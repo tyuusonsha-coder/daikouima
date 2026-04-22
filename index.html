@@ -1,1 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>代行いま</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0a0a;--surface:#111;--card:#141414;--border:#1e1e1e;
+  --accent:#FF6B00;--accent-dim:rgba(255,107,0,.13);
+  --text:#f0f0f0;--sub:#666;
+  --success:#00C853;--danger:#FF1744;--blue:#2979FF;
+}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--bg);color:var(--text);
+  max-width:480px;margin:0 auto;
+  display:flex;flex-direction:column;height:100dvh;
+  position:relative;
+}
+/* スクロールエリア */
+#app-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:72px;}
+/* パネル */
+.panel{display:none;} .panel.active{display:block;}
+.tl-panel{display:none;} .tl-panel.active{display:block;}
+
+/* ── トップバー ── */
+#topbar{
+  background:#000;padding:13px 16px 11px;
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.logo{display:flex;align-items:center;gap:6px;}
+.logo-w{font-weight:900;font-size:20px;color:#fff;letter-spacing:-1px;}
+.logo-a{font-weight:900;font-size:20px;color:var(--accent);letter-spacing:-1px;}
+.logo-v{font-size:10px;color:#333;border:1px solid #222;border-radius:6px;padding:1px 6px;margin-left:2px;}
+.topbar-right{display:flex;gap:8px;align-items:center;}
+.save-btn{padding:6px 12px;background:var(--surface);color:var(--sub);border:1px solid var(--border);border-radius:12px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;}
+.status-toggle{display:flex;background:var(--surface);border-radius:24px;overflow:hidden;border:1px solid var(--border);}
+.st-btn{padding:7px 13px;font-weight:700;font-size:12px;border:none;cursor:pointer;font-family:inherit;background:transparent;color:var(--sub);transition:all .2s;}
+.st-btn.on-free{background:var(--success);color:#000;}
+.st-btn.on-busy{background:#8b0000;color:#fff;}
+
+/* ── ボトムナビ ── */
+#bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:rgba(0,0,0,.95);border-top:1px solid var(--border);
+  backdrop-filter:blur(12px);display:flex;z-index:100;
+}
+.nav-btn{
+  flex:1;padding:10px 0 12px;background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-family:inherit;color:var(--sub);transition:color .15s;
+}
+.nav-btn.active{color:var(--accent);}
+.nav-icon{font-size:20px;line-height:1;}
+.nav-label{font-size:10px;font-weight:400;}
+.nav-btn.active .nav-label{font-weight:700;}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);margin-top:1px;}
+
+/* ── FAB ── */
+#fab{
+  position:fixed;bottom:84px;right:max(16px,calc(50% - 224px));
+  width:56px;height:56px;border-radius:50%;background:var(--accent);color:#000;
+  border:none;font-size:24px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(255,107,0,.4);
+  display:flex;align-items:center;justify-content:center;z-index:99;
+  transition:transform .15s;
+}
+#fab:active{transform:scale(.93);}
+
+/* ── トースト ── */
+#toast{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-60px);
+  background:#1a3a1a;color:var(--success);padding:8px 20px;
+  border-radius:20px;font-size:13px;font-weight:700;z-index:9999;
+  border:1px solid var(--success);transition:transform .3s;pointer-events:none;
+}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── マッチング画面 ── */
+#matching-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;
+}
+#matching-overlay.show{display:flex;}
+.ping-ring{
+  position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);
+  animation:ping 1.5s ease-out infinite;
+}
+@keyframes ping{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.8);opacity:0}}
+.pulse-wrap{position:relative;width:120px;height:120px;margin-bottom:32px;}
+.pulse-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.match-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;}
+.match-sub{color:var(--sub);font-size:14px;margin-bottom:6px;}
+.match-sub2{color:var(--sub);font-size:13px;margin-bottom:40px;}
+.cancel-btn{padding:12px 32px;background:none;border:1px solid #333;border-radius:24px;color:var(--sub);font-size:14px;cursor:pointer;font-family:inherit;}
+.match-done-icon{font-size:60px;margin-bottom:24px;}
+.match-done-title{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:8px;}
+.match-result-card{background:var(--surface);border-radius:20px;padding:24px 32px;margin-bottom:32px;width:100%;max-width:320px;}
+.match-result-grid{display:flex;gap:12px;margin-top:16px;}
+.match-result-item{flex:1;background:var(--card);border-radius:12px;padding:12px 0;text-align:center;}
+.match-result-num{color:var(--accent);font-weight:800;font-size:22px;}
+.match-result-lbl{color:var(--sub);font-size:12px;margin-top:2px;}
+.confirm-btn{width:100%;max-width:320px;padding:16px 0;background:var(--accent);color:#000;border:none;border-radius:28px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit;}
+
+/* ── アバター ── */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-.5px;}
+
+/* ── 共通カード ── */
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:10px;border:1px solid var(--border);}
+.inp{
+  width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:13px 15px;color:var(--text);font-size:15px;outline:none;
+  font-family:inherit;transition:border .15s;
+}
+.inp:focus{border-color:var(--accent);}
+.inp+.inp{margin-top:10px;}
+.btn-accent{width:100%;padding:16px 0;background:var(--accent);color:#000;border:none;border-radius:20px;font-weight:900;font-size:17px;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px rgba(255,107,0,.3);}
+.btn-surface{padding:13px 0;background:var(--surface);color:var(--blue);border:1px solid #3498db;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+.btn-outline-accent{padding:13px 0;background:var(--surface);color:var(--accent);border:1px solid var(--accent);border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+.btn-outline-green{padding:13px 0;background:#1a3a1a;color:var(--success);border:1px solid var(--success);border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+.btn-row{display:flex;gap:8px;margin-bottom:16px;}
+.btn-row>*{flex:1;}
+.sec-title{font-size:20px;font-weight:800;margin-bottom:16px;}
+
+/* ── ホーム業者カード ── */
+.agent-card{background:var(--card);border-radius:16px;padding:14px 16px;margin:0 16px 10px;border:1px solid var(--border);}
+.agent-av-wrap{position:relative;flex-shrink:0;}
+.status-dot{position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;border:2px solid var(--card);}
+.agent-name{font-weight:700;font-size:16px;}
+.agent-meta{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;}
+.agent-meta span{font-size:13px;color:var(--sub);}
+.agent-meta .rating{color:var(--accent);}
+.agent-actions{display:flex;gap:8px;margin-top:12px;}
+.btn-order{flex:1;padding:10px 0;background:var(--accent);color:#000;border:none;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;}
+.btn-call{flex:1;padding:10px 0;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+
+/* ── 依頼フォーム ── */
+.route-card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:16px;border:1px solid var(--border);}
+.route-row{display:flex;align-items:center;gap:12px;}
+.route-dot-g{width:10px;height:10px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success);flex-shrink:0;}
+.route-dot-r{width:10px;height:10px;border-radius:2px;background:var(--danger);box-shadow:0 0 8px var(--danger);flex-shrink:0;}
+.route-line{width:2px;height:16px;background:var(--border);margin-left:4px;margin:10px 0 10px 4px;}
+.route-inp{flex:1;background:transparent;border:none;color:var(--text);font-size:16px;outline:none;font-family:inherit;padding:6px 0;}
+.dist-result{background:var(--card);border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid rgba(255,107,0,.3);text-align:center;}
+.dist-num{color:var(--accent);font-size:36px;font-weight:900;}
+.dist-sub{color:var(--sub);font-size:13px;margin-top:4px;}
+
+/* ── 地図 ── */
+#map{width:100%;height:280px;border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.calc-box{background:var(--card);border-radius:16px;padding:16px;margin-top:16px;border:1px solid var(--border);}
+.calc-title{color:var(--accent);font-weight:800;font-size:15px;margin-bottom:14px;}
+
+/* ── 業者管理 ── */
+.mgmt-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:10px;border:1px solid var(--border);}
+.status-toggle-btn{font-size:11px;padding:3px 10px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-family:inherit;}
+
+/* ── タイムライン ── */
+.tl-compose{background:#000;border-bottom:1px solid var(--border);padding:12px 16px;position:sticky;top:0;z-index:5;}
+.compose-name-inp{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:#888;font-size:13px;padding:4px 0;margin-bottom:8px;outline:none;font-family:inherit;}
+.compose-area{width:100%;background:transparent;border:none;color:var(--text);font-size:15px;resize:none;outline:none;font-family:inherit;line-height:1.5;}
+.compose-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+.req-post-btn{background:none;border:1px solid var(--border);border-radius:16px;padding:5px 12px;color:var(--accent);font-size:12px;cursor:pointer;font-family:inherit;font-weight:600;}
+.char-count{font-size:12px;color:var(--sub);}
+.char-warn{color:var(--danger);}
+.post-btn{padding:8px 20px;background:var(--accent);color:#000;border:none;border-radius:20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;transition:all .2s;}
+.post-btn:disabled{background:#333;color:#555;cursor:default;}
+.tweet{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #161616;}
+.tweet-body{flex:1;min-width:0;}
+.tweet-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
+.tweet-name{font-weight:700;font-size:15px;}
+.tweet-badge{font-size:10px;padding:2px 8px;background:var(--accent);color:#000;border-radius:10px;font-weight:800;}
+.tweet-time{color:#444;font-size:12px;margin-left:auto;}
+.tweet-text{font-size:15px;color:#e0e0e0;line-height:1.6;word-break:break-word;margin-bottom:10px;}
+.req-route{background:#1a1a1a;border-radius:12px;padding:10px 14px;margin-bottom:8px;border-left:3px solid var(--accent);}
+.req-route-label{font-size:13px;color:#aaa;margin-bottom:4px;}
+.req-route-row{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:600;}
+.tweet-actions{display:flex;gap:4px;}
+.act-btn{display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-size:13px;padding:4px 8px 4px 0;font-family:inherit;transition:color .15s;}
+.replies-wrap{margin-top:10px;background:#0d0d0d;border:1px solid #1e1e1e;border-radius:14px;padding:10px 12px;}
+.reply-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #161616;}
+.reply-item:last-of-type{border-bottom:none;}
+.reply-name{font-weight:700;font-size:13px;color:#bbb;}
+.reply-text{font-size:13px;color:#888;margin-top:2px;line-height:1.4;word-break:break-word;}
+.reply-inp-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.reply-inp{flex:1;background:#111;border:1px solid #252525;border-radius:20px;padding:8px 14px;color:#fff;font-size:13px;outline:none;font-family:inherit;}
+.reply-send{padding:8px 14px;background:#1a3a1a;color:var(--success);border:1px solid var(--success);border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.notif-banner{width:100%;padding:12px 16px;background:var(--accent-dim);color:var(--accent);border:none;border-bottom:1px solid var(--border);font-weight:700;font-size:13px;cursor:pointer;text-align:left;font-family:inherit;}
+.stat-bar{padding:20px 16px 14px;}
+.stat-num{font-size:22px;font-weight:800;}
+.stat-on{color:var(--success);font-size:16px;}
+.msg-line{font-size:13px;text-align:center;margin:8px 0;}
+.msg-ok{color:var(--success);}
+.msg-err{color:var(--danger);}
+.msg-wait{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- トースト -->
+<div id="toast">✅ 保存しました</div>
+
+<!-- マッチングオーバーレイ -->
+<div id="matching-overlay">
+  <div id="matching-searching">
+    <div class="pulse-wrap">
+      <div class="ping-ring" style="animation-delay:0s"></div>
+      <div class="ping-ring" style="animation-delay:.3s;opacity:.45"></div>
+      <div class="ping-ring" style="animation-delay:.6s;opacity:.3"></div>
+      <div class="pulse-emoji">🚗</div>
+    </div>
+    <div class="match-title" id="match-dots">マッチング中．</div>
+    <div class="match-sub" id="match-route-label"></div>
+    <div class="match-sub2">近くの業者を探しています</div>
+    <button class="cancel-btn" onclick="cancelMatching()">キャンセル</button>
+  </div>
+  <div id="matching-found" style="display:none;flex-direction:column;align-items:center;width:100%">
+    <div class="match-done-icon">✅</div>
+    <div class="match-done-title">マッチング完了！</div>
+    <div class="match-result-card">
+      <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+        <div id="match-av" class="av" style="width:52px;height:52px;font-size:22px"></div>
+        <div>
+          <div style="font-weight:800;font-size:18px">代行太郎</div>
+          <div style="color:var(--accent);font-size:13px;margin-top:2px">★ 4.9 · 実績 127件</div>
+        </div>
+      </div>
+      <div class="match-result-grid">
+        <div class="match-result-item">
+          <div class="match-result-num" id="match-eta"></div>
+          <div class="match-result-lbl">到着予定</div>
+        </div>
+        <div class="match-result-item">
+          <div class="match-result-num" id="match-dist"></div>
+          <div class="match-result-lbl">距離</div>
+        </div>
+      </div>
+    </div>
+    <button class="confirm-btn" onclick="cancelMatching()">確定する</button>
+  </div>
+</div>
+
+<!-- トップバー -->
+<div id="topbar">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div class="logo">
+      <span class="logo-w">代行</span>
+      <span class="logo-a">いま</span>
+      <span class="logo-v">v5</span>
+    </div>
+    <div class="topbar-right">
+      <button class="save-btn" onclick="manualSave()">💾 保存</button>
+      <div class="status-toggle">
+        <button class="st-btn on-free" id="btn-free" onclick="setMyStatus('空き')">● 空き</button>
+        <button class="st-btn" id="btn-busy" onclick="setMyStatus('対応中')">● 対応中</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スクロールコンテンツ -->
+<div id="app-scroll">
+
+  <!-- ホーム -->
+  <div class="panel active" id="panel-home">
+    <button class="notif-banner" id="notif-banner" onclick="requestNotif()" style="display:none">
+      🔔 通知を許可する → 依頼が来たらお知らせします
+    </button>
+    <div class="stat-bar">
+      <div style="font-size:13px;color:var(--sub);margin-bottom:6px">近くの業者</div>
+      <div class="stat-num"><span id="online-count">0</span>人 <span class="stat-on">オンライン</span></div>
+    </div>
+    <div id="home-agent-list"></div>
+  </div>
+
+  <!-- 依頼 -->
+  <div class="panel" id="panel-order" style="padding:16px">
+    <div class="sec-title">🚗 代行を依頼する</div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--sub);margin-bottom:6px;font-weight:600">あなたのお名前</div>
+      <input class="inp" id="order-name" placeholder="例：田中" oninput="orderNameSync()"/>
+    </div>
+    <div class="route-card">
+      <div class="route-row">
+        <div class="route-dot-g"></div>
+        <input class="route-inp" id="from-input" placeholder="出発地を入力" oninput="resetCalc()"/>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-row">
+        <div class="route-dot-r"></div>
+        <input class="route-inp" id="to-input" placeholder="目的地を入力" oninput="resetCalc()"/>
+      </div>
+    </div>
+    <button class="btn-surface" style="width:100%;margin-bottom:8px" onclick="getLocation()">📍 現在地を出発地にする</button>
+    <div class="msg-line" id="geo-msg"></div>
+    <div class="btn-row">
+      <button class="btn-outline-accent" onclick="doCalc()">📏 距離を計算する</button>
+      <button class="btn-outline-green" onclick="openGmap()">🗺️ Google</button>
+    </div>
+    <div class="msg-line" id="calc-msg"></div>
+    <div class="dist-result" id="dist-result" style="display:none">
+      <div style="color:var(--sub);font-size:12px;margin-bottom:4px">直線距離</div>
+      <div class="dist-num" id="dist-num">—</div>
+      <div class="dist-sub" id="dist-sub"></div>
+    </div>
+    <button class="btn-accent" onclick="submitOrder()">🚗 今すぐ依頼する</button>
+  </div>
+
+  <!-- 地図 -->
+  <div class="panel" id="panel-map" style="padding:16px">
+    <div class="sec-title">🗺️ マップ</div>
+    <div id="map"></div>
+    <div class="calc-box">
+      <div class="calc-title">📏 距離計算</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div class="route-dot-g"></div>
+        <input class="inp" id="map-from" placeholder="出発地（例：渋谷駅）" oninput="resetCalc()" style="flex:1"/>
+      </div>
+      <div class="route-line"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div class="route-dot-r"></div>
+        <input class="inp" id="map-to" placeholder="目的地（例：東京タワー）" oninput="resetCalc()" style="flex:1"/>
+      </div>
+      <div class="btn-row">
+        <button class="btn-accent" style="font-size:14px;padding:13px 0;border-radius:12px" onclick="doMapCalc()">📏 計算</button>
+        <button class="btn-outline-green" onclick="openMapGmap()">🗺️ Google</button>
+      </div>
+      <div class="msg-line" id="map-calc-msg"></div>
+      <div id="map-dist-result" style="display:none;margin-top:14px;background:#0a0a0a;border-radius:14px;padding:16px;border:1px solid rgba(255,107,0,.3);text-align:center">
+        <div style="color:var(--sub);font-size:12px;margin-bottom:4px">直線距離</div>
+        <div class="dist-num" id="map-dist-num">—</div>
+        <div class="dist-sub" id="map-dist-sub"></div>
+        <button onclick="openMapGmap()" style="margin-top:12px;width:100%;padding:11px 0;background:#1a3a1a;color:var(--success);border:1px solid var(--success);border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit">
+          🗺️ Google マップでルートを開く →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 業者 -->
+  <div class="panel" id="panel-agents" style="padding:16px">
+    <div class="sec-title">👥 業者一覧</div>
+    <div id="agents-list"></div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="tl-panel" id="panel-tl">
+    <div class="tl-compose">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div id="compose-av" class="av" style="width:40px;height:40px;font-size:17px;background:linear-gradient(135deg,#FF6B00,#FF3D00)">あ</div>
+        <div style="flex:1">
+          <input class="compose-name-inp" id="tl-name" placeholder="ユーザー名" maxlength="20" oninput="tlNameSync()"/>
+          <textarea class="compose-area" id="post-text" placeholder="いまどうしてる？" rows="3" maxlength="140" oninput="updateCharCount()"></textarea>
+          <div class="compose-footer">
+            <button class="req-post-btn" onclick="switchScreen('order')">🚗 依頼を投稿</button>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="char-count" id="char-count">140</span>
+              <button class="post-btn" id="post-btn" onclick="addPost()" disabled>投稿する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="post-list"></div>
+  </div>
+
+</div><!-- /app-scroll -->
+
+<!-- ボトムナビ -->
+<nav id="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="switchScreen('home')">
+    <span class="nav-icon">🏠</span><span class="nav-label">ホーム</span><div class="nav-dot" id="dot-home"></div>
+  </button>
+  <button class="nav-btn" id="nav-order" onclick="switchScreen('order')">
+    <span class="nav-icon">🚗</span><span class="nav-label">依頼</span><div class="nav-dot" id="dot-order" style="display:none"></div>
+  </button>
+  <button class="nav-btn" id="nav-map" onclick="switchScreen('map')">
+    <span class="nav-icon">🗺️</span><span class="nav-label">地図</span><div class="nav-dot" id="dot-map" style="display:none"></div>
+  </button>
+  <button class="nav-btn" id="nav-agents" onclick="switchScreen('agents')">
+    <span class="nav-icon">👥</span><span class="nav-label">業者</span><div class="nav-dot" id="dot-agents" style="display:none"></div>
+  </button>
+  <button class="nav-btn" id="nav-tl" onclick="switchScreen('tl')">
+    <span class="nav-icon">📢</span><span class="nav-label">TL</span><div class="nav-dot" id="dot-tl" style="display:none"></div>
+  </button>
+</nav>
+
+<!-- FAB -->
+<button id="fab" onclick="switchScreen('order')">🚗</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ══════════════════════════════════════════
+// データ・定数
+// ══════════════════════════════════════════
+const AV_GRADIENTS = [
+  "#FF6B00,#FF3D00","#00C853,#00796B","#2979FF,#1565C0",
+  "#AA00FF,#6200EA","#FF1744,#B71C1C","#00B0FF,#0277BD",
+  "#FFD600,#F57F17","#F50057,#880E4F"
+];
+const avColor = n => { if(!n) return AV_GRADIENTS[0]; let s=0; for(let i=0;i<n.length;i++) s+=n.charCodeAt(i); return AV_GRADIENTS[s%AV_GRADIENTS.length]; };
+const avChar  = n => n ? n[0].toUpperCase() : '？';
+const timeAgo = ts => {
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return `${s}秒前`;
+  if(s<3600) return `${Math.floor(s/60)}分前`;
+  if(s<86400) return `${Math.floor(s/3600)}時間前`;
+  return `${Math.floor(s/86400)}日前`;
+};
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+let agents = JSON.parse(localStorage.getItem('dk5:agents') || JSON.stringify([
+  {id:1,name:"代行太郎",phone:"090-1111-2222",status:"オンライン",area:"渋谷区",rating:4.9,jobs:127,dist:0.8},
+  {id:2,name:"夜の代行",phone:"080-3333-4444",status:"オンライン",area:"新宿区",rating:4.7,jobs:89,dist:1.4},
+  {id:3,name:"スピード代行",phone:"070-5555-6666",status:"対応中",area:"港区",rating:4.8,jobs:203,dist:2.1},
+  {id:4,name:"安心代行",phone:"090-7777-8888",status:"オフライン",area:"品川区",rating:4.6,jobs:54,dist:3.5},
+]));
+let posts = JSON.parse(localStorage.getItem('dk5:posts') || JSON.stringify([
+  {id:1,username:"代行太郎",text:"今日も渋谷・新宿エリア空いてます！深夜OK🌙",time:Date.now()-1800000,likes:8,liked:false,replies:[{id:101,username:"田中",text:"お願いします！",time:Date.now()-1200000}],isRequest:false},
+  {id:2,username:"田中",text:"代行お願いしたい！",from:"渋谷駅",to:"横浜駅",time:Date.now()-3600000,likes:2,liked:false,replies:[],isRequest:true},
+  {id:3,username:"ユーザーB",text:"先日お世話になりました。丁寧で安心でした👍",time:Date.now()-7200000,likes:15,liked:false,replies:[],isRequest:false},
+]));
+let myName   = localStorage.getItem('dk5:name')   || '';
+let myStatus = localStorage.getItem('dk5:status') || '空き';
+let nextId   = 500;
+let currentScreen = 'home';
+
+const save = () => {
+  localStorage.setItem('dk5:agents', JSON.stringify(agents));
+  localStorage.setItem('dk5:posts',  JSON.stringify(posts));
+  localStorage.setItem('dk5:name',   myName);
+  localStorage.setItem('dk5:status', myStatus);
+};
+
+// ══════════════════════════════════════════
+// トースト
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg='✅ 保存しました'){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+function manualSave(){ save(); showToast(); }
+
+// ══════════════════════════════════════════
+// アバター生成
+// ══════════════════════════════════════════
+function makeAv(name='?', size=40){
+  const g = avColor(name);
+  const fs = Math.round(size * .42);
+  return `<div class="av" style="width:${size}px;height:${size}px;font-size:${fs}px;background:linear-gradient(135deg,${g})">${esc(avChar(name))}</div>`;
+}
+
+// ══════════════════════════════════════════
+// ナビゲーション
+// ══════════════════════════════════════════
+const SCREENS = ['home','order','map','agents','tl'];
+function switchScreen(name){
+  SCREENS.forEach(s => {
+    const panel = document.getElementById('panel-'+s);
+    if(panel){ panel.className = s==='tl' ? 'tl-panel' : 'panel'; }
+    document.getElementById('nav-'+s).classList.remove('active');
+    document.getElementById('dot-'+s).style.display = 'none';
+  });
+  const target = document.getElementById('panel-'+name);
+  if(target){ target.className = (name==='tl' ? 'tl-panel' : 'panel') + ' active'; }
+  document.getElementById('nav-'+name).classList.add('active');
+  document.getElementById('dot-'+name).style.display = 'block';
+  document.getElementById('fab').style.display = name==='home' ? 'flex' : 'none';
+  currentScreen = name;
+  if(name==='map') initMap();
+  if(name==='tl') { renderPosts(); syncTlName(); }
+  if(name==='agents') renderAgents();
+  if(name==='home') renderHome();
+  if(name==='order') { document.getElementById('order-name').value = myName; }
+}
+
+// ══════════════════════════════════════════
+// ステータス
+// ══════════════════════════════════════════
+function setMyStatus(s){
+  myStatus = s;
+  document.getElementById('btn-free').className = 'st-btn' + (s==='空き'?' on-free':'');
+  document.getElementById('btn-busy').className = 'st-btn' + (s==='対応中'?' on-busy':'');
+  save();
+}
+setMyStatus(myStatus);
+
+// ══════════════════════════════════════════
+// 通知
+// ══════════════════════════════════════════
+function checkNotifBanner(){
+  const b = document.getElementById('notif-banner');
+  if('Notification' in window && Notification.permission==='default') b.style.display='block';
+  else b.style.display='none';
+}
+async function requestNotif(){
+  if(!('Notification' in window)||Notification.permission!=='default') return;
+  await Notification.requestPermission();
+  checkNotifBanner();
+}
+const sendNotif = (t,b) => {
+  if('Notification' in window && Notification.permission==='granted') new Notification(t,{body:b});
+};
+checkNotifBanner();
+
+// ══════════════════════════════════════════
+// ホーム
+// ══════════════════════════════════════════
+function renderHome(){
+  const onlineCount = agents.filter(a=>a.status==='オンライン').length;
+  document.getElementById('online-count').textContent = onlineCount;
+  const list = document.getElementById('home-agent-list');
+  list.innerHTML = agents.map(a => {
+    const dotColor = a.status==='オンライン' ? 'var(--success)' : a.status==='対応中' ? 'var(--accent)' : '#444';
+    const actions = a.status!=='オフライン' ? `
+      <div class="agent-actions">
+        <button class="btn-order" onclick="goOrder()">依頼する</button>
+        <a class="btn-call" href="tel:${esc(a.phone)}">📞 電話</a>
+      </div>` : '';
+    return `
+      <div class="agent-card">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="agent-av-wrap">
+            ${makeAv(a.name, 48)}
+            <div class="status-dot" style="background:${dotColor}"></div>
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="agent-name">${esc(a.name)}</span>
+              <span style="font-size:12px;font-weight:600;color:${dotColor}">${esc(a.status)}</span>
+            </div>
+            <div class="agent-meta">
+              <span class="rating">★ ${a.rating}</span>
+              <span>実績 ${a.jobs}件</span>
+              <span>📍 ${a.dist}km</span>
+            </div>
+          </div>
+        </div>
+        ${actions}
+      </div>`;
+  }).join('');
+}
+function goOrder(){
+  document.getElementById('from-input').value = '現在地';
+  document.getElementById('to-input').value   = '';
+  switchScreen('order');
+}
+
+// ══════════════════════════════════════════
+// 業者管理
+// ══════════════════════════════════════════
+function renderAgents(){
+  const dotColor = s => s==='オンライン' ? 'var(--success)' : s==='対応中' ? 'var(--accent)' : '#333';
+  const btnBg    = s => s==='オンライン' ? '#1a3a1a' : s==='対応中' ? '#2a1a0a' : '#1a1a1a';
+  const btnClr   = s => s==='オンライン' ? 'var(--success)' : s==='対応中' ? 'var(--accent)' : 'var(--sub)';
+  const actions  = a => a.status!=='オフライン' ? `
+    <div class="agent-actions">
+      <button class="btn-order" onclick="goOrder()">依頼する</button>
+      <a class="btn-call" href="tel:${esc(a.phone)}">📞 電話</a>
+    </div>` : '';
+  document.getElementById('agents-list').innerHTML = agents.map(a=>`
+    <div class="mgmt-card">
+      <div style="display:flex;gap:12px;align-items:center${a.status!=='オフライン'?';margin-bottom:12px':''}">
+        <div class="agent-av-wrap">
+          ${makeAv(a.name,50)}
+          <div class="status-dot" style="background:${dotColor(a.status)};width:13px;height:13px"></div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span style="font-weight:700;font-size:17px">${esc(a.name)}</span>
+            <button class="status-toggle-btn" style="background:${btnBg(a.status)};color:${btnClr(a.status)}"
+              onclick="toggleAgentStatus(${a.id})">${esc(a.status)}</button>
+          </div>
+          <div class="agent-meta" style="margin-top:5px">
+            <span class="rating">★ ${a.rating}</span>
+            <span>実績 ${a.jobs}件</span>
+            <span>📍 ${esc(a.area)}</span>
+            <span>📞 ${esc(a.phone)}</span>
+          </div>
+        </div>
+      </div>
+      ${actions(a)}
+    </div>`).join('');
+}
+function toggleAgentStatus(id){
+  agents = agents.map(a => a.id===id ? {...a, status: a.status==='オンライン'?'オフライン':'オンライン'} : a);
+  save(); renderAgents();
+}
+
+// ══════════════════════════════════════════
+// 位置・距離計算（依頼タブ）
+// ══════════════════════════════════════════
+let currentPos=null, fromPos=null, toPos=null, calcDistance=null;
+
+function setCalcMsg(msg){
+  const el=document.getElementById('calc-msg');
+  el.textContent=msg;
+  el.className='msg-line ' + (msg.startsWith('✅')?'msg-ok':msg.startsWith('❌')||msg.startsWith('⚠️')?'msg-err':'msg-wait');
+}
+function setGeoMsg(msg){
+  const el=document.getElementById('geo-msg');
+  el.textContent=msg;
+  el.className='msg-line ' + (msg.startsWith('✅')?'msg-ok':msg.startsWith('❌')?'msg-err':'msg-wait');
+}
+function resetCalc(){
+  calcDistance=null;
+  document.getElementById('dist-result').style.display='none';
+  document.getElementById('calc-msg').textContent='';
+}
+
+function getLocation(){
+  if(!navigator.geolocation){setGeoMsg('❌ 位置情報が使えません');return;}
+  setGeoMsg('取得中...');
+  navigator.geolocation.getCurrentPosition(p=>{
+    currentPos={lat:p.coords.latitude,lon:p.coords.longitude};
+    fromPos=currentPos;
+    document.getElementById('from-input').value='現在地';
+    setGeoMsg('✅ 現在地を取得しました');
+  },()=>setGeoMsg('❌ 取得失敗（許可を確認してください）'));
+}
+
+function calcKm(la1,lo1,la2,lo2){
+  const R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+async function geocode(q){
+  const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`,{headers:{"Accept-Language":"ja"}});
+  const d=await r.json();
+  if(!d.length) throw new Error('not found');
+  return {lat:parseFloat(d[0].lat),lon:parseFloat(d[0].lon)};
+}
+
+async function doCalc(){
+  const fi=document.getElementById('from-input').value.trim();
+  const ti=document.getElementById('to-input').value.trim();
+  if(!fi||!ti){setCalcMsg('⚠️ 両方入力してください');return;}
+  setCalcMsg('計算中...');
+  document.getElementById('dist-result').style.display='none';
+  try{
+    const fPos = (fi==='現在地'&&fromPos) ? fromPos : await geocode(fi);
+    const tPos = await geocode(ti);
+    fromPos=fPos; toPos=tPos;
+    calcDistance = calcKm(fPos.lat,fPos.lon,tPos.lat,tPos.lon);
+    const label = calcDistance>=1 ? `${calcDistance.toFixed(1)} km` : `${Math.round(calcDistance*1000)} m`;
+    document.getElementById('dist-num').textContent = label;
+    document.getElementById('dist-sub').textContent = calcDistance>=1 ? `≈ 車で約${Math.round(calcDistance/40*60)}分（40km/h想定）` : '';
+    document.getElementById('dist-result').style.display='block';
+    setCalcMsg('✅ 計算完了');
+    if(mapObj) drawMap();
+  }catch{setCalcMsg('❌ 場所が見つかりませんでした');}
+}
+
+function openGmap(){
+  const fi=document.getElementById('from-input').value.trim();
+  const ti=document.getElementById('to-input').value.trim();
+  if(!fi||!ti){setCalcMsg('⚠️ 両方入力してください');return;}
+  window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fi)}&destination=${encodeURIComponent(ti)}&travelmode=driving`,'_blank');
+}
+
+function orderNameSync(){
+  myName = document.getElementById('order-name').value;
+  save();
+}
+
+// ══════════════════════════════════════════
+// 依頼送信 → マッチング
+// ══════════════════════════════════════════
+let matchTimer1, matchTimer2, matchDots;
+
+function submitOrder(){
+  const fi=document.getElementById('from-input').value.trim();
+  const ti=document.getElementById('to-input').value.trim();
+  if(!fi||!ti){setCalcMsg('⚠️ 出発地と目的地を入力してください');return;}
+  const name=myName||document.getElementById('order-name').value.trim()||'匿名ユーザー';
+  // タイムラインに依頼投稿
+  posts.unshift({id:nextId++,username:name,text:`${fi}から${ti}まで代行お願いします！`,from:fi,to:ti,time:Date.now(),likes:0,liked:false,replies:[],isRequest:true});
+  save();
+  sendNotif('🚗 依頼を送信しました！',`${fi} → ${ti}`);
+  // マッチング開始
+  startMatching(fi,ti);
+}
+
+function startMatching(from,to){
+  const overlay = document.getElementById('matching-overlay');
+  const searching = document.getElementById('matching-searching');
+  const found = document.getElementById('matching-found');
+  searching.style.display='flex'; found.style.display='none';
+  overlay.classList.add('show');
+  document.getElementById('match-route-label').textContent=`${from} → ${to}`;
+  let d=0;
+  matchDots = setInterval(()=>{
+    d=(d+1)%4;
+    document.getElementById('match-dots').textContent='マッチング中'+'．'.repeat(d+1);
+  },500);
+  matchTimer1 = setTimeout(()=>{
+    clearInterval(matchDots);
+    searching.style.display='none';
+    const eta=Math.floor(Math.random()*8)+3;
+    const dist=(Math.random()*3+0.5).toFixed(1);
+    document.getElementById('match-eta').textContent=eta+'分';
+    document.getElementById('match-dist').textContent=dist+'km';
+    // マッチしたアバター
+    const av=document.getElementById('match-av');
+    av.style.background='linear-gradient(135deg,'+avColor('代行太郎')+')';
+    av.textContent=avChar('代行太郎');
+    found.style.display='flex';
+  },3500);
+}
+
+function cancelMatching(){
+  clearInterval(matchDots);
+  clearTimeout(matchTimer1);
+  document.getElementById('matching-overlay').classList.remove('show');
+  document.getElementById('from-input').value='';
+  document.getElementById('to-input').value='';
+  resetCalc();
+}
+
+// ══════════════════════════════════════════
+// 地図タブ
+// ══════════════════════════════════════════
+let mapObj=null, mapMarkers=[], mapLine=null;
+let mapFromPos=null, mapToPos=null;
+
+function initMap(){
+  if(mapObj) return;
+  mapObj = L.map('map',{center:[35.68,139.77],zoom:5});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(mapObj);
+  drawMap();
+}
+
+function dotIcon(color){
+  return L.divIcon({html:`<div style="background:${color};width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 8px ${color}88"></div>`,iconSize:[14,14],iconAnchor:[7,7],className:''});
+}
+
+function drawMap(){
+  if(!mapObj) return;
+  mapMarkers.forEach(m=>mapObj.removeLayer(m)); mapMarkers=[];
+  if(mapLine){mapObj.removeLayer(mapLine);mapLine=null;}
+  const fp = mapFromPos || fromPos;
+  const tp = mapToPos  || toPos;
+  if(currentPos) mapMarkers.push(L.marker([currentPos.lat,currentPos.lon],{icon:dotIcon('#FF6B00')}).addTo(mapObj).bindPopup('📍 現在地'));
+  if(fp) mapMarkers.push(L.marker([fp.lat,fp.lon],{icon:dotIcon('#00C853')}).addTo(mapObj).bindPopup('🟢 出発地'));
+  if(tp) mapMarkers.push(L.marker([tp.lat,tp.lon],{icon:dotIcon('#FF1744')}).addTo(mapObj).bindPopup('🔴 目的地'));
+  if(fp&&tp){
+    mapLine=L.polyline([[fp.lat,fp.lon],[tp.lat,tp.lon]],{color:'#FF6B00',weight:3,dashArray:'8 5'}).addTo(mapObj);
+    mapObj.fitBounds([[fp.lat,fp.lon],[tp.lat,tp.lon]],{padding:[50,50]});
+  } else if(currentPos) mapObj.setView([currentPos.lat,currentPos.lon],14);
+}
+
+function setMapMsg(msg, elId){
+  const el=document.getElementById(elId);
+  el.textContent=msg;
+  el.className='msg-line '+(msg.startsWith('✅')?'msg-ok':msg.startsWith('❌')||msg.startsWith('⚠️')?'msg-err':'msg-wait');
+}
+
+async function doMapCalc(){
+  const fi=document.getElementById('map-from').value.trim();
+  const ti=document.getElementById('map-to').value.trim();
+  if(!fi||!ti){setMapMsg('⚠️ 両方入力してください','map-calc-msg');return;}
+  setMapMsg('計算中...','map-calc-msg');
+  document.getElementById('map-dist-result').style.display='none';
+  try{
+    const fPos=(fi==='現在地'&&fromPos)?fromPos:await geocode(fi);
+    const tPos=await geocode(ti);
+    mapFromPos=fPos; mapToPos=tPos;
+    const d=calcKm(fPos.lat,fPos.lon,tPos.lat,tPos.lon);
+    const label=d>=1?`${d.toFixed(1)} km`:`${Math.round(d*1000)} m`;
+    document.getElementById('map-dist-num').textContent=label;
+    document.getElementById('map-dist-sub').textContent=d>=1?`≈ 車で約${Math.round(d/40*60)}分（40km/h想定）`:'';
+    document.getElementById('map-dist-result').style.display='block';
+    setMapMsg('✅ 計算完了','map-calc-msg');
+    drawMap();
+  }catch{setMapMsg('❌ 場所が見つかりませんでした','map-calc-msg');}
+}
+
+function openMapGmap(){
+  const fi=document.getElementById('map-from').value.trim();
+  const ti=document.getElementById('map-to').value.trim();
+  if(!fi||!ti){setMapMsg('⚠️ 両方入力してください','map-calc-msg');return;}
+  window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fi)}&destination=${encodeURIComponent(ti)}&travelmode=driving`,'_blank');
+}
+
+// ══════════════════════════════════════════
+// タイムライン
+// ══════════════════════════════════════════
+function syncTlName(){
+  document.getElementById('tl-name').value = myName;
+  updateComposeAv();
+}
+function tlNameSync(){
+  myName = document.getElementById('tl-name').value;
+  document.getElementById('order-name').value = myName;
+  updateComposeAv(); save();
+}
+function updateComposeAv(){
+  const n = myName||'あ';
+  const av = document.getElementById('compose-av');
+  av.style.background = 'linear-gradient(135deg,'+avColor(n)+')';
+  av.textContent = avChar(n);
+}
+function updateCharCount(){
+  const len = document.getElementById('post-text').value.length;
+  const cnt = document.getElementById('char-count');
+  cnt.textContent = 140-len;
+  cnt.className = 'char-count' + (140-len<=20?' char-warn':'');
+  const hasText = document.getElementById('post-text').value.trim().length>0;
+  const btn = document.getElementById('post-btn');
+  btn.disabled = !hasText;
+  btn.style.background = hasText ? 'var(--accent)' : '#333';
+  btn.style.color = hasText ? '#000' : '#555';
+}
+function addPost(){
+  const text = document.getElementById('post-text').value.trim();
+  if(!text) return;
+  const name = myName||'匿名ユーザー';
+  posts.unshift({id:nextId++,username:name,text,time:Date.now(),likes:0,liked:false,replies:[],isRequest:false});
+  save(); renderPosts();
+  document.getElementById('post-text').value='';
+  updateCharCount();
+}
+function toggleLike(id){
+  posts = posts.map(p => p.id===id ? {...p,liked:!p.liked,likes:p.liked?p.likes-1:p.likes+1} : p);
+  save(); renderPosts();
+}
+function toggleReply(id){
+  const el = document.getElementById('reply-wrap-'+id);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+function sendReply(id){
+  const inp = document.getElementById('reply-inp-'+id);
+  const text = inp.value.trim();
+  if(!text) return;
+  const name = myName||'匿名ユーザー';
+  posts = posts.map(p => p.id===id ? {...p,replies:[...p.replies,{id:nextId++,username:name,text,time:Date.now()}]} : p);
+  save(); renderPosts();
+}
+function renderPosts(){
+  const list = document.getElementById('post-list');
+  if(!posts.length){
+    list.innerHTML='<div style="text-align:center;color:var(--sub);font-size:14px;padding:60px 20px">まだ投稿がありません</div>';
+    return;
+  }
+  list.innerHTML = posts.map(p=>{
+    const reqRoute = p.isRequest ? `
+      <div class="req-route">
+        <div class="req-route-label">🚗 代行依頼</div>
+        <div class="req-route-row">
+          <span style="color:var(--success)">📍 ${esc(p.from||'')}</span>
+          <span style="color:#444">→</span>
+          <span style="color:var(--danger)">🏁 ${esc(p.to||'')}</span>
+        </div>
+      </div>` : '';
+    const badge = p.isRequest ? '<span class="tweet-badge">依頼</span>' : '';
+    const replies = p.replies.map(r=>`
+      <div class="reply-item">
+        ${makeAv(r.username,28)}
+        <div>
+          <div class="reply-name">${esc(r.username)}</div>
+          <div class="reply-text">${esc(r.text)}</div>
+          <div style="font-size:11px;color:#444;margin-top:2px">${timeAgo(r.time)}</div>
+        </div>
+      </div>`).join('');
+    return `
+      <div class="tweet">
+        ${makeAv(p.username,44)}
+        <div class="tweet-body">
+          <div class="tweet-header">
+            <span class="tweet-name">${esc(p.username)}</span>
+            ${badge}
+            <span class="tweet-time">${timeAgo(p.time)}</span>
+          </div>
+          ${reqRoute}
+          <div class="tweet-text">${esc(p.text).replace(/\n/g,'<br>')}</div>
+          <div class="tweet-actions">
+            <button class="act-btn" style="color:${p.replies.length?'var(--blue)':'#444'}" onclick="toggleReply(${p.id})">
+              <span>💬</span><span>${p.replies.length||''}</span>
+            </button>
+            <button class="act-btn" style="color:${p.liked?'var(--danger)':'#444'}" onclick="toggleLike(${p.id})">
+              <span>${p.liked?'❤️':'🤍'}</span><span>${p.likes||''}</span>
+            </button>
+          </div>
+          <div id="reply-wrap-${p.id}" style="display:${p.replies.length?'block':'none'}">
+            <div class="replies-wrap">
+              ${replies}
+              <div class="reply-inp-row">
+                <input id="reply-inp-${p.id}" class="reply-inp" placeholder="返信する..." maxlength="100"
+                  onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendReply(${p.id});}"/>
+                <button class="reply-send" onclick="sendReply(${p.id})">返信</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// 初期化
+// ══════════════════════════════════════════
+document.getElementById('order-name').value = myName;
+renderHome();
+</script>
+</body>
+</html>
 
