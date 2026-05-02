@@ -1,1108 +1,754 @@
 
+Claudeが応答を完了しました
+photo.jpeg
+5月2日
+Claudeが返答しました: 原因と対処法
 
+Diagnosed repository access impediment between platforms
+Diagnosed repository access impediment between platforms
+原因と対処法
+**「No repositories found」**というエラーは、NetlifyがGitHubのリポジトリにアクセスする権限がないために発生しています。
 
+手順
+① GitHubでNetlifyアプリの権限を設定する
 
-<! html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>代行なう</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #080808; font-family: 'Noto Sans JP', sans-serif; }
-    #root { min-height: 100vh; }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel" data-presets="react">
-    const { useState, useEffect, useRef, useCallback, useMemo, memo } = React;
+GitHubにログイン
+右上のアイコン → Settings
+左メニュー下部の Applications をクリック
+「Authorized GitHub Apps」 タブを開く
+Netlify を見つけて Configure をクリック
+「Repository access」 で：
+All repositories か
+Only select repositories → daikouima を追加
+② Netlifyに戻って再試行
 
+GitHubの設定を保存したら、Netlifyの画面でリポジトリ一覧を再読み込みすると daikouima が表示されます。
 
-    // window.storage polyfill for GitHub Pages
-    window.storage = window.storage || {
-      _data: {},
-      set: (k, v) => { try { localStorage.setItem(k, v); } catch(e){} return Promise.resolve({key:k,value:v}); },
-      get: (k) => { try { const v = localStorage.getItem(k); return Promise.resolve(v ? {key:k,value:v} : null); } catch(e){ return Promise.resolve(null); } },
-      delete: (k) => { try { localStorage.removeItem(k); } catch(e){} return Promise.resolve({key:k,deleted:true}); },
-    };
+💡 補足：赤文字のエラー「repository is empty or disabled」は、GitHubアプリ連携の権限不足が原因の場合がほとんどです。上記の手順で解決できるはずです。
 
+photo.jpeg
+5月2日
+Claudeが返答しました: GitHubのダッシュボードが開けていますね。左側に daikouima リポジトリも見えています。
 
+Identified repository context and Netlify configuration requirements
+Identified repository context and Netlify configuration requirements
+GitHubのダッシュボードが開けていますね。左側に daikouima リポジトリも見えています。
 
+次の手順
+このページから設定画面へ移動します：
 
-// ══ SUPABASE CONFIG ══
-// ⚠️ 以下の2行をSupabaseのProject URLとAnon Keyに書き換えてください
+右上のプロフィールアイコンをクリック
+Settings を選択
+左メニューを下にスクロール → Applications をクリック
+「Authorized GitHub Apps」 タブ
+Netlify の横の Configure をクリック
+daikouima リポジトリへのアクセスを許可して保存
+または、直接このURLにアクセスしてください：
+
+https://github.com/settings/installations
+そこでNetlifyを見つけて daikouima を追加すればOKです。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 今は 「Authorized GitHub Apps」 タブにいますが、リポジトリのアクセス設定は別のタブです。
+
+Identified navigation discrepancy for GitHub configuration
+Identified navigation discrepancy for GitHub configuration
+今は 「Authorized GitHub Apps」 タブにいますが、リポジトリのアクセス設定は別のタブです。
+
+次の手順
+「Installed GitHub Apps」 タブをクリックしてください。
+
+（同じページの左側のタブです）
+
+そこにNetlifyが表示されたら Configure ボタンを押して、daikouima リポジトリへのアクセスを追加します。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: Netlifyのインストール詳細ページが開いています。下にスクロールしてください。
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Navigated user toward repository configuration interface
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Navigated user toward repository configuration interface
+Netlifyのインストール詳細ページが開いています。下にスクロールしてください。
+
+「Repository access」というセクションが出てきます。そこで daikouima を追加して Save を押せば完了です。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 「All repositories」 がすでに選択されています！
+
+1秒間思考しました
+1秒間思考しました
+「All repositories」 がすでに選択されています！
+
+このまま Save ボタンを押してください。
+
+保存したらNetlifyのページに戻ってリポジトリを再検索すると、daikouima が表示されるはずです。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 🎉 成功です！
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Verified successful GitHub integration deployment
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Verified successful GitHub integration deployment
+🎉 成功です！
+
+daikounau.com が 「Deploys from GitHub」 と表示されています！GitHubとの連携が完了しました。
+
+次のステップ
+daikounau.com をクリックして、デプロイの状態を確認してください。GitHubにプッシュするたびに自動でデプロイされるようになっています。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 🎉 完璧です！
+
+Verified project deployment status and confirmed successful publication
+Verified project deployment status and confirmed successful publication
+🎉 完璧です！
+
+daikounau.com が正常に動いています：
+
+✅ Deploys from GitHub — 自動デプロイ設定済み
+✅ Published on May 1 — 公開中
+これで GitHubにコードをプッシュするだけで自動デプロイされる状態になりました！
+
+何か次にやりたいことはありますか？
+
+あなたの入力: 新しいやつをデブロイしたいんだけど
+新しいやつをデブロイしたいんだけど
+
+5月2日
+Claudeが返答しました: GitHubにプッシュすれば自動でデプロイされます。
+
+デプロイプロセスと自動トリガーメカニズムを検討した。
+デプロイプロセスと自動トリガーメカニズムを検討した。
+GitHubにプッシュすれば自動でデプロイされます。
+
+どちらの方法で更新しますか？
+
+あなたの入力: Q: 新しいファイルはどこにありますか？
+Q: 新しいファイルはどこにありますか？
+回答: メールとGoogleドライブの中にある
+
+5月2日
+Claudeが返答しました: わかりました！GoogleドライブからファイルをGitHubにアップロードする手順です。
+
+ファイルの所在地を整理し、デプロイ戦略を検討した。
+ファイルの所在地を整理し、デプロイ戦略を検討した。
+わかりました！GoogleドライブからファイルをGitHubにアップロードする手順です。
+
+手順
+① Googleドライブからファイルをダウンロード
+
+Googleドライブを開く
+対象ファイルを右クリック → ダウンロード
+② GitHubにアップロード
+
+github.com/tyuusonsha-coder/daikouima を開く
+右上の Add file → Upload files をクリック
+ダウンロードしたファイルをドラッグ＆ドロップ
+下の Commit changes ボタンを押す
+③ 自動デプロイ プッシュ完了後、Netlifyが自動で daikounau.com に反映します（約1〜2分）。
+
+まずGoogleドライブのファイルをダウンロードしてみてください！
+
+IMG_1031.png
+5月2日
+Claudeが返答しました: また同じエラーが出ていますね。
+
+3秒間思考しました
+3秒間思考しました
+また同じエラーが出ていますね。
+
+このページを再読み込みしてください。
+
+ブラウザの更新ボタン（↺）を押すと daikouima が表示されるはずです。
+
+IMG_1034.png
+5月2日
+Claudeが返答しました: 「GitHub」 をクリックしてください。
+
+2秒間思考しました
+2秒間思考しました
+「GitHub」 をクリックしてください。
+
+そのあとリポジトリ一覧から daikouima を選べるはずです。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: リポジトリが表示されました！
+
+1秒間思考しました
+1秒間思考しました
+リポジトリが表示されました！
+
+daikouima をクリックしてください。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: いい感じです！設定が確認できています。
+
+1秒間思考しました
+1秒間思考しました
+いい感じです！設定が確認できています。
+
+下にスクロールして 「Deploy」 ボタンを押してください。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: ERRSSLPROTOCOL_ERROR が出ています。デプロイ直後はSSL証明書の設定に数分かかることがあります。
+
+Diagnosed SSL certificate malfunction and deployment concerns
+Diagnosed SSL certificate malfunction and deployment concerns
+ERR_SSL_PROTOCOL_ERROR が出ています。デプロイ直後はSSL証明書の設定に数分かかることがあります。
+
+確認手順
+まず Netlifyの管理画面に戻る
+Deploys をクリックしてデプロイの状態を確認
+✅ Published になっていれば、5〜10分待ってから daikounau.com を再読み込み
+もしDeploysに❌エラーが出ていたら、スクリーンショットを見せてください。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: ✅ デプロイ成功です！
+
+1秒間思考しました
+1秒間思考しました
+✅ デプロイ成功です！
+
+「Published at 3:17 AM (2 minutes ago)」と表示されています。
+
+SSL証明書の設定中なので、5〜10分待ってから daikounau.com を再度開いてみてください。そのまま表示されるはずです！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 7分経っています。そろそろSSLも準備できているはずです！
+
+0秒間思考しました
+0秒間思考しました
+7分経っています。そろそろSSLも準備できているはずです！
+
+daikounau.com をブラウザで開いてみてください。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: URLのスペルミスです！
+
+1秒間思考しました
+1秒間思考しました
+URLのスペルミスです！
+
+アドレスバーを見ると dakounau.com になっています。
+
+正しくは daikounau.com（"dai"）です。i が抜けています。
+
+アドレスバーに daikounau.com と入力し直してください！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: SSLエラーが続いています。NetlifyのDNS設定を確認する必要があります。
+
+I notice the user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Diagnosed SSL certificate provisioning delay and DNS configuration issues
+I notice the user prompt is empty, so I cannot determine the primary language. However, based on the thinking block being in English, here is my summary: Diagnosed SSL certificate provisioning delay and DNS configuration issues
+SSLエラーが続いています。NetlifyのDNS設定を確認する必要があります。
+
+確認手順
+Netlifyの管理画面を開く
+daikounau.com プロジェクトをクリック
+左メニューの 「Domain management」 をクリック
+スクリーンショットを見せてください
+SSL証明書が正しく設定されているか確認します。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 原因がわかりました！
+
+I notice the user prompt is empty, so I cannot determine the primary language. However, based on the thinking block content (which is in English), here is my summary: Diagnosed DNS propagation delay and suggested interim solution
+I notice the user prompt is empty, so I cannot determine the primary language. However, based on the thinking block content (which is in English), here is my summary: Diagnosed DNS propagation delay and suggested interim solution
+原因がわかりました！
+
+daikounau.com の横に 「Netlify DNS propagating...」 と表示されています。DNS伝播中でまだ完了していません。
+
+対処法
+今すぐ見たい場合： アドレスバーに以下を入力してください：
+
+daikou.netlify.app
+こちらはすぐ表示されます。
+
+daikounau.com は DNSの伝播が完了するまで 数時間〜最大24時間かかります。しばらく待てば自動で繋がります。
+
+あなたの入力: デブロイを更新したい。
+デブロイを更新したい。
+
+5月2日
+Claudeが返答しました: 更新したいファイルはどこにありますか？
+
+デプロイ更新の進め方を検討した。
+デプロイ更新の進め方を検討した。
+更新したいファイルはどこにありますか？
+
+あなたの入力: Q: 新しいファイルの場所を教えてください
+Q: 新しいファイルの場所を教えてください
+回答: Claudeに作ってほしい
+
+5月2日
+Claudeが返答しました: どんな変更・追加をしたいですか？できるだけ詳しく教えてください！
+
+1秒間思考しました
+1秒間思考しました
+どんな変更・追加をしたいですか？できるだけ詳しく教えてください！
+
+例：
+
+「料金表を更新したい」
+「新しいページを追加したい」
+「デザインを変えたい」
+「〇〇の機能を追加したい」
+あなたの入力: 1px solid ${c}33}}>
+1px solid ${c}33}}>
+                  <div style={{fontSize:20,fontWeight:900,color:c}}>{v}</div>
+                  <div style={{fontSize:11,color:C.t2,marginTop:2}}>{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{fontSize:14,fontWeight:700,color:C.t2,marginBottom:12}}>あなたの依頼</div>
+          {posts.filter(p=>p.userId===me.id).length===0&&<div style={{textAlign:"center",color:C.t3,padding:"30px 20px",fontSize:14}}>まだ投稿がありません</div>}
+          {posts.filter(p=>p.userId===me.id).map(p=>(
+            <div key={p.id} style={{background:C.s2,borderRadius:14,padding:"12px 14px",marginBottom:10,border:1px solid ${C.b2}}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:6,alignItems:"center"}}>
+                <TimingBadge timing={p.timing}/>
+                <StatusBadge status={p.status}/>
+              </div>
+              <div style={{fontSize:14,fontWeight:600,marginBottom:4}}>{p.from} → {p.to}</div>
+              <div style={{display:"flex",gap:12,fontSize:13,color:C.t2}}>
+                <span style={{color:C.accent,fontWeight:700}}>{fmtYen(p.price)}</span>
+                <span>💬{p.replies.length}</span><span>❤️{p.likes}</span>
+                <span style={{marginLeft:"auto"}}>{ago(p.time)}</span>
+              </div>
+              {p.status==="受付終了"&&<button onClick={()=>setChat(p)} style={{width:"100%",marginTop:10,padding:"10px 0",background:C.bL,color:C.blue,border:1px solid ${C.blue}44`,borderRadius:12,fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>💬 チャットを開く</button>}
+            </div>
+          ))}
+        </div>}
+
+      </div>
+
+      {/* BOTTOM NAV */}
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:"rgba(0,0,0,0.96)",borderTop:1px solid ${C.border},display:"flex",backdropFilter:"blur(12px)",zIndex:100}}>
+        {NAV.map(n=>(
+          <button key={n.id} onClick={()=>setScreen(n.id)}
+            style={{flex:1,padding:"10px 0 14px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,fontFamily:"inherit",color:screen===n.id?C.accent:C.t3,transition:"all .15s"}}>
+            <span style={{fontSize:19,lineHeight:1}}>{n.icon}</span>
+            <span style={{fontSize:9,fontWeight:screen===n.id?700:400}}>{n.label}</span>
+            {screen===n.id&&<div style={{width:4,height:4,borderRadius:"50%",background:C.accent}}/>}
+          </button>
+        ))}
+      </div>
+
+    </div>
+  );
+}
+
+もっと表示
+5月2日
+Claudeが返答しました: コードの一部が貼られましたね。どうしたいですか？
+
+Identified code snippet requiring clarification on desired modifications
+Identified code snippet requiring clarification on desired modifications
+コードの一部が貼られましたね。どうしたいですか？
+
+あなたの入力: Q: どの方法で更新しますか？
+Q: どの方法で更新しますか？
+回答: 簡単な方法
+
+5月2日
+Claudeが返答しました: 一番簡単な方法はGitHubのWeb画面で直接編集することです。
+
+ユーザーの簡単な方法を優先し、解決策を検討した。
+ユーザーの簡単な方法を優先し、解決策を検討した。
+一番簡単な方法はGitHubのWeb画面で直接編集することです。
+
+手順
+github.com/tyuusonsha-coder/daikouima を開く
+更新したいファイル（例：index.html）をクリック
+右上の 鉛筆アイコン（✏️） をクリック
+コードを貼り付けて編集
+右上の 「Commit changes」 ボタンを押す
+→ GitHubに保存されると Netlifyが自動でデプロイされます！
+
+更新したいファイル名は何ですか？
+
+photo.jpeg
+5月2日
+Claudeが返答しました: index.
+index.html が見えています！
+
+index.html をクリックしてください。次に鉛筆アイコン（✏️）で編集できます。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 編集画面が開きました！
+
+Identified need to request code details for deployment assistance
+Identified need to request code details for deployment assistance
+編集画面が開きました！
+
+新しいコードをここに貼り付けてください。全部置き換える場合は：
+
+Ctrl + A で全選択
+新しいコードを貼り付け
+右上の 「Commit changes」 ボタンを押す
+新しいコードをここ（このチャット）に貼ってくれれば、確認してからお伝えします！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 現在のファイルが開いていますね（1812行）。
+
+Unable to generate summary; user prompt is empty
+Unable to generate summary; user prompt is empty
+現在のファイルが開いていますね（1812行）。
+
+新しいコードをこのチャットに貼り付けてください。確認してから、GitHubへの貼り付け方をお伝えします！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 現在のファイルの編集画面ですね。
+
+Assessed code deployment scenario and guidance options
+Assessed code deployment scenario and guidance options
+現在のファイルの編集画面ですね。
+
+新しいコードはどこにありますか？このチャットに貼り付けてもらえれば、内容を確認してからGitHubへの手順をお伝えします。
+
+もし全部置き換える場合は今すぐ：
+
+編集エリアをクリック
+Ctrl + A で全選択
+新しいコードを貼り付け
+右上 「Commit changes」 を押す
+photo.jpeg
+5月2日
+Claudeが返答しました: WPSのWordファイル（Daikounaw3.
+
+Assessed code migration strategy for substantial backend integration
+Assessed code migration strategy for substantial backend integration
+**WPSのWordファイル（Daikounaw3.docx）**に新しいコードが入っているんですね！Supabaseを使った新バージョンですね。13ページもあります。
+
+一番簡単な手順
+① Wordのコードを全コピー
+
+WPS Writerで Ctrl + A → Ctrl + C
+② GitHubの編集画面に貼り付け
+
+さっきのGitHub編集画面に戻る
+コードエリアをクリック
+Ctrl + A で全選択
+Ctrl + V で貼り付け
+右上 「Commit changes」 を押す
+⚠️ 注意：コードの中に
+
 const SUPABASE_URL = "https://your-project.supabase.co";
 const SUPABASE_ANON_KEY = "your-anon-key-here";
+とありますが、実際のSupabaseのURLとキーに書き換える必要があります。Supabaseのアカウントはお持ちですか？
+
+photo.jpeg
+5月2日
+Claudeが返答しました: GitHub編集画面が開いていますね！
+
+Charted guidance for code replacement task
+Charted guidance for code replacement task
+GitHub編集画面が開いていますね！
+
+今すぐやること
+WPS Writerに切り替え（タスクバーから）
+Ctrl + A → Ctrl + C でコード全コピー
+GitHubの編集画面に戻る
+コードエリアをクリック → Ctrl + A → Ctrl + V
+右上の緑ボタン 「変更をコミットします」 を押す
+これだけでデプロイ完了です！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: ⚠️ 重要な問題があります！
+
+Identified technical incompatibility and flagged missing configuration details
+Identified technical incompatibility and flagged missing configuration details
+⚠️ 重要な問題があります！
+
+このコードは import { useState } from "react" で始まっていますが、これはReactのビルドが必要なJSX形式です。
+
+このままGitHubに貼り付けても、HTMLファイルとしては動きません。
+
+解決策
+このコードはどこから来ましたか？
+
+以前Claudeに作ってもらったコードですか？もしそうなら、index.htmlとして動く形（vanilla HTML版）に変換する必要があります。
+
+コードをこのチャットに貼り付けてもらえれば、HTML形式に変換してお渡しします！
 
 
-// Supabaseクライアント（CDN版・軽量ラッパー）
-const supabase = (() => {
-  const headers = {
-    "apikey": SUPABASE_ANON_KEY,
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-  };
-  const authHeaders = (token) => ({
-    ...headers,
-    "Authorization": `Bearer ${token || SUPABASE_ANON_KEY}`,
-  });
-  const base = `${SUPABASE_URL}/rest/v1`;
-  const authBase = `${SUPABASE_URL}/auth/v1`;
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react"; // ══ SUPABASE CONFIG ══ // ⚠️ 以下の2行をSupabaseのProject URLとAnon Keyに書き換えてください const SUPABASE_URL = "https://your-project.supabase.co"; const SUPABASE_ANON_KEY = "your-// Supabaseクライアント（CDN版・軽量ラッパー） const supabas
+
+pasted
+
+5月2日
+Claudeが返答しました: コードを受け取りました！これはReact JSXコードなので、HTMLファイルに変換してからGitHubにアップロードします。少々お待ちください。
+
+Devised React-to-HTML conversion strategy using CDN approach
+Devised React-to-HTML conversion strategy using CDN approach
+コードを受け取りました！これはReact JSXコードなので、HTMLファイルに変換してからGitHubにアップロードします。少々お待ちください。
 
 
-  // セッション管理
-  let _session = null;
-  const SESSION_KEY = "daiko_session";
-  const loadSession = () => {
-    try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; }
-  };
-  const saveSession = (s) => {
-    _session = s;
-    if (s) localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-    else localStorage.removeItem(SESSION_KEY);
-  };
-  _session = loadSession();
+Create the HTML file with the React code wrapped in Babel standalone
+Create the HTML file with the React code wrapped in Babel standalone
+IMG_1035.png
+5月2日
+Claudeが返答しました: これは古いバージョンですね！新しいコードに更新します。ファイルを作成しています…
+
+Devised strategy to incrementally reconstruct website codebase
+Devised strategy to incrementally reconstruct website codebase
+これは古いバージョンですね！新しいコードに更新します。ファイルを作成しています…
 
 
-  return {
-    getSession: () => _session,
+Create the new index.html - part 1 header and setup
+Create the new index.html - part 1 header and setup
+あなたの入力: 大根なおが新しくなってないよ。
+大根なおが新しくなってないよ。
+
+5月2日
+Claudeが返答しました: GitHubにまだアップロードしていないからです！ファイルを出力しますので、それをGitHubに貼り付けましょう。 このファイルをGitHubにアップロードする手順です：
+
+デプロイ問題を診断し解決策を構想した。
+デプロイ問題を診断し解決策を構想した。
+GitHubにまだアップロードしていないからです！ファイルを出力しますので、それをGitHubに貼り付けましょう。
 
 
-    // 新規登録
-    signUp: async ({ email, password, name, address, role }) => {
-      const r = await fetch(`${authBase}/signup`, {
-        method: "POST", headers,
-        body: JSON.stringify({ email, password, data: { name } }),
-      }).then(r => r.json());
-      if (r.error) return { error: r.error };
-      saveSession(r);
-      // profilesテーブルに追加情報を保存
-      if (r.access_token) {
-        await fetch(`${base}/profiles`, {
-          method: "POST",
-          headers: { ...authHeaders(r.access_token), "Prefer": "return=minimal" },
-          body: JSON.stringify({ id: r.user.id, name, email, address: address || "", role: role || "user" }),
-        });
-      }
-      return { data: r };
-    },
+コマンドを実行しました, ファイルを読み取りました
+コマンドを実行しました, ファイルを読み取りました
+このファイルをGitHubにアップロードする手順です：
+
+github.com/tyuusonsha-coder/daikouima を開く
+index.html をクリック
+右上の ✏️（鉛筆アイコン） をクリック
+Ctrl+A で全選択 → 削除
+ダウンロードしたファイルの中身を Ctrl+V で貼り付け
+「Commit changes」 を押す
+→ 1〜2分でNetlifyが自動デプロイします！
 
 
-    // ログイン
-    signIn: async ({ email, password }) => {
-      const r = await fetch(`${authBase}/token?grant_type=password`, {
-        method: "POST", headers,
-        body: JSON.stringify({ email, password }),
-      }).then(r => r.json());
-      if (r.error) return { error: r.error };
-      saveSession(r);
-      return { data: r };
-    },
+Index
+コード · HTML 
+photo.jpeg
+5月2日
+Claudeが返答しました: GitHub で index.
+
+1秒間思考しました
+1秒間思考しました
+GitHub で index.html が開いています！
+
+右上の ✏️（鉛筆アイコン） をクリックして編集画面を開いてください。
+
+photo.jpeg
+5月2日
+Claudeが返答しました: 編集画面が開いています！
+
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Orchestrated user guidance through code editing workflow
+The user prompt is empty, so I cannot determine the primary language. However, based on the thinking block alone, here is a summary: Orchestrated user guidance through code editing workflow
+編集画面が開いています！
+
+コードエリアをクリック
+Ctrl + A で全選択
+Ctrl + V で新しいコードを貼り付け
+右上 「Commit changes」 を押す
+新しいコードはダウンロードした index.html ファイルを開いて中身をコピーしてください。
+
+あなたの入力: もう貼り付けたって
+もう貼り付けたって
+
+5月2日
+Claudeが返答しました: では右上の緑ボタン 「Commit changes」 を押してください！
+
+1秒間思考しました
+1秒間思考しました
+では右上の緑ボタン 「Commit changes」 を押してください！
+
+それだけでデプロイ完了です🎉
+
+あなたの入力: コミットをした
+コミットをした
+
+5月2日
+Claudeが返答しました: 🎉 あとはNetlifyが自動でデプロイします！
+
+デプロイ完了を待つよう促した。
+デプロイ完了を待つよう促した。
+🎉 あとはNetlifyが自動でデプロイします！
+
+1〜2分待ってから daikounau.com を開いてみてください！
+
+photo.jpeg
+5月2日
+Claudeが返答しました: まだSSLエラーが出ています。DNS伝播がまだ完了していないためです。
+まだSSLエラーが出ています。DNS伝播がまだ完了していないためです。
+
+まずNetlifyの仮URLで確認してみてください：
+
+daikou.netlify.app
+
+こちらは今すぐ開けるはずです。新しいバージョンになっていれば成功です！
+
+daikounau.com は数時間待てば繋がります。
+
+IMG_1036.png
+5月2日
+Claudeが返答しました: Googleで検索していますが、アドレスバーに直接入力してください！
+Googleで検索していますが、アドレスバーに直接入力してください！
+
+ブラウザのアドレスバー（上部）に直接：
+
+daikou.netlify.app
+
+と入力してEnterを押してください。
+
+スクリーンショット 2026-05-02 232713.png
+5月2日
+Claudeが返答しました: 真っ黒ですね。コードに export default が含まれていてエラーになっています。修正版を作ります！ このファイルをダウンロードして、またGitHubに貼り付けてください。手順は同じです：
+
+7秒間思考しました
+7秒間思考しました
+真っ黒ですね。コードに export default が含まれていてエラーになっています。修正版を作ります！
 
 
-    // ログアウト
-    signOut: async () => {
-      const token = _session?.access_token;
-      saveSession(null);
-      if (token) await fetch(`${authBase}/logout`, {
-        method: "POST", headers: authHeaders(token),
-      }).catch(() => {});
-      return { error: null };
-    },
+コマンドを実行しました, ファイルを読み取りました
+コマンドを実行しました, ファイルを読み取りました
+このファイルをダウンロードして、またGitHubに貼り付けてください。手順は同じです：
 
+GitHub の index.html を編集（✏️）
+Ctrl+A → 削除
+新しいファイルの中身を Ctrl+V
+Commit changes
 
-    // プロフィール取得
-    getProfile: async () => {
-      const token = _session?.access_token;
-      const uid = _session?.user?.id;
-      if (!token || !uid) return { data: null };
-      const r = await fetch(`${base}/profiles?id=eq.${uid}&select=*`, {
-        headers: authHeaders(token),
-      }).then(r => r.json());
-      return { data: Array.isArray(r) ? r[0] : null };
-    },
-
-
-    // プロフィール更新
-    updateProfile: async (updates) => {
-      const token = _session?.access_token;
-      const uid = _session?.user?.id;
-      if (!token || !uid) return { error: "未ログイン" };
-      const r = await fetch(`${base}/profiles?id=eq.${uid}`, {
-        method: "PATCH",
-        headers: { ...authHeaders(token), "Prefer": "return=minimal" },
-        body: JSON.stringify({ ...updates, updated_at: new Date().toISOString() }),
-      });
-      return { error: r.ok ? null : "更新失敗" };
-    },
-
-
-    // トークンリフレッシュ
-    refreshSession: async () => {
-      const refresh_token = _session?.refresh_token;
-      if (!refresh_token) return null;
-      const r = await fetch(`${authBase}/token?grant_type=refresh_token`, {
-        method: "POST", headers,
-        body: JSON.stringify({ refresh_token }),
-      }).then(r => r.json()).catch(() => null);
-      if (r?.access_token) { saveSession(r); return r; }
-      saveSession(null); return null;
-    },
-  };
-})();
+Index
+コード · HTML 
 
 
 
 
-// ══ STORAGE ══
+Claude は AI のため、誤りを含む可能性があります。回答内容は必ずご確認ください。
+Index · HTML
+コピー
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>代行なう</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+html,body,#root{margin:0;padding:0;height:100%;background:#080808;}
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useRef,useCallback,useMemo,memo}=React;
+if(!window.storage){window.storage={_s:{},get:async k=>{const v=window.storage._s[k];return v!==undefined?{key:k,value:v}:null;},set:async(k,v)=>{window.storage._s[k]=v;return{key:k,value:v};},delete:async k=>{delete window.storage._s[k];return{key:k,deleted:true};},list:async p=>{const keys=Object.keys(window.storage._s).filter(k=>!p||k.startsWith(p));return{keys};}};}
 async function save(k,v){try{await window.storage.set(k,JSON.stringify(v));}catch{}}
 async function load(k){try{const r=await window.storage.get(k);return r?JSON.parse(r.value):null;}catch{return null;}}
-
-
-// ══ HELPERS ══
 const AV_G=["135deg,#FF6B00,#FF3D00","135deg,#00C853,#00796B","135deg,#2979FF,#1565C0","135deg,#AA00FF,#6200EA","135deg,#FF1744,#B71C1C","135deg,#00B0FF,#0277BD","135deg,#FFD600,#F57F17","135deg,#F50057,#880E4F"];
 const avC=n=>{let s=0;for(const c of(n||"?"))s+=c.charCodeAt(0);return AV_G[s%AV_G.length];};
 const avCh=n=>(n||"?")[0].toUpperCase();
 const agoCache=new Map();
-const ago=ts=>{
-  const bucket=Math.floor((Date.now()-ts)/5000);
-  const key=`${ts}:${bucket}`;
-  if(agoCache.has(key))return agoCache.get(key);
-  const s=Math.floor((Date.now()-ts)/1000);
-  const r=s<60?`${s}秒前`:s<3600?`${Math.floor(s/60)}分前`:s<86400?`${Math.floor(s/3600)}時間前`:`${Math.floor(s/86400)}日前`;
-  if(agoCache.size>200)agoCache.clear();
-  agoCache.set(key,r);return r;
-};
+const ago=ts=>{const bucket=Math.floor((Date.now()-ts)/5000);const key=`${ts}:${bucket}`;if(agoCache.has(key))return agoCache.get(key);const s=Math.floor((Date.now()-ts)/1000);const r=s<60?`${s}秒前`:s<3600?`${Math.floor(s/60)}分前`:s<86400?`${Math.floor(s/3600)}時間前`:`${Math.floor(s/86400)}日前`;if(agoCache.size>200)agoCache.clear();agoCache.set(key,r);return r;};
 const fmtYen=n=>`¥${Number(n).toLocaleString()}`;
 const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-
-
-// ══ 料金計算エンジン ══
-const FARE_TABLE=[
-  {maxKm:2,  base:1500, perKm:400},
-  {maxKm:5,  base:2200, perKm:350},
-  {maxKm:10, base:3400, perKm:300},
-  {maxKm:20, base:5400, perKm:250},
-  {maxKm:999,base:8000, perKm:200},
-];
-const calcFare=(km,opts={})=>{
-  if(!km||km<=0)return null;
-  const tier=FARE_TABLE.find(t=>km<=t.maxKm)||FARE_TABLE[FARE_TABLE.length-1];
-  let fare=tier.base+Math.max(0,km-1)*tier.perKm;
-  const h=new Date().getHours();
-  const isLate=(h>=23||h<5);
-  if(isLate)fare=Math.round(fare*1.3);
-  if(opts.holiday)fare=Math.round(fare*1.2);
-  fare=Math.ceil(fare/100)*100; // 100円単位切り上げ
-  return{fare,isLate,km,tier,min:Math.round(fare*0.9),max:Math.round(fare*1.1)};
-};
-const fareLabel=r=>r?`${fmtYen(r.fare)}${r.isLate?" 🌙深夜料金含む":""}`:null;
-const calcKmSimple=(la1,lo1,la2,lo2)=>{
-  const R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
-  const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-};
-
-
-// ══ COLORS ══
-const C={
-  bg:"#080808",card:"#0f0f0f",s1:"#111",s2:"#151515",s3:"#1a1a1a",
-  border:"#1e1e1e",b2:"#252525",b3:"#2e2e2e",
-  accent:"#FF6B00",aL:"rgba(255,107,0,0.08)",aM:"rgba(255,107,0,0.18)",
-  green:"#00D26A",gL:"rgba(0,210,106,0.08)",
-  red:"#FF4757",rL:"rgba(255,71,87,0.08)",
-  blue:"#4A90FF",bL:"rgba(74,144,255,0.08)",
-  gold:"#FFD700",
-  text:"#EFEFEF",t2:"#777",t3:"#3a3a3a",t4:"#555",
-};
-
-
-// ══ DATA ══
+const FARE_TABLE=[{maxKm:2,base:1500,perKm:400},{maxKm:5,base:2200,perKm:350},{maxKm:10,base:3400,perKm:300},{maxKm:20,base:5400,perKm:250},{maxKm:999,base:8000,perKm:200}];
+const calcFare=(km,opts={})=>{if(!km||km<=0)return null;const tier=FARE_TABLE.find(t=>km<=t.maxKm)||FARE_TABLE[FARE_TABLE.length-1];let fare=tier.base+Math.max(0,km-1)*tier.perKm;const h=new Date().getHours();const isLate=(h>=23||h<5);if(isLate)fare=Math.round(fare*1.3);if(opts.holiday)fare=Math.round(fare*1.2);fare=Math.ceil(fare/100)*100;return{fare,isLate,km,tier,min:Math.round(fare*0.9),max:Math.round(fare*1.1)};};
+const calcKmSimple=(la1,lo1,la2,lo2)=>{const R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));};
+const C={bg:"#080808",card:"#0f0f0f",s1:"#111",s2:"#151515",s3:"#1a1a1a",border:"#1e1e1e",b2:"#252525",b3:"#2e2e2e",accent:"#FF6B00",aL:"rgba(255,107,0,0.08)",aM:"rgba(255,107,0,0.18)",green:"#00D26A",gL:"rgba(0,210,106,0.08)",red:"#FF4757",rL:"rgba(255,71,87,0.08)",blue:"#4A90FF",bL:"rgba(74,144,255,0.08)",gold:"#FFD700",text:"#EFEFEF",t2:"#777",t3:"#3a3a3a",t4:"#555"};
 const T=Date.now();
-const DRIVERS=[
-  {id:"u1",name:"田中 健一",shortName:"田中",rating:4.9,reviews:312,bio:"博多・天神エリア専門",eta:3,dist:0.8,price:1800,tags:["⚡ 最速","🌙 深夜OK"],active:true,lat:33.591,lon:130.401,todaySales:24800},
-  {id:"u2",name:"夜の代行 松本",shortName:"松本",rating:4.7,reviews:189,bio:"中央区・南区 深夜対応",eta:5,dist:1.4,price:1600,tags:["💰 最安","🌙 深夜OK"],active:true,lat:33.588,lon:130.398,todaySales:18200},
-  {id:"u3",name:"山田 スピード",shortName:"山田",rating:4.8,reviews:476,bio:"スピード対応が得意",eta:6,dist:1.9,price:2000,tags:["👑 実績No.1","⚡ 素早い"],active:true,lat:33.594,lon:130.404,todaySales:31500},
-  {id:"u4",name:"佐藤ドライブ",shortName:"佐藤",rating:4.6,reviews:94,bio:"丁寧で安全な運転",eta:8,dist:2.3,price:1500,tags:["💰 最安","😊 丁寧"],active:false,lat:33.586,lon:130.396,todaySales:12000},
-  {id:"u5",name:"鈴木 快速",shortName:"鈴木",rating:5.0,reviews:67,bio:"新規歓迎！全エリア対応",eta:4,dist:1.1,price:1900,tags:["⭐ 高評価","🗺 全エリア"],active:true,lat:33.592,lon:130.403,todaySales:19800},
-];
+const DRIVERS=[{id:"u1",name:"田中 健一",shortName:"田中",rating:4.9,reviews:312,bio:"博多・天神エリア専門",eta:3,dist:0.8,price:1800,tags:["⚡ 最速","🌙 深夜OK"],active:true,lat:33.591,lon:130.401,todaySales:24800},{id:"u2",name:"夜の代行 松本",shortName:"松本",rating:4.7,reviews:189,bio:"中央区・南区 深夜対応",eta:5,dist:1.4,price:1600,tags:["💰 最安","🌙 深夜OK"],active:true,lat:33.588,lon:130.398,todaySales:18200},{id:"u3",name:"山田 スピード",shortName:"山田",rating:4.8,reviews:476,bio:"スピード対応が得意",eta:6,dist:1.9,price:2000,tags:["👑 実績No.1","⚡ 素早い"],active:true,lat:33.594,lon:130.404,todaySales:31500},{id:"u4",name:"佐藤ドライブ",shortName:"佐藤",rating:4.6,reviews:94,bio:"丁寧で安全な運転",eta:8,dist:2.3,price:1500,tags:["💰 最安","😊 丁寧"],active:false,lat:33.586,lon:130.396,todaySales:12000},{id:"u5",name:"鈴木 快速",shortName:"鈴木",rating:5.0,reviews:67,bio:"新規歓迎！全エリア対応",eta:4,dist:1.1,price:1900,tags:["⭐ 高評価","🗺 全エリア"],active:true,lat:33.592,lon:130.403,todaySales:19800}];
 const BEST_DRIVER=DRIVERS[0];
 const ONLINE_COUNT=rnd(5,13);
-
-
-const DEMO_POSTS=[
-  {id:"p1",userId:"u2",from:"博多駅",to:"福岡空港",price:3500,timing:"今すぐ",note:"終電逃しました😭 急いでます！",status:"募集中",time:T-180000,dist:1.2,likes:3,liked:false,replies:[{id:"r1",userId:"u4",text:"すぐ向かえます！",time:T-120000}],accepted:null,viewers:3,type:"request"},
-  {id:"p2",userId:"u3",from:"天神",to:"大橋",price:2000,timing:"今すぐ",note:"",status:"募集中",time:T-600000,dist:2.8,likes:1,liked:false,replies:[],accepted:null,viewers:2,type:"request"},
-  {id:"p3",userId:"u5",from:"中洲",to:"春日市",price:4000,timing:"今すぐ",note:"深夜2時ごろ",status:"受付終了",time:T-1800000,dist:0.8,likes:7,liked:false,replies:[{id:"r2",userId:"u1",text:"よろしくです！",time:T-1700000}],accepted:"u1",viewers:0,type:"request"},
-  {id:"p4",userId:"u1",from:"博多駅",to:"久留米駅",price:0,timing:"今すぐ",note:"帰り便！空車です🚗 乗りませんか？",status:"募集中",time:T-900000,dist:0,likes:5,liked:false,replies:[],accepted:null,viewers:4,type:"kaeri"},
-  {id:"p5",userId:"u4",from:"香椎",to:"博多駅",price:2500,timing:"今すぐ",note:"",status:"募集中",time:T-7200000,dist:4.1,likes:0,liked:false,replies:[],accepted:null,viewers:1,type:"request"},
-];
-const DEMO_TL=[
-  {id:"t1",userId:"u1",text:"今夜も博多・天神エリア空いてます！深夜OK🌙 お気軽にどうぞ",time:T-900000,likes:8,liked:false,replies:[{id:"tr1",userId:"u3",text:"いつもありがとう！",time:T-800000}],status:"active"},
-  {id:"t2",userId:"u3",text:"先日の代行さん最高でした👍 また使います！",time:T-3600000,likes:12,liked:false,replies:[],status:"active"},
-  {id:"t3",userId:"u2",text:"中洲・天神エリア 深夜2時まで対応 空いてます🚗",time:T-7200000,likes:5,liked:false,replies:[],status:"busy"},
-  {id:"t4",userId:"u5",text:"本日全エリア対応！お気軽にどうぞ ¥1,900〜",time:T-1800000,likes:9,liked:false,replies:[],status:"active"},
-];
-const RANKING=[
-  {rank:1,userId:"u3",sales:89,amount:142000,badge:"👑"},
-  {rank:2,userId:"u1",sales:67,amount:107200,badge:"🥈"},
-  {rank:3,userId:"u5",sales:54,amount:86400,badge:"🥉"},
-  {rank:4,userId:"u2",sales:41,amount:65600,badge:""},
-  {rank:5,userId:"u4",sales:28,amount:44800,badge:""},
-];
-
-
-// ══ CSS ══
-const CSS=`
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
-@keyframes matchPop{0%{transform:scale(.3);opacity:0}65%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-@keyframes ping{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.2);opacity:0}}
-@keyframes ping2{0%{transform:scale(.7);opacity:.5}100%{transform:scale(2.6);opacity:0}}
-@keyframes notif{0%{transform:translateY(-80px) scale(.9);opacity:0}12%{transform:translateY(0) scale(1);opacity:1}85%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(.9);opacity:0}}
-@keyframes driverIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes ctaPulse{0%,100%{box-shadow:0 4px 20px rgba(255,107,0,.35)}60%{box-shadow:0 4px 32px rgba(255,107,0,.6)}}
-@keyframes numberUp{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes slideRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes battlePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.015)}}
-@keyframes barFill{from{width:0}to{width:var(--w)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes vsFlash{0%,100%{text-shadow:none}50%{text-shadow:0 0 12px #FF6B00,0 0 24px #FF3D00}}
-@keyframes rankSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
-`;
-
-
-// ══ COMPONENTS ══
-const Av=memo(({name="?",size=40,ring=false,status=null})=>(
-  <div style={{position:"relative",flexShrink:0}}>
-    <div style={{width:size,height:size,borderRadius:"50%",background:`linear-gradient(${avC(name)})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.4,fontWeight:900,color:"#fff",boxShadow:ring?`0 0 0 2px ${C.accent},0 0 12px rgba(255,107,0,.3)`:undefined}}>
-      {avCh(name)}
-    </div>
-    {status!==null&&<div style={{position:"absolute",bottom:1,right:1,width:Math.max(8,size*.26),height:Math.max(8,size*.26),borderRadius:"50%",background:status?C.green:C.red,border:`2px solid ${C.bg}`}}/>}
-  </div>
-));
-
-
-const Stars=memo(({rating,size=11})=>(
-  <span style={{color:C.gold,fontSize:size,letterSpacing:-1}}>
-    {"★".repeat(Math.floor(rating))}{"☆".repeat(5-Math.floor(rating))}
-  </span>
-));
-
-
-const Tag=({label})=>{
-  const col=label.includes("最速")||label.includes("素早")?C.accent:label.includes("最安")||label.includes("安")?C.green:label.includes("実績")||label.includes("高評価")||label.includes("⭐")?C.gold:C.blue;
-  return <span style={{fontSize:10,padding:"2px 7px",borderRadius:8,fontWeight:700,background:`${col}18`,color:col,border:`1px solid ${col}28`,whiteSpace:"nowrap"}}>{label}</span>;
-};
-
-
-// 通知トースト
-function NotifToast({msg,sub,onDone}){
-  useEffect(()=>{const t=setTimeout(onDone,3800);return()=>clearTimeout(t);},[]);
-  return(
-    <div style={{position:"fixed",top:0,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 24px)",maxWidth:456,zIndex:9999,padding:"12px 0 0",animation:"notif 4s cubic-bezier(.34,1.56,.64,1) forwards"}}>
-      <div style={{background:"#1a1a1a",borderRadius:16,padding:"14px 16px",border:`1px solid ${C.b3}`,display:"flex",alignItems:"center",gap:12,boxShadow:"0 8px 32px rgba(0,0,0,.7)"}}>
-        <div style={{width:40,height:40,borderRadius:12,background:C.aL,border:`1px solid ${C.accent}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🚗</div>
-        <div style={{flex:1}}>
-          <div style={{fontWeight:700,fontSize:14,color:C.text}}>{msg}</div>
-          {sub&&<div style={{fontSize:12,color:C.t2,marginTop:2}}>{sub}</div>}
-        </div>
-        <div style={{fontSize:11,color:C.accent,fontWeight:800}}>今すぐ</div>
-      </div>
-    </div>
-  );
-}
-
-
-// メインCTAボタン
-function CallButton({driver,onPress,waitCount}){
-  const [pressed,setPressed]=useState(false);
-  const handle=()=>{setPressed(true);setTimeout(()=>setPressed(false),180);onPress();};
-  return(
-    <button onClick={handle} style={{width:"100%",padding:0,background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",transform:pressed?"scale(.96)":"scale(1)",transition:"transform .15s cubic-bezier(.34,1.56,.64,1)"}}>
-      <div style={{background:"linear-gradient(135deg,#FF6B00,#FF3D00)",borderRadius:20,overflow:"hidden",animation:"ctaPulse 2.5s ease-in-out infinite"}}>
-        <div style={{padding:"18px 20px 14px",display:"flex",alignItems:"center",gap:14}}>
-          <div style={{fontSize:30}}>🚗</div>
-          <div style={{flex:1,textAlign:"left"}}>
-            <div style={{fontSize:20,fontWeight:900,color:"#000",letterSpacing:"-.3px",lineHeight:1.1}}>今すぐ代行を呼ぶ</div>
-            <div style={{fontSize:12,color:"rgba(0,0,0,.6)",marginTop:3,fontWeight:500}}>
-              {driver.name} ★{driver.rating} · {driver.dist}km
-            </div>
-          </div>
-          <div style={{textAlign:"right"}}>
-            <div style={{fontSize:28,fontWeight:900,color:"#000",lineHeight:1}}>{driver.eta}<span style={{fontSize:14,fontWeight:700}}>分</span></div>
-            <div style={{fontSize:12,color:"rgba(0,0,0,.55)",fontWeight:700}}>{fmtYen(driver.price)}〜 <span style={{fontSize:10,opacity:.7}}>({driver.dist}km)</span></div>
-          </div>
-        </div>
-        <div style={{background:"rgba(0,0,0,.16)",padding:"7px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{fontSize:11,color:"rgba(0,0,0,.65)",fontWeight:700,display:"flex",alignItems:"center",gap:5}}>
-            <span style={{width:6,height:6,borderRadius:"50%",background:"rgba(0,0,0,.5)",display:"inline-block",animation:"blink .9s ease-in-out infinite"}}/>
-            {waitCount}台待機中
-          </div>
-          <div style={{fontSize:11,color:"rgba(0,0,0,.65)",fontWeight:700}}>あと{rnd(2,5)}台 ›</div>
-        </div>
-      </div>
-    </button>
-  );
-}
-
-
-// マッチングオーバーレイ
-function MatchingOverlay({driver,onCancel,onConfirm}){
-  const [phase,setPhase]=useState("searching");
-  const [countdown,setCountdown]=useState(driver.eta*60);
-  const [scanPct,setScanPct]=useState(0);
-
-
-  useEffect(()=>{
-    let p=0;
-    const scan=setInterval(()=>{p+=3.5;setScanPct(Math.min(p,100));if(p>=100)clearInterval(scan);},65);
-    const match=setTimeout(()=>setPhase("matched"),2300);
-    return()=>{clearInterval(scan);clearTimeout(match);};
-  },[]);
-
-
-  useEffect(()=>{
-    if(phase!=="matched")return;
-    const t=setInterval(()=>setCountdown(c=>Math.max(0,c-1)),1000);
-    return()=>clearInterval(t);
-  },[phase]);
-
-
-  const mm=String(Math.floor(countdown/60)).padStart(2,"0");
-  const ss=String(countdown%60).padStart(2,"0");
-
-
-  return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.93)",zIndex:900,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 16px"}}>
-      {phase==="searching"?(
-        <div style={{width:"100%",maxWidth:340,textAlign:"center"}}>
-          <div style={{position:"relative",width:140,height:140,margin:"0 auto 28px"}}>
-            {[0,20,40].map(i=><div key={i} style={{position:"absolute",inset:i,borderRadius:"50%",border:`1px solid ${C.accent}${i===0?"33":i===20?"44":"55"}`}}/>)}
-            <div style={{position:"absolute",inset:0,borderRadius:"50%",border:`2px solid ${C.accent}`,opacity:.5,animation:"ping 1.5s ease-out infinite"}}/>
-            <div style={{position:"absolute",inset:0,borderRadius:"50%",border:`2px solid ${C.accent}`,opacity:.25,animation:"ping2 1.5s ease-out infinite",animationDelay:".5s"}}/>
-            <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:42}}>🚗</div>
-          </div>
-          <div style={{fontSize:11,color:C.green,fontWeight:800,letterSpacing:2,marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-            <span style={{width:7,height:7,borderRadius:"50%",background:C.green,display:"inline-block",animation:"blink .8s ease-in-out infinite"}}/>
-            最適なドライバーを検索中
-          </div>
-          <div style={{fontSize:22,fontWeight:900,color:C.text,marginBottom:20}}>マッチング処理中...</div>
-          <div style={{width:"100%",height:3,background:C.b2,borderRadius:2,overflow:"hidden",marginBottom:28}}>
-            <div style={{height:"100%",background:"linear-gradient(90deg,#FF6B00,#FF3D00)",width:`${scanPct}%`,transition:"width .08s linear",borderRadius:2}}/>
-          </div>
-          <button onClick={onCancel} style={{padding:"12px 32px",background:"none",border:`1px solid ${C.b3}`,borderRadius:24,color:C.t2,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>キャンセル</button>
-        </div>
-      ):(
-        <div style={{width:"100%",maxWidth:340,animation:"scaleIn .4s cubic-bezier(.34,1.56,.64,1)"}}>
-          <div style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:12,color:C.green,fontWeight:800,letterSpacing:1.5,marginBottom:6,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>
-              <span style={{width:7,height:7,borderRadius:"50%",background:C.green,display:"inline-block",animation:"blink 1s ease-in-out infinite"}}/>
-              マッチング完了
-            </div>
-            <div style={{fontSize:22,fontWeight:900,color:C.text}}>ドライバーが向かっています</div>
-          </div>
-          <div style={{background:C.card,borderRadius:20,padding:20,marginBottom:16,border:`1px solid ${C.b2}`}}>
-            <div style={{display:"flex",gap:14,alignItems:"center",marginBottom:16}}>
-              <div style={{position:"relative"}}>
-                <Av name={driver.name} size={56} ring status={true}/>
-                <div style={{position:"absolute",bottom:-4,right:-4,background:C.green,borderRadius:10,padding:"2px 6px",fontSize:10,fontWeight:800,color:"#000",border:`2px solid ${C.bg}`}}>稼働中</div>
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontWeight:800,fontSize:18,marginBottom:3}}>{driver.name}</div>
-                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-                  <Stars rating={driver.rating}/>
-                  <span style={{color:C.gold,fontWeight:700,fontSize:13}}>{driver.rating}</span>
-                  <span style={{color:C.t2,fontSize:12}}>({driver.reviews}件)</span>
-                </div>
-                <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
-                  {driver.tags.map(t=><Tag key={t} label={t}/>)}
-                </div>
-              </div>
-            </div>
-            <div style={{display:"flex",gap:10}}>
-              <div style={{flex:1,background:C.aL,borderRadius:14,padding:"14px 0",textAlign:"center",border:`1px solid ${C.accent}22`}}>
-                <div style={{fontSize:28,fontWeight:900,color:C.accent,fontVariantNumeric:"tabular-nums"}}>{mm}:{ss}</div>
-                <div style={{fontSize:11,color:C.t2,marginTop:2}}>到着まで</div>
-              </div>
-              <div style={{flex:1,background:C.gL,borderRadius:14,padding:"14px 0",textAlign:"center",border:`1px solid ${C.green}22`}}>
-                <div style={{fontSize:24,fontWeight:900,color:C.green}}>{driver.dist}km</div>
-                <div style={{fontSize:11,color:C.t2,marginTop:2}}>現在地から</div>
-              </div>
-              <div style={{flex:1,background:"rgba(255,215,0,.06)",borderRadius:14,padding:"14px 0",textAlign:"center",border:"1px solid rgba(255,215,0,.15)"}}>
-                <div style={{fontSize:20,fontWeight:900,color:C.gold}}>{fmtYen(calcFare(driver.dist)?.fare||driver.price)}</div>
-                <div style={{fontSize:11,color:C.t2,marginTop:2}}>料金目安</div>
-              </div>
-            </div>
-          </div>
-          <div style={{display:"flex",gap:10}}>
-            <button onClick={onConfirm} style={{flex:2,padding:"15px 0",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:16,fontWeight:900,fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>確定する 🚗</button>
-            <button onClick={onCancel} style={{flex:1,padding:"15px 0",background:C.s2,color:C.t2,border:`1px solid ${C.b2}`,borderRadius:16,fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>キャンセル</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-// チャットモーダル
-function ChatModal({post,me,users,onClose}){
-  const other=users.find(u=>u.id===(post.userId===me.id?post.accepted:post.userId))||users[0];
-  const [msgs,setMsgs]=useState([
-    {id:1,from:post.accepted||post.userId,text:"よろしくお願いします！向かっています🚗",time:T-60000},
-    {id:2,from:me.id,text:"ありがとうございます！よろしくお願いします🙏",time:T-30000},
-  ]);
-  const [txt,setTxt]=useState("");
-  const btm=useRef(null);
-  useEffect(()=>btm.current?.scrollIntoView({behavior:"smooth"}),[msgs]);
-  const send=()=>{if(!txt.trim())return;setMsgs(m=>[...m,{id:Date.now(),from:me.id,text:txt,time:Date.now()}]);setTxt("");};
-  return(
-    <div style={{position:"fixed",inset:0,background:C.bg,zIndex:200,display:"flex",flexDirection:"column"}}>
-      <div style={{background:C.s1,padding:"14px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",gap:12}}>
-        <button onClick={onClose} style={{background:"none",border:"none",color:C.t2,fontSize:22,cursor:"pointer",padding:0,lineHeight:1}}>←</button>
-        <Av name={other?.name||"?"} size={36} status={true}/>
-        <div>
-          <div style={{fontWeight:700,fontSize:15}}>{other?.name}</div>
-          <div style={{fontSize:11,color:C.green,fontWeight:600}}>● オンライン</div>
-        </div>
-        <div style={{marginLeft:"auto",background:C.aL,border:`1px solid ${C.accent}22`,borderRadius:10,padding:"6px 12px",fontSize:11,color:C.accent,fontWeight:700}}>🚗 {post.from}→{post.to}</div>
-      </div>
-      <div style={{flex:1,overflowY:"auto",padding:16,display:"flex",flexDirection:"column",gap:10}}>
-        <div style={{textAlign:"center",fontSize:11,color:C.t3,padding:"4px 12px",background:C.s2,borderRadius:16,alignSelf:"center",marginBottom:6}}>🎉 マッチング成立</div>
-        {msgs.map(m=>{
-          const mine=m.from===me.id;const s=users.find(u=>u.id===m.from);
-          return(
-            <div key={m.id} style={{display:"flex",gap:8,alignItems:"flex-end",flexDirection:mine?"row-reverse":"row"}}>
-              {!mine&&<Av name={s?.name||"?"} size={28}/>}
-              <div style={{maxWidth:"72%"}}>
-                <div style={{background:mine?"linear-gradient(135deg,#FF6B00,#FF3D00)":C.s2,color:mine?"#000":C.text,borderRadius:mine?"18px 18px 4px 18px":"18px 18px 18px 4px",padding:"10px 14px",fontSize:14,lineHeight:1.5,wordBreak:"break-word"}}>{m.text}</div>
-                <div style={{fontSize:10,color:C.t3,marginTop:3,textAlign:mine?"right":"left"}}>{ago(m.time)}</div>
-              </div>
-            </div>
-          );
-        })}
-        <div ref={btm}/>
-      </div>
-      <div style={{padding:"12px 16px",borderTop:`1px solid ${C.border}`,display:"flex",gap:8,background:C.s1}}>
-        <input value={txt} onChange={e=>setTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send();}} placeholder="メッセージを入力..." style={{flex:1,background:C.s2,border:`1px solid ${C.b2}`,borderRadius:24,padding:"10px 16px",color:C.text,fontSize:14,outline:"none",fontFamily:"inherit"}}/>
-        <button onClick={send} style={{width:44,height:44,borderRadius:"50%",background:txt.trim()?"linear-gradient(135deg,#FF6B00,#FF3D00)":"#222",color:txt.trim()?"#000":"#555",border:"none",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>↑</button>
-      </div>
-    </div>
-  );
-}
-
-
-// 投稿カード
-const PostCard=memo(function PostCard({post,users,me,onAccept,onLike,onReply,onChat,onFocusMap,onCallDriver}){
-  const user=users.find(u=>u.id===post.userId)||users[0];
-  const driver=DRIVERS.find(d=>d.id===post.userId);
-  const [replyOpen,setReplyOpen]=useState(false);
-  const [replyTxt,setReplyTxt]=useState("");
-  const [accepting,setAccepting]=useState(false);
-  const [justAccepted,setJustAccepted]=useState(false);
-  const [countdown,setCountdown]=useState(15);
-  const isOwn=post.userId===me.id;
-  const isClosed=post.status==="受付終了";
-  const isKaeri=post.type==="kaeri";
-
-
-  useEffect(()=>{
-    if(!accepting)return;
-    const t=setInterval(()=>setCountdown(c=>Math.max(0,c-1)),1000);
-    return()=>clearInterval(t);
-  },[accepting]);
-
-
-  const handleAccept=async()=>{
-    setAccepting(true);
-    await new Promise(r=>setTimeout(r,1200));
-    setJustAccepted(true);onAccept(post.id);setAccepting(false);
-  };
-
-
-  return(
-    <div style={{borderBottom:`1px solid ${C.border}`,padding:"14px 16px",background:justAccepted?"rgba(0,210,106,.04)":C.bg,transition:"background .4s"}}>
-      {isKaeri&&<div style={{background:"rgba(74,144,255,.07)",border:`1px solid ${C.blue}22`,borderRadius:10,padding:"5px 12px",marginBottom:10,fontSize:12,color:C.blue,fontWeight:700,display:"flex",alignItems:"center",gap:6}}>
-        🔄 帰り便募集 <span style={{color:C.t2,fontWeight:400}}>空車でお迎えできます</span>
-      </div>}
-      <div style={{display:"flex",gap:10,marginBottom:12}}>
-        <Av name={user.name} size={44} status={driver?.active}/>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-            <span style={{fontWeight:700,fontSize:15}}>{user.name}</span>
-            <Stars rating={user.rating} size={11}/>
-            <span style={{color:C.t3,fontSize:11}}>{user.rating}</span>
-            <span style={{fontSize:11,color:C.t3,marginLeft:"auto"}}>{ago(post.time)}</span>
-          </div>
-          <div style={{display:"flex",gap:5,flexWrap:"wrap",alignItems:"center"}}>
-            <span style={{fontSize:11,padding:"2px 8px",borderRadius:8,fontWeight:700,background:post.status==="募集中"?C.gL:C.rL,color:post.status==="募集中"?C.green:C.red,border:`1px solid ${post.status==="募集中"?C.green+"33":C.red+"33"}`,display:"flex",alignItems:"center",gap:3}}>
-              <span style={{width:5,height:5,borderRadius:"50%",background:post.status==="募集中"?C.green:C.red,display:"inline-block",animation:post.status==="募集中"?"blink 1.4s ease-in-out infinite":undefined}}/>
-              {post.status}
-            </span>
-            <span style={{fontSize:10,padding:"2px 7px",borderRadius:8,fontWeight:700,background:C.aL,color:C.accent,border:`1px solid ${C.accent}22`}}>{post.timing==="今すぐ"?"⚡ 今すぐ":"📅 予約"}</span>
-            {post.viewers>0&&<span style={{fontSize:10,color:C.t4}}>👁 {post.viewers}人検討中</span>}
-          </div>
-        </div>
-      </div>
-      <div onClick={()=>onFocusMap&&onFocusMap(post)} style={{background:C.s2,borderRadius:14,padding:"12px 14px",marginBottom:10,border:`1px solid ${C.b2}`,cursor:"pointer"}}>
-        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-            <div style={{width:9,height:9,borderRadius:"50%",background:C.green,boxShadow:`0 0 6px ${C.green}`}}/>
-            <div style={{width:1.5,height:18,background:`linear-gradient(${C.green},${C.red})`,margin:"2px 0"}}/>
-            <div style={{width:9,height:9,borderRadius:2,background:C.red,boxShadow:`0 0 6px ${C.red}`}}/>
-          </div>
-          <div style={{flex:1}}>
-            <div style={{fontSize:14,fontWeight:700,marginBottom:8}}>{post.from}</div>
-            <div style={{fontSize:14,fontWeight:700,color:C.t2}}>{post.to}</div>
-          </div>
-          {!isKaeri&&<div style={{textAlign:"right"}}>
-            <div style={{fontSize:22,fontWeight:900,color:C.accent,lineHeight:1}}>{fmtYen(post.price)}</div>
-            {post.km&&<div style={{fontSize:10,color:C.t2,marginTop:2}}>{post.km.toFixed(1)}km</div>}
-            {post.fareResult?.isLate&&<div style={{fontSize:9,color:"#AA00FF",fontWeight:700,marginTop:2}}>🌙 深夜料金</div>}
-          </div>}
-        </div>
-        {!isKaeri&&<div style={{display:"flex",gap:12,paddingTop:8,borderTop:`1px solid ${C.border}`,fontSize:11,color:C.t2}}>
-          <span>📍 {post.dist}km</span>
-          {driver&&<span>⏱ 約{driver.eta}分</span>}
-          <span style={{marginLeft:"auto",color:C.accent,fontSize:10}}>🗺 地図で見る</span>
-        </div>}
-      </div>
-      {post.note&&<div style={{fontSize:13,color:C.t2,lineHeight:1.6,marginBottom:10,padding:"8px 12px",background:C.s2,borderRadius:10,border:`1px solid ${C.b2}`}}>{post.note}</div>}
-      <div style={{display:"flex",gap:8,alignItems:"center"}}>
-        {!isOwn&&!isClosed&&(
-          <button onClick={handleAccept} disabled={accepting} style={{flex:1,padding:"12px 0",border:"none",borderRadius:14,fontWeight:900,fontSize:14,cursor:accepting?"default":"pointer",fontFamily:"inherit",background:justAccepted?C.s2:accepting?"#102210":"linear-gradient(135deg,#FF6B00,#FF3D00)",color:justAccepted?C.t3:accepting?C.green:"#000",display:"flex",alignItems:"center",justifyContent:"center",gap:8,opacity:justAccepted?.5:1}}>
-            {accepting?(<><span style={{display:"inline-block",animation:"spin .6s linear infinite"}}>⟳</span><span>受付中 {countdown}秒</span></>):justAccepted?"✓ 受付完了":"🔥 即受ける"}
-          </button>
-        )}
-        {!isOwn&&!isClosed&&<button onClick={()=>onCallDriver&&onCallDriver(user)} style={{padding:"12px 13px",background:C.aL,color:C.accent,border:`1px solid ${C.accent}33`,borderRadius:14,fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🚗 呼ぶ</button>}
-        {isClosed&&<button onClick={()=>onChat(post)} style={{flex:1,padding:"12px 0",background:C.bL,color:C.blue,border:`1px solid ${C.blue}33`,borderRadius:14,fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>💬 チャットを開く</button>}
-        {isOwn&&!isClosed&&<div style={{flex:1,padding:"12px 0",background:C.aL,color:C.accent,border:`1px solid ${C.accent}22`,borderRadius:14,fontWeight:700,fontSize:13,textAlign:"center"}}>📢 あなたの依頼</div>}
-        <button onClick={()=>onLike(post.id)} style={{width:44,height:44,borderRadius:12,background:post.liked?C.rL:C.s2,color:post.liked?C.red:C.t3,border:`1px solid ${post.liked?C.red+"33":C.b2}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:3,fontSize:12,fontWeight:700,fontFamily:"inherit"}}>
-          {post.liked?"❤️":"🤍"}{post.likes>0&&<span style={{fontSize:11}}>{post.likes}</span>}
-        </button>
-        <button onClick={()=>setReplyOpen(v=>!v)} style={{width:44,height:44,borderRadius:12,background:replyOpen?C.bL:C.s2,color:replyOpen?C.blue:C.t3,border:`1px solid ${replyOpen?C.blue+"33":C.b2}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:3,fontSize:12,fontFamily:"inherit"}}>
-          💬{post.replies.length>0&&<span style={{fontSize:11}}>{post.replies.length}</span>}
-        </button>
-      </div>
-      {replyOpen&&(
-        <div style={{marginTop:10,background:C.s2,borderRadius:12,padding:"10px 12px",border:`1px solid ${C.b2}`}}>
-          {post.replies.map(r=>{const ru=users.find(u=>u.id===r.userId)||{name:"?"};return(
-            <div key={r.id} style={{display:"flex",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}>
-              <Av name={ru.name} size={26}/>
-              <div style={{flex:1}}>
-                <div style={{fontWeight:700,fontSize:12,color:C.t2}}>{ru.name}<span style={{fontSize:10,marginLeft:6}}>{ago(r.time)}</span></div>
-                <div style={{fontSize:13,color:C.text,marginTop:2}}>{r.text}</div>
-              </div>
-            </div>
-          );})}
-          <div style={{display:"flex",gap:8,marginTop:8}}>
-            <input value={replyTxt} onChange={e=>setReplyTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&replyTxt.trim()){onReply(post.id,replyTxt);setReplyTxt("");}}} placeholder="コメントする..." style={{flex:1,background:C.bg,border:`1px solid ${C.b2}`,borderRadius:18,padding:"8px 14px",color:C.text,fontSize:13,outline:"none",fontFamily:"inherit"}}/>
-            <button onClick={()=>{if(replyTxt.trim()){onReply(post.id,replyTxt);setReplyTxt("");}}} style={{padding:"8px 14px",background:C.accent,color:"#000",border:"none",borderRadius:18,fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>送信</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-});
-
-
-// TLカード
-const TLCard=memo(function TLCard({post,users,me,onLike,onReply,onCallDriver}){
-  const user=users.find(u=>u.id===post.userId)||users[0];
-  const driver=DRIVERS.find(d=>d.id===post.userId);
-  const [open,setOpen]=useState(false);
-  const [txt,setTxt]=useState("");
-  const isActive=post.status==="active";
-  return(
-    <div style={{padding:"14px 16px",borderBottom:`1px solid ${C.border}`}}>
-      <div style={{display:"flex",gap:12}}>
-        <Av name={user.name} size={44} status={isActive}/>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-            <span style={{fontWeight:700,fontSize:15}}>{user.name}</span>
-            <span style={{fontSize:10,padding:"1px 7px",borderRadius:6,background:isActive?C.gL:C.rL,color:isActive?C.green:C.red,fontWeight:700,border:`1px solid ${isActive?C.green+"33":C.red+"33"}`}}>{isActive?"🟢 稼働中":"🔴 対応中"}</span>
-            <span style={{fontSize:11,color:C.t3,marginLeft:"auto"}}>{ago(post.time)}</span>
-          </div>
-          <div style={{fontSize:14,color:"#d0d0d0",lineHeight:1.65,marginBottom:8,wordBreak:"break-word"}}>{post.text}</div>
-          {driver&&<div style={{background:C.s2,borderRadius:10,padding:"8px 12px",marginBottom:10,border:`1px solid ${C.b2}`,display:"flex",gap:12,fontSize:12,alignItems:"center"}}>
-            <span style={{color:C.accent,fontWeight:700}}>{fmtYen(driver.price)}〜</span>
-            <span style={{color:C.t2}}>📍 {driver.dist}km</span>
-            <span style={{color:C.green,fontWeight:700}}>⏱ {driver.eta}分</span>
-            <div style={{display:"flex",gap:4,marginLeft:"auto"}}>{driver.tags.slice(0,1).map(t=><Tag key={t} label={t}/>)}</div>
-          </div>}
-          <div style={{display:"flex",gap:4,alignItems:"center"}}>
-            <button onClick={()=>setOpen(v=>!v)} style={{display:"flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",color:open?C.blue:C.t3,fontSize:13,padding:"4px 8px 4px 0",fontFamily:"inherit"}}>
-              💬{post.replies.length>0&&<span>{post.replies.length}</span>}
-            </button>
-            <button onClick={()=>onLike(post.id)} style={{display:"flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",color:post.liked?C.red:C.t3,fontSize:13,padding:"4px 8px 4px 0",fontFamily:"inherit"}}>
-              {post.liked?"❤️":"🤍"}{post.likes>0&&<span>{post.likes}</span>}
-            </button>
-            {isActive&&driver&&<button onClick={()=>onCallDriver&&onCallDriver(user)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,padding:"7px 14px",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:20,fontSize:12,fontWeight:900,cursor:"pointer",fontFamily:"inherit"}}>
-              🚗 このドライバーを呼ぶ
-            </button>}
-          </div>
-          {open&&(
-            <div style={{marginTop:8,background:C.s2,borderRadius:12,padding:"10px 12px",border:`1px solid ${C.b2}`}}>
-              {post.replies.map(r=>{const ru=users.find(u=>u.id===r.userId)||{name:"?"};return(
-                <div key={r.id} style={{display:"flex",gap:8,padding:"5px 0",borderBottom:`1px solid ${C.border}`}}>
-                  <Av name={ru.name} size={26}/>
-                  <div style={{fontSize:12,color:C.t2,paddingTop:2}}><span style={{fontWeight:700,color:C.text}}>{ru.name}</span> {r.text}</div>
-                </div>
-              );})}
-              <div style={{display:"flex",gap:8,marginTop:8}}>
-                <input value={txt} onChange={e=>setTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&txt.trim()){onReply(post.id,txt);setTxt("");}}} placeholder="返信する..." style={{flex:1,background:C.bg,border:`1px solid ${C.b2}`,borderRadius:18,padding:"8px 14px",color:C.text,fontSize:13,outline:"none",fontFamily:"inherit"}}/>
-                <button onClick={()=>{if(txt.trim()){onReply(post.id,txt);setTxt("");}}} style={{padding:"8px 14px",background:C.green,color:"#000",border:"none",borderRadius:18,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>返信</button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-
-// ══ 料金表コンポーネント ══
-function FareTable(){
-  const h=new Date().getHours();
-  const isLate=h>=23||h<5;
-  const rows=[
-    {label:"〜2km",fare:"¥1,500〜",ex:"博多駅→天神"},
-    {label:"〜5km",fare:"¥2,200〜",ex:"天神→大橋"},
-    {label:"〜10km",fare:"¥3,400〜",ex:"博多→春日"},
-    {label:"〜20km",fare:"¥5,400〜",ex:"博多→古賀"},
-    {label:"20km〜",fare:"¥8,000〜",ex:"博多→久留米"},
-  ];
-  return(
-    <div style={{background:C.s2,borderRadius:14,overflow:"hidden",border:`1px solid ${C.b2}`,marginBottom:14}}>
-      <div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontSize:12,fontWeight:800,color:C.t2}}>📋 料金表（距離別）</span>
-        {isLate&&<span style={{fontSize:10,color:"#AA00FF",fontWeight:700,background:"rgba(170,0,255,.1)",padding:"2px 8px",borderRadius:8,border:"1px solid rgba(170,0,255,.25)"}}>🌙 深夜割増 +30%中</span>}
-      </div>
-      {rows.map((r,i)=>(
-        <div key={i} style={{display:"flex",alignItems:"center",padding:"9px 14px",borderBottom:i<rows.length-1?`1px solid ${C.border}`:undefined,background:i%2===0?"transparent":"rgba(255,255,255,.01)"}}>
-          <div style={{width:70,fontSize:12,fontWeight:700,color:C.text}}>{r.label}</div>
-          <div style={{flex:1,fontSize:13,fontWeight:900,color:C.accent}}>{isLate?r.fare.replace("¥",`¥${Math.round(parseInt(r.fare.replace(/[¥,〜]/g,""))*1.3/100)*100}〜 `):r.fare}</div>
-          <div style={{fontSize:11,color:C.t3}}>{r.ex}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-
-// 投稿フォーム（距離自動計算料金）
-function PostForm({me,onPost,onClose}){
-  const [type,setType]=useState("request");
-  const [from,setFrom]=useState("");
-  const [to,setTo]=useState("");
-  const [note,setNote]=useState("");
-  const [err,setErr]=useState("");
-  const [fareResult,setFareResult]=useState(null); // {fare, isLate, km, min, max}
-  const [calcStatus,setCalcStatus]=useState(""); // "" | "loading" | "done" | "error"
-  const [showTable,setShowTable]=useState(false);
-  const inp={width:"100%",background:"transparent",border:"none",padding:0,color:C.text,fontSize:15,outline:"none",fontFamily:"inherit"};
-  const calcTimer=useRef(null);
-
-
-  // 出発地・目的地が両方入ったら自動計算
-  useEffect(()=>{
-    if(!from.trim()||!to.trim()){setFareResult(null);setCalcStatus("");return;}
-    clearTimeout(calcTimer.current);
-    calcTimer.current=setTimeout(async()=>{
-      setCalcStatus("loading");setFareResult(null);
-      try{
-        const[fr,t2]=await Promise.all([
-          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(from+" 福岡")}&format=json&limit=1`).then(r=>r.json()),
-          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(to+" 福岡")}&format=json&limit=1`).then(r=>r.json()),
-        ]);
-        if(!fr.length||!t2.length){setCalcStatus("error");return;}
-        const km=calcKmSimple(parseFloat(fr[0].lat),parseFloat(fr[0].lon),parseFloat(t2[0].lat),parseFloat(t2[0].lon));
-        const result=calcFare(km);
-        setFareResult(result);setCalcStatus("done");
-      }catch{setCalcStatus("error");}
-    },800);
-    return()=>clearTimeout(calcTimer.current);
-  },[from,to]);
-
-
-  const submit=()=>{
-    if(!from.trim()||!to.trim()){setErr("出発地と目的地を入力してください");return;}
-    if(type==="request"&&!fareResult){setErr("料金を計算中です。少し待ってください");return;}
-    onPost({from,to,price:fareResult?fareResult.fare:0,km:fareResult?.km,timing:"今すぐ",note,type,fareResult});
-    onClose();
-  };
-
-
-  return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.92)",zIndex:150,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-      <div style={{background:C.s1,borderRadius:"20px 20px 0 0",padding:"20px 16px 36px",maxHeight:"92vh",overflowY:"auto",border:`1px solid ${C.b2}`,borderBottom:"none"}}>
-        <div style={{width:36,height:3,borderRadius:2,background:C.b3,margin:"0 auto 18px"}}/>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
-          <span style={{fontSize:17,fontWeight:900}}>投稿する</span>
-          <button onClick={onClose} style={{background:"none",border:"none",color:C.t2,fontSize:24,cursor:"pointer",lineHeight:1}}>×</button>
-        </div>
-
-
-        {/* タイプ切替 */}
-        <div style={{display:"flex",gap:6,marginBottom:18,background:C.s2,borderRadius:14,padding:4}}>
-          {[["request","🚗 代行依頼"],["kaeri","🔄 帰り便"]].map(([v,l])=>(
-            <button key={v} onClick={()=>setType(v)} style={{flex:1,padding:"10px 0",borderRadius:10,border:"none",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit",background:type===v?"linear-gradient(135deg,#FF6B00,#FF3D00)":"transparent",color:type===v?"#000":C.t2}}>{l}</button>
-          ))}
-        </div>
-
-
-        {type==="kaeri"&&<div style={{background:C.bL,border:`1px solid ${C.blue}22`,borderRadius:12,padding:"10px 14px",marginBottom:14,fontSize:12,color:C.blue}}>💡 帰り便は無料で募集できます。乗客が見つかれば料金交渉が可能です。</div>}
-
-
-        {/* ルート入力 */}
-        <div style={{background:C.s2,borderRadius:16,padding:"14px",marginBottom:type==="request"?0:14,border:`1px solid ${fareResult?C.accent+"44":C.b2}`,transition:"border-color .3s"}}>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-            <div style={{width:10,height:10,borderRadius:"50%",background:C.green,flexShrink:0,boxShadow:`0 0 6px ${C.green}`}}/>
-            <input value={from} onChange={e=>setFrom(e.target.value)} placeholder={type==="kaeri"?"出発地（空車の現在地）":"出発地（例：博多駅）"} style={inp}/>
-          </div>
-          <div style={{width:1.5,height:14,background:C.b3,marginLeft:4,marginBottom:12}}/>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:10,height:10,borderRadius:2,background:C.red,flexShrink:0,boxShadow:`0 0 6px ${C.red}`}}/>
-            <input value={to} onChange={e=>setTo(e.target.value)} placeholder={type==="kaeri"?"目的地（どこまで行けるか）":"目的地（例：天神、大橋）"} style={inp}/>
-          </div>
-        </div>
-
-
-        {/* 料金自動表示エリア */}
-        {type==="request"&&(
-          <div style={{marginBottom:14}}>
-            {calcStatus==="loading"&&(
-              <div style={{padding:"12px 14px",background:C.s2,borderRadius:"0 0 14px 14px",border:`1px solid ${C.b2}`,borderTop:"none",display:"flex",alignItems:"center",gap:8,fontSize:12,color:C.t2}}>
-                <span style={{display:"inline-block",animation:"spin .7s linear infinite",fontSize:14}}>⟳</span>
-                距離を計算して料金を算出中...
-              </div>
-            )}
-            {calcStatus==="done"&&fareResult&&(
-              <div style={{background:"linear-gradient(135deg,rgba(255,107,0,.1),rgba(255,61,0,.06))",borderRadius:"0 0 16px 16px",border:`1px solid ${C.accent}44`,borderTop:"none",overflow:"hidden"}}>
-                {/* メイン料金 */}
-                <div style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:11,color:C.t2,marginBottom:3}}>距離 {fareResult.km.toFixed(1)}km · 自動計算料金</div>
-                    <div style={{fontSize:30,fontWeight:900,color:C.accent,lineHeight:1}}>{fmtYen(fareResult.fare)}</div>
-                    <div style={{fontSize:11,color:C.t2,marginTop:3}}>
-                      範囲: {fmtYen(fareResult.min)} 〜 {fmtYen(fareResult.max)}
-                      {fareResult.isLate&&<span style={{color:"#AA00FF",fontWeight:700,marginLeft:6}}>🌙 深夜+30%</span>}
-                    </div>
-                  </div>
-                  <div style={{width:48,height:48,borderRadius:14,background:C.aL,border:`1px solid ${C.accent}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>✅</div>
-                </div>
-                {/* 内訳 */}
-                <div style={{padding:"10px 16px",background:"rgba(0,0,0,.2)",borderTop:`1px solid ${C.accent}22`,fontSize:11,color:C.t2,display:"flex",gap:16}}>
-                  <span>基本料金: {fmtYen(fareResult.tier.base)}</span>
-                  <span>距離加算: {fmtYen(Math.round(Math.max(0,fareResult.km-1)*fareResult.tier.perKm))}</span>
-                  {fareResult.isLate&&<span style={{color:"#AA00FF"}}>深夜割増: ×1.3</span>}
-                </div>
-              </div>
-            )}
-            {calcStatus==="error"&&(
-              <div style={{padding:"10px 14px",background:C.rL,borderRadius:"0 0 12px 12px",border:`1px solid ${C.red}33`,borderTop:"none",fontSize:12,color:C.red}}>
-                ⚠️ 場所を確認できませんでした。正式な地名で入力してください
-              </div>
-            )}
-            {/* 料金表トグル */}
-            <button onClick={()=>setShowTable(v=>!v)} style={{width:"100%",padding:"8px 0",background:"none",border:"none",color:C.t2,fontSize:11,cursor:"pointer",fontFamily:"inherit",marginTop:8,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>
-              {showTable?"▲ 料金表を閉じる":"▼ 距離別の料金表を見る"}
-            </button>
-            {showTable&&<FareTable/>}
-          </div>
-        )}
-
-
-        <div style={{marginBottom:18}}>
-          <div style={{fontSize:12,color:C.t2,marginBottom:6,fontWeight:700}}>メモ（任意）</div>
-          <textarea value={note} onChange={e=>setNote(e.target.value)} placeholder={type==="kaeri"?"乗車可能人数・メッセージなど":"駐車場所・その他の要望など"} style={{width:"100%",background:C.s2,border:`1px solid ${C.b2}`,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:14,outline:"none",fontFamily:"inherit",minHeight:64,resize:"none",lineHeight:1.6,boxSizing:"border-box"}}/>
-        </div>
-
-
-        {err&&<div style={{color:C.red,fontSize:12,marginBottom:10,textAlign:"center",fontWeight:600}}>{err}</div>}
-
-
-        <button onClick={submit}
-          style={{width:"100%",padding:"16px 0",background:type==="request"&&fareResult?"linear-gradient(135deg,#FF6B00,#FF3D00)":type==="request"&&!fareResult?"#2a2a2a":"linear-gradient(135deg,#2979FF,#1565C0)",color:type==="request"&&fareResult?"#000":type==="request"?"#555":"#fff",border:"none",borderRadius:16,fontWeight:900,fontSize:16,cursor:"pointer",fontFamily:"inherit",transition:"all .3s"}}>
-          {type==="kaeri"?"🔄 帰り便を募集する":fareResult?`🚗 ${fmtYen(fareResult.fare)}で依頼を投稿`:calcStatus==="loading"?"料金計算中...":"出発地と目的地を入力してください"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-
-// ドライバーカード
-function DriverCard({driver,onCall}){
-  return(
-    <div style={{background:C.card,borderRadius:18,padding:16,marginBottom:10,border:`1px solid ${C.b2}`}}>
-      <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:14}}>
-        <Av name={driver.name} size={52} status={driver.active}/>
-        <div style={{flex:1}}>
-          <div style={{fontWeight:800,fontSize:16,marginBottom:3}}>{driver.name}</div>
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:5}}><Stars rating={driver.rating} size={12}/><span style={{color:C.gold,fontWeight:700,fontSize:12}}>{driver.rating}</span><span style={{color:C.t2,fontSize:11}}>({driver.reviews}件)</span></div>
-          <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{driver.tags.map(t=><Tag key={t} label={t}/>)}</div>
-        </div>
-        <div style={{textAlign:"right"}}>
-          <div style={{fontSize:24,fontWeight:900,color:driver.active?C.green:C.t3}}>{driver.active?`${driver.eta}分`:"対応中"}</div>
-          <div style={{fontSize:10,color:C.t2}}>到着予定</div>
-        </div>
-      </div>
-      <div style={{display:"flex",gap:8,marginBottom:12}}>
-        {[{l:"距離",v:`${driver.dist}km`,c:C.blue},{l:"料金",v:`${fmtYen(calcFare(driver.dist)?.fare||driver.price)}`,c:C.accent},{l:"本日",v:`${Math.floor(driver.todaySales/2500)}件`,c:C.green}].map(({l,v,c})=>(
-          <div key={l} style={{flex:1,background:`${c}0d`,borderRadius:10,padding:"8px 0",textAlign:"center",border:`1px solid ${c}22`}}>
-            <div style={{fontSize:14,fontWeight:800,color:c}}>{v}</div>
-            <div style={{fontSize:10,color:C.t2,marginTop:1}}>{l}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{fontSize:12,color:C.t2,marginBottom:12,padding:"0 2px"}}>{driver.bio}</div>
-      <div style={{display:"flex",gap:8}}>
-        <button onClick={()=>onCall(driver)} disabled={!driver.active} style={{flex:1,padding:"12px 0",background:driver.active?"linear-gradient(135deg,#FF6B00,#FF3D00)":"#2a2a2a",color:driver.active?"#000":C.t3,border:"none",borderRadius:14,fontWeight:900,fontSize:14,cursor:driver.active?"pointer":"default",fontFamily:"inherit"}}>
-          {driver.active?"🚗 今すぐ呼ぶ":"📵 対応中"}
-        </button>
-        <a href="tel:090-0000-0000" style={{padding:"12px 16px",background:C.s2,color:C.text,border:`1px solid ${C.b2}`,borderRadius:14,fontWeight:700,fontSize:13,textDecoration:"none",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"inherit"}}>📞</a>
-      </div>
-    </div>
-  );
-}
-
-
-// ランキング
-function RankingScreen({me}){
-  return(
-    <div style={{padding:16,paddingBottom:80}}>
-      <div style={{fontSize:18,fontWeight:900,marginBottom:4}}>📊 今月のランキング</div>
-      <div style={{fontSize:12,color:C.t2,marginBottom:20}}>{new Date().getMonth()+1}月 売上・件数ランキング</div>
-      <div style={{background:"linear-gradient(135deg,rgba(255,107,0,.1),rgba(255,61,0,.05))",borderRadius:18,padding:16,marginBottom:20,border:`1px solid ${C.accent}22`}}>
-        <div style={{fontSize:12,color:C.accent,fontWeight:800,marginBottom:10}}>あなたの今日の成績</div>
-        <div style={{display:"flex",gap:10}}>
-          {[["本日売上",fmtYen(me.todaySales||24800),C.gold],["件数","12件",C.green],["評価",`★${me.rating}`,C.accent]].map(([l,v,c])=>(
-            <div key={l} style={{flex:1,textAlign:"center",background:`${c}10`,borderRadius:12,padding:"12px 0",border:`1px solid ${c}22`}}>
-              <div style={{fontSize:18,fontWeight:900,color:c,animation:"numberUp .4s ease"}}>{v}</div>
-              <div style={{fontSize:10,color:C.t2,marginTop:2}}>{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {RANKING.map((r,i)=>{
-        const u=DRIVERS.find(d=>d.id===r.userId)||{name:"?",rating:4.5,active:false};
-        const isMe=r.userId===me.id;
-        const rankColor=i===0?C.gold:i===1?"#aaa":i===2?"#CD7F32":C.t3;
-        return(
-          <div key={r.userId} style={{background:isMe?C.aL:C.card,borderRadius:14,padding:"12px 14px",marginBottom:8,border:`1px solid ${isMe?C.accent+"33":C.b2}`,display:"flex",alignItems:"center",gap:12,animation:"driverIn .3s ease",animationDelay:`${i*0.05}s`,animationFillMode:"both"}}>
-            <div style={{width:32,height:32,borderRadius:10,background:i<3?`${rankColor}20`:C.s2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:i<3?18:14,fontWeight:900,color:i<3?rankColor:C.t2,border:`1px solid ${i<3?rankColor+"33":C.b2}`,flexShrink:0}}>{r.badge||r.rank}</div>
-            <Av name={u.name} size={36} status={u.active}/>
-            <div style={{flex:1}}>
-              <div style={{fontWeight:700,fontSize:14,display:"flex",alignItems:"center",gap:6}}>{u.name}{isMe&&<span style={{fontSize:10,color:C.accent,fontWeight:700}}>(あなた)</span>}</div>
-              <div style={{fontSize:11,color:C.t2,marginTop:2}}>{r.sales}件</div>
-            </div>
-            <div style={{textAlign:"right"}}>
-              <div style={{fontSize:16,fontWeight:800,color:C.gold}}>{fmtYen(r.amount)}</div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-
-
-
-// ══ TODAY'S BATTLE BANNER (TL固定表示) ══
-function TodayBattleBanner({onGo}){
-  const topic=BATTLE_TOPICS[0]; // 今日のバトル = 最初のトピック
-  const tc=INIT_COMMENTS[topic.id]||[];
-  const pl=tc.filter(c=>c.side==="pro").reduce((s,c)=>s+c.likes,0);
-  const cl=tc.filter(c=>c.side==="con").reduce((s,c)=>s+c.likes,0);
-  const tot=pl+cl||1;
-  const pct=Math.round(pl/tot*100);
-  // 今月1位
-  const top1=Object.entries(BATTLE_STATS).sort((a,b)=>b[1].monthLikes-a[1].monthLikes)[0];
-  const top1User=DRIVERS.find(d=>d.id===top1[0])||{name:"山田 スピード",shortName:"山田"};
-  const myStats=BATTLE_STATS["u1"]||{monthLikes:42};
-  const gap=top1[1].monthLikes-myStats.monthLikes;
-
-
-  return(
-    <div style={{margin:"12px 16px",borderRadius:18,overflow:"hidden",border:`1px solid rgba(255,107,0,.25)`,animation:"battlePulse 3s ease-in-out infinite"}}>
-      {/* グラデヘッダー */}
-      <div style={{background:"linear-gradient(135deg,#1a0800,#0d0500,#080808)",padding:"12px 14px 10px"}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-          <div style={{display:"flex",alignItems:"center",gap:7}}>
-            <span style={{fontSize:16}}>⚔️</span>
-            <span style={{fontSize:12,fontWeight:900,color:C.accent,letterSpacing:.5}}>今日のバトル</span>
-            <span style={{fontSize:9,background:C.rL,color:C.red,border:`1px solid ${C.red}44`,padding:"1px 6px",borderRadius:6,fontWeight:800}}>LIVE</span>
-          </div>
-          <span style={{fontSize:10,color:C.t2}}>{tc.length}件参加中</span>
-        </div>
-        <div style={{fontWeight:900,fontSize:17,marginBottom:4,display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontSize:18}}>{topic.icon}</span>
-          <span>{topic.theme}について、どう思う？</span>
-        </div>
-        <div style={{fontSize:11,color:C.t2,marginBottom:10,lineHeight:1.5}}>{topic.desc}</div>
-
-
-        {/* 大型スコアバー */}
-        <div style={{marginBottom:10}}>
-          <div style={{display:"flex",alignItems:"center",gap:0,marginBottom:5}}>
-            <div style={{flex:pct,textAlign:"left"}}>
-              <span style={{fontSize:11,fontWeight:800,color:C.blue}}>👍 賛成</span>
-            </div>
-            <div style={{fontSize:13,fontWeight:900,color:C.accent,padding:"0 8px",animation:"vsFlash 2s ease-in-out infinite"}}>VS</div>
-            <div style={{flex:100-pct,textAlign:"right"}}>
-              <span style={{fontSize:11,fontWeight:800,color:C.red}}>反対 👎</span>
-            </div>
-          </div>
-          <div style={{height:12,background:C.b2,borderRadius:6,overflow:"hidden",display:"flex",position:"relative"}}>
-            <div style={{width:`${pct}%`,background:"linear-gradient(90deg,#2979FF,#6ab0ff)",transition:"width .8s ease",display:"flex",alignItems:"center",justifyContent:"flex-end",paddingRight:4}}>
-              <span style={{fontSize:9,fontWeight:900,color:"#fff",opacity:.9}}>{pct}%</span>
-            </div>
-            <div style={{flex:1,background:"linear-gradient(90deg,#FF4757,#ff7070)",display:"flex",alignItems:"center",paddingLeft:4}}>
-              <span style={{fontSize:9,fontWeight:900,color:"#fff",opacity:.9}}>{100-pct}%</span>
-            </div>
-          </div>
-          <div style={{display:"flex",justifyContent:"space-between",marginTop:4,fontSize:10,color:C.t2}}>
-            <span>❤️{pl} いいね</span><span>❤️{cl} いいね</span>
-          </div>
-        </div>
-
-
-        {/* 1位バー */}
-        <div style={{background:"rgba(255,215,0,.06)",borderRadius:10,padding:"7px 10px",border:"1px solid rgba(255,215,0,.15)",display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-          <span style={{fontSize:14}}>🥇</span>
-          <div style={{flex:1,fontSize:11,color:C.t2}}>
-            今月1位: <b style={{color:C.gold}}>{top1User.name}</b> ❤️{top1[1].monthLikes}
-          </div>
-          {gap>0&&<div style={{fontSize:10,color:C.gold,fontWeight:700,textAlign:"right"}}>あと<b>{gap}</b>いいねで1位！</div>}
-          {gap<=0&&<div style={{fontSize:10,color:C.green,fontWeight:700}}>🎉 1位！</div>}
-        </div>
-
-
-        {/* CTAボタン群 */}
-        <div style={{display:"flex",gap:8}}>
-          <button onClick={()=>onGo("pro")}
-            style={{flex:1,padding:"11px 0",background:"linear-gradient(135deg,#2979FF,#1565C0)",color:"#fff",border:"none",borderRadius:12,fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>
-            👍 賛成で参加
-          </button>
-          <button onClick={()=>onGo("con")}
-            style={{flex:1,padding:"11px 0",background:"linear-gradient(135deg,#FF4757,#c0000f)",color:"#fff",border:"none",borderRadius:12,fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>
-            👎 反対で参加
-          </button>
-          <button onClick={()=>onGo(null)}
-            style={{padding:"11px 12px",background:C.s2,color:C.t2,border:`1px solid ${C.b2}`,borderRadius:12,fontWeight:700,fontSize:11,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>
-            全部見る
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// ══ MAP ══
-function MapView({fromPos,toPos,focusPost,visible,onMapClick,pickMode}){
-  const ref=useRef(null);const M=useRef(null);const MK=useRef([]);const LN=useRef(null);
-  const dMK=useRef([]);const mvTimer=useRef(null);const initialized=useRef(false);
-  const clickMK=useRef(null); // タップ仮ピン
-
-
-  const initMap=useCallback(()=>{
-    if(initialized.current||!ref.current||!window.L)return;
-    initialized.current=true;
-    const L=window.L;
-    const m=L.map(ref.current,{center:[33.590,130.401],zoom:14,preferCanvas:true,zoomControl:false});
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:""}).addTo(m);
-    // ズームコントロール右下
-    L.control.zoom({position:"bottomright"}).addTo(m);
-    M.current=m;
-    // ドライバーピン
-    DRIVERS.filter(d=>d.active).forEach(d=>{
-      const ic=L.divIcon({
-        html:`<div style="background:#FF6B00;color:#000;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:900;white-space:nowrap;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.5);display:flex;align-items:center;gap:4px"><span>🚗</span>${d.eta}分</div>`,
-        className:"",iconAnchor:[35,14]});
-      const mk=L.marker([d.lat,d.lon],{icon:ic}).addTo(m);
-      mk.bindPopup(`<b>${d.name}</b><br>⭐${d.rating} · ${d.dist}km · ¥${d.price}〜`);
-      dMK.current.push({mk,d:{...d}});
-    });
-    // 疑似移動
-    mvTimer.current=setInterval(()=>{
-      dMK.current.forEach(({mk,d})=>{mk.setLatLng([d.lat+(Math.random()-.5)*.002,d.lon+(Math.random()-.5)*.002]);});
-    },6000);
-    // タップイベント
-    m.on("click",e=>{
-      if(onMapClick)onMapClick(e.latlng.lat,e.latlng.lng);
-    });
-  },[onMapClick]);
-
-
-  useEffect(()=>{
-    if(!document.getElementById("lf-css")){const l=document.createElement("link");l.id="lf-css";l.rel="stylesheet";l.href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";document.head.appendChild(l);}
-    if(window.L){initMap();return;}
-    if(!document.getElementById("lf-js")){const s=document.createElement("script");s.id="lf-js";s.src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";s.onload=initMap;document.head.appendChild(s);}
-    else{const w=setInterval(()=>{if(window.L){clearInterval(w);initMap();}},150);return()=>clearInterval(w);}
-    return()=>{clearInterval(mvTimer.current);};
-  },[]);
-
-
-  useEffect(()=>{
-    if(!visible||!M.current||!window.L)return;
-    setTimeout(()=>{if(M.current&&window.L)M.current.invalidateSize();},80);
-    if(!initialized.current&&window.L)initMap();
-  },[visible]);
-
-
-  // onMapClick が変わったらイベント再登録
-  useEffect(()=>{
-    const m=M.current;if(!m||!window.L)return;
-    m.off("click");
-    m.on("click",e=>{if(onMapClick)onMapClick(e.latlng.lat,e.latlng.lng);});
-  },[onMapClick]);
-
-
-  // fromPos/toPos ルートマーカー
-  useEffect(()=>{
-    const L=window.L,m=M.current;if(!L||!m)return;
-    MK.current.forEach(x=>m.removeLayer(x));MK.current=[];
-    if(LN.current){m.removeLayer(LN.current);LN.current=null;}
-    const fromIc=L.divIcon({html:`<div style="width:18px;height:18px;border-radius:50%;background:#00D26A;border:3px solid #fff;box-shadow:0 0 10px #00D26A,0 3px 8px rgba(0,0,0,.4)"></div>`,iconSize:[18,18],iconAnchor:[9,9],className:""});
-    const toIc=L.divIcon({html:`<div style="width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:18px solid #FF4757;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))"></div>`,iconSize:[20,18],iconAnchor:[10,18],className:""});
-    if(fromPos){const mk=L.marker([fromPos.lat,fromPos.lon],{icon:fromIc}).addTo(m);mk.bindPopup("🟢 出発地");MK.current.push(mk);}
-    if(toPos){const mk=L.marker([toPos.lat,toPos.lon],{icon:toIc}).addTo(m);mk.bindPopup("🔴 目的地");MK.current.push(mk);}
-    if(fromPos&&toPos){
-      LN.current=L.polyline([[fromPos.lat,fromPos.lon],[toPos.lat,toPos.lon]],{color:"#FF6B00",weight:4,dashArray:"10 6",opacity:.9}).addTo(m);
-      m.fitBounds([[fromPos.lat,fromPos.lon],[toPos.lat,toPos.lon]],{padding:[80,80]});
-    }
-  },[fromPos,toPos]);
-
-
-  // focusPost ジャンプ
-  useEffect(()=>{
-    if(!focusPost||!M.current||!window.L)return;
-    let dead=false;
-    (async()=>{
-      try{
-        const[fr,to]=await Promise.all([
-          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusPost.from+" 福岡")}&format=json&limit=1`).then(r=>r.json()),
-          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusPost.to+" 福岡")}&format=json&limit=1`).then(r=>r.json()),
-        ]);
-        if(dead||!fr.length||!to.length)return;
-        const L=window.L,m=M.current;
-        const fromIc=L.divIcon({html:`<div style="width:16px;height:16px;border-radius:50%;background:#00D26A;border:3px solid #fff;box-shadow:0 0 8px #00D26A"></div>`,iconSize:[16,16],iconAnchor:[8,8],className:""});
-        const toIc=L.divIcon({html:`<div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:16px solid #FF4757;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))"></div
+const DEMO_POSTS=[{id:"p1",userId:"u2",from:"博多駅",to:"福岡空港",price:3500,timing:"今すぐ",note:"終電逃しました😭 急いでます！",status:"募集中",time:T-180000,dist:1.2,likes:3,liked:false,replies:[{id:"r1",userId:"u4",text:"すぐ向かえます！",time:T-120000}],accepted:null,viewers:3,type:"request"},{id:"p2",userId:"u3",from:"天神",to:"大橋",price:2000,timing:"今すぐ",note:"",status:"募集中",time:T-600000,dist:2.8,likes:1,liked:false,replies:[],accepted:null,viewers:2,type:"request"},{id:"p3",userId:"u5",from:"中洲",to:"春日市",price:4000,timing:"今すぐ",note:"深夜2時ごろ",status:"受付終了",time:T-1800000,dist:0.8,likes:7,liked:false,replies:[{id:"r2",userId:"u1",text:"よろしくです！",time:T-1700000}],accepted:"u1",viewers:0,type:"request"},{id:"p4",userId:"u1",from:"博多駅",to:"久留米駅",price:0,timing:"今すぐ",note:"帰り便！空車です🚗",status:"募集中",time:T-900000,dist:0,likes:5,liked:false,replies:[],accepted:null,viewers:4,type:"kaeri"},{id:"p5",userId:"u4",from:"香椎",to:"博多駅",price:2500,timing:"今すぐ",note:"",status:"募集中",time:T-7200000,dist:4.1,likes:0,liked:false,replies:[],accepted:null,viewers:1,type:"request"}];
+const DEMO_TL=[{id:"t1",userId:"u1",text:"今夜も博多・天神エリア空いてます！深夜OK🌙",time:T-900000,likes:8,liked:false,replies:[{id:"tr1",userId:"u3",text:"いつもありがとう！",time:T-800000}],status:"active"},{id:"t2",userId:"u3",text:"先日の代行さん最高でした👍 また使います！",time:T-3600000,likes:12,liked:false,replies:[],status:"active"},{id:"t3",userId:"u2",text:"中洲・天神エリア 深夜2時まで対応 空いてます🚗",time:T-7200000,likes:5,liked:false,replies:[],status:"busy"},{id:"t4",userId:"u5",text:"本日全エリア対応！お気軽にどうぞ ¥1,900〜",time:T-1800000,likes:9,liked:false,replies:[],status:"active"}];
+const RANKING=[{rank:1,userId:"u3",sales:89,amount:142000,badge:"👑"},{rank:2,userId:"u1",sales:67,amount:107200,badge:"🥈"},{rank:3,userId:"u5",sales:54,amount:86400,badge:"🥉"},{rank:4,userId:"u2",sales:41,amount:65600,badge:""},{rank:5,userId:"u4",sales:28,amount:44800,badge:""}];
+const NG_WORDS=["死ね","殺","バカ","アホ","氏ね","クズ","差別","詐欺師"];
+const filterNG=txt=>NG_WORDS.some(w=>txt.includes(w));
+const BATTLE_BADGES=[{id:"legend",label:"LEGEND",icon:"👑",color:"#FFD700",min:50},{id:"master",label:"上級者",icon:"🔥",color:"#FF6B00",min:20},{id:"mid",label:"中級者",icon:"⚡",color:"#4A90FF",min:5},{id:"beginner",label:"初心者",icon:"🌱",color:"#00D26A",min:0}];
+const getBadge=wins=>BATTLE_BADGES.find(b=>wins>=b.min)||BATTLE_BADGES[3];
+const T2=Date.now();
+const BATTLE_TOPICS=[{id:"bt1",theme:"接客",icon:"😊",desc:"代行業者の接客マナーについて語り合おう",color:"#4A90FF",endTime:T2+86400000*3,status:"open"},{id:"bt2",theme:"料金設定",icon:"💰",desc:"適正価格って結局いくらなの？",color:"#FFD700",endTime:T2+86400000*5,status:"open"},{id:"bt3",theme:"対応スピード",icon:"⚡",desc:"深夜でも5分以内に来るべき？",color:"#FF6B00",endTime:T2+86400000*1,status:"open"},{id:"bt4",theme:"深夜料金",icon:"🌙",desc:"深夜割増は必要？不要？",color:"#AA00FF",endTime:T2+86400000*7,status:"open"},{id:"bt5",theme:"運転マナー",icon:"🚗",desc:"代行ドライバーに求めるマナーとは",color:"#00D26A",endTime:T2-3600000,status:"ended"}];
+const INIT_COMMENTS={bt1:[{id:"c1",userId:"u2",text:"挨拶はしっかりしてほしい。お客様商売なんだから基本中の基本。",likes:12,liked:false,time:T2-7200000,reported:false,hidden:false,side:"pro"},{id:"c2",userId:"u3",text:"車内で話しかけすぎるのも困る。静かに乗りたい人もいる。",likes:8,liked:false,time:T2-6000000,reported:false,hidden:false,side:"con"},{id:"c3",userId:"u1",text:"到着時の案内、ドア開け、荷物サポートまでやってるよ。差別化になる。",likes:15,liked:false,time:T2-3600000,reported:false,hidden:false,side:"pro"},{id:"c4",userId:"u4",text:"そこまでやる必要ある？料金が安い分サービスも最低限でいいと思う。",likes:4,liked:false,time:T2-1800000,reported:false,hidden:false,side:"con"}],bt2:[{id:"c5",userId:"u1",text:"2km以内は¥2,000が相場。それ以下にすると品質下がる一方。",likes:9,liked:false,time:T2-5000000,reported:false,hidden:false,side:"pro"},{id:"c6",userId:"u5",text:"¥1,500でも十分な利益でるよ。値下げ競争は必要だと思う。",likes:6,liked:false,time:T2-4000000,reported:false,hidden:false,side:"con"}],bt3:[{id:"c7",userId:"u3",text:"5分以内は無理。安全運転を優先すべき。",likes:11,liked:false,time:T2-3000000,reported:false,hidden:false,side:"con"},{id:"c8",userId:"u2",text:"うちは平均4分で到着してる。準備と位置取りの問題。",likes:18,liked:false,time:T2-2000000,reported:false,hidden:false,side:"pro"}],bt4:[],bt5:[{id:"c9",userId:"u1",text:"方向指示器を必ず出すのは絶対条件。",likes:20,liked:false,time:T2-86400000,reported:false,hidden:false,side:"pro"}]};
+const BATTLE_STATS={u1:{wins:8,streak:3,totalLikes:124,monthLikes:42},u2:{wins:5,streak:1,totalLikes:87,monthLikes:31},u3:{wins:12,streak:0,totalLikes:198,monthLikes:58},u4:{wins:2,streak:0,totalLikes:34,monthLikes:11},u5:{wins:6,streak:2,totalLikes:96,monthLikes:37}};
+const CSS=`@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}@keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}@keyframes matchPop{0%{transform:scale(.3);opacity:0}65%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}@keyframes ping{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.2);opacity:0}}@keyframes ping2{0%{transform:scale(.7);opacity:.5}100%{transform:scale(2.6);opacity:0}}@keyframes notif{0%{transform:translateY(-80px) scale(.9);opacity:0}12%{transform:translateY(0) scale(1);opacity:1}85%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(.9);opacity:0}}@keyframes driverIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes ctaPulse{0%,100%{box-shadow:0 4px 20px rgba(255,107,0,.35)}60%{box-shadow:0 4px 32px rgba(255,107,0,.6)}}@keyframes battlePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.015)}}@keyframes vsFlash{0%,100%{text-shadow:none}50%{text-shadow:0 0 12px #FF6B00,0 0 24px #FF3D00}}@keyframes rankSlide{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}`;
+const Av=memo(({name="?",size=40,ring=false,status=null})=>(<div style={{position:"relative",flexShrink:0}}><div style={{width:size,height:size,borderRadius:"50%",background:`linear-gradient(${avC(name)})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.4,fontWeight:900,color:"#fff",boxShadow:ring?`0 0 0 2px ${C.accent},0 0 12px rgba(255,107,0,.3)`:undefined}}>{avCh(name)}</div>{status!==null&&<div style={{position:"absolute",bottom:1,right:1,width:Math.max(8,size*.26),height:Math.max(8,size*.26),borderRadius:"50%",background:status?C.green:C.red,border:`2px solid ${C.bg}`}}/>}</div>));
+const Stars=memo(({rating,size=11})=>(<span style={{color:C.gold,fontSize:size,letterSpacing:-1}}>{"★".repeat(Math.floor(rating))}{"☆".repeat(5-Math.floor(rating))}</span>));
+const Tag=({label})=>{const col=label.includes("最速")||label.includes("素早")?C.accent:label.includes("最安")||label.includes("安")?C.green:label.includes("実績")||label.includes("高評価")||label.includes("⭐")?C.gold:C.blue;return <span style={{fontSize:10,padding:"2px 7px",borderRadius:8,fontWeight:700,background:`${col}18`,color:col,border:`1px solid ${col}28`,whiteSpace:"nowrap"}}>{label}</span>;};
+function NotifToast({msg,sub,onDone}){useEffect(()=>{const t=setTimeout(onDone,3800);return()=>clearTimeout(t);},[]);return(<div style={{position:"fixed",top:0,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 24px)",maxWidth:456,zIndex:9999,padding:"12px 0 0",animation:"notif 4s cubic-bezier(.34,1.56,.64,1) forwards"}}><div style={{background:"#1a1a1a",borderRadius:16,padding:"14px 16px",border:`1px solid ${C.b3}`,display:"flex",alignItems:"center",gap:12,boxShadow:"0 8px 32px rgba(0,0,0,.7)"}}><div style={{width:40,height:40,borderRadius:12,background:C.aL,border:`1px solid ${C.accent}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🚗</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,color:C.text}}>{msg}</div>{sub&&<div style={{fontSize:12,color:C.t2,marginTop:2}}>{sub}</div>}</div><div style={{fontSize:11,color:C.accent,fontWeight:800}}>今すぐ</div></div></div>);}
+function CallButton({driver,onPress,waitCount}){const[pressed,setPressed]=useState(false);const handle=()=>{setPressed(true);setTimeout(()=>setPressed(false),180);onPress();};return(<button onClick={handle} style={{width:"100%",padding:0,background:"none",border:"none",cursor:"pointer",fontFamily:"inherit",transform:pressed?"scale(.96)":"scale(1)",transition:"transform .15s cubic-bezier(.34,1.56,.64,1)"}}><div style={{background:"linear-gradient(135deg,#FF6B00,#FF3D00)",borderRadius:20,overflow:"hidden",animation:"ctaPulse 2.5s ease-in-out infinite"}}><div style={{padding:"18px 20px 14px",display:"flex",alignItems:"center",gap:14}}><div style={{fontSize:30}}>🚗</div><div style={{flex:1,textAlign:"left"}}><div style={{fontSize:20,fontWeight:900,color:"#000",letterSpacing:"-.3px",lineHeight:1.1}}>今すぐ代行を呼ぶ</div><div style={{fontSize:12,color:"rgba(0,0,0,.6)",marginTop:3,fontWeight:500}}>{driver.name} ★{driver.rating} · {driver.dist}km</div></div><div style={{textAlign:"right"}}><div style={{fontSize:28,fontWeight:900,color:"#000",lineHeight:1}}>{driver.eta}<span style={{fontSize:14,fontWeight:700}}>分</span></div><div style={{fontSize:12,color:"rgba(0,0,0,.55)",fontWeight:700}}>{fmtYen(driver.price)}〜</div></div></div><div style={{background:"rgba(0,0,0,.16)",padding:"7px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{fontSize:11,color:"rgba(0,0,0,.65)",fontWeight:700,display:"flex",alignItems:"center",gap:5}}><span style={{width:6,height:6,borderRadius:"50%",background:"rgba(0,0,0,.5)",display:"inline-block",animation:"blink .9s ease-in-out infinite"}}/>{waitCount}台待機中</div><div style={{fontSize:11,color:"rgba(0,0,0,.65)",fontWeight:700}}>あと{rnd(2,5)}台 ›</div></div></div></button>);}
+function MatchingOverlay({driver,onCancel,onConfirm}){const[phase,setPhase]=useState("searching");const[countdown,setCountdown]=useState(driver.eta*60);const[scanPct,setScanPct]=useState(0);useEffect(()=>{let p=0;const scan=setInterval(()=>{p+=3.5;setScanPct(Math.min(p,100));if(p>=100)clearInterval(scan);},65);const match=setTimeout(()=>setPhase("matched"),2300);return()=>{clearInterval(scan);clearTimeout(match);};},[]);useEffect(()=>{if(phase!=="matched")return;const t=setInterval(()=>setCountdown(c=>Math.max(0,c-1)),1000);return()=>clearInterval(t);},[phase]);const mm=String(Math.floor(countdown/60)).padStart(2,"0");const ss=String(countdown%60).padStart(2,"0");return(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.93)",zIndex:900,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 16px"}}>{phase==="searching"?(<div style={{width:"100%",maxWidth:340,textAlign:"center"}}><div style={{position:"relative",width:140,height:140,margin:"0 auto 28px"}}>{[0,20,40].map(i=><div key={i} style={{position:"absolute",inset:i,borderRadius:"50%",border:`1px solid ${C.accent}${i===0?"33":i===20?"44":"55"}`}}/>)}<div style={{position:"absolute",inset:0,borderRadius:"50%",border:`2px solid ${C.accent}`,opacity:.5,animation:"ping 1.5s ease-out infinite"}}/><div style={{position:"absolute",inset:0,borderRadius:"50%",border:`2px solid ${C.accent}`,opacity:.25,animation:"ping2 1.5s ease-out infinite",animationDelay:".5s"}}/><div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:42}}>🚗</div></div><div style={{fontSize:22,fontWeight:900,color:C.text,marginBottom:20}}>マッチング処理中...</div><div style={{width:"100%",height:3,background:C.b2,borderRadius:2,overflow:"hidden",marginBottom:28}}><div style={{height:"100%",background:"linear-gradient(90deg,#FF6B00,#FF3D00)",width:`${scanPct}%`,transition:"width .08s linear",borderRadius:2}}/></div><button onClick={onCancel} style={{padding:"12px 32px",background:"none",border:`1px solid ${C.b3}`,borderRadius:24,color:C.t2,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>キャンセル</button></div>):(<div style={{width:"100%",maxWidth:340,animation:"scaleIn .4s cubic-bezier(.34,1.56,.64,1)"}}><div style={{textAlign:"center",marginBottom:20}}><div style={{fontSize:22,fontWeight:900,color:C.text}}>ドライバーが向かっています</div></div><div style={{background:C.card,borderRadius:20,padding:20,marginBottom:16,border:`1px solid ${C.b2}`}}><div style={{display:"flex",gap:14,alignItems:"center",marginBottom:16}}><Av name={driver.name} size={56} ring status={true}/><div style={{flex:1}}><div style={{fontWeight:800,fontSize:18,marginBottom:3}}>{driver.name}</div><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}><Stars rating={driver.rating}/><span style={{color:C.gold,fontWeight:700,fontSize:13}}>{driver.rating}</span><span style={{color:C.t2,fontSize:12}}>({driver.reviews}件)</span></div><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{driver.tags.map(t=><Tag key={t} label={t}/>)}</div></div></div><div style={{display:"flex",gap:10}}><div style={{flex:1,background:C.aL,borderRadius:14,padding:"14px 0",textAlign:"center",border:`1px solid ${C.accent}22`}}><div style={{fontSize:28,fontWeight:900,color:C.accent}}>{mm}:{ss}</div><div style={{fontSize:11,color:C.t2,marginTop:2}}>到着まで</div></div><div style={{flex:1,background:C.gL,borderRadius:14,padding:"14px 0",textAlign:"center",border:`1px solid ${C.green}22`}}><div style={{fontSize:24,fontWeight:900,color:C.green}}>{driver.dist}km</div><div style={{fontSize:11,color:C.t2,marginTop:2}}>現在地から</div></div><div style={{flex:1,background:"rgba(255,215,0,.06)",borderRadius:14,padding:"14px 0",textAlign:"center",border:"1px solid rgba(255,215,0,.15)"}}><div style={{fontSize:20,fontWeight:900,color:C.gold}}>{fmtYen(calcFare(driver.dist)?.fare||driver.price)}</div><div style={{fontSize:11,color:C.t2,marginTop:2}}>料金目安</div></div></div></div><div style={{display:"flex",gap:10}}><button onClick={onConfirm} style={{flex:2,padding:"15px 0",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:16,fontWeight:900,fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>確定する 🚗</button><button onClick={onCancel} style={{flex:1,padding:"15px 0",background:C.s2,color:C.t2,border:`1px solid ${C.b2}`,borderRadius:16,fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>キャンセル</button></div></div>)}</div>);}
+function ChatModal({post,me,users,onClose}){const other=users.find(u=>u.id===(post.userId===me.id?post.accepted:post.userId))||users[0];const[msgs,setMsgs]=useState([{id:1,from:post.accepted||post.userId,text:"よろしくお願いします！向かっています🚗",time:T-60000},{id:2,from:me.id,text:"ありがとうございます！よろしくお願いします🙏",time:T-30000}]);const[txt,setTxt]=useState("");const btm=useRef(null);useEffect(()=>btm.current?.scrollIntoView({behavior:"smooth"}),[msgs]);const send=()=>{if(!txt.trim())return;setMsgs(m=>[...m,{id:Date.now(),from:me.id,text:txt,time:Date.now()}]);setTxt("");};return(<div style={{position:"fixed",inset:0,background:C.bg,zIndex:200,display:"flex",flexDirection:"column"}}><div style={{background:C.s1,padding:"14px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",gap:12}}><button onClick={onClose} style={{background:"none",border:"none",color:C.t2,fontSize:22,cursor:"pointer",padding:0,lineHeight:1}}>←</button><Av name={other?.name||"?"} size={36} status={true}/><div><div style={{fontWeight:700,fontSize:15}}>{other?.name}</div><div style={{fontSize:11,color:C.green,fontWeight:600}}>● オンライン</div></div><div style={{marginLeft:"auto",background:C.aL,border:`1px solid ${C.accent}22`,borderRadius:10,padding:"6px 12px",fontSize:11,color:C.accent,fontWeight:700}}>🚗 {post.from}→{post.to}</div></div><div style={{flex:1,overflowY:"auto",padding:16,display:"flex",flexDirection:"column",gap:10}}><div style={{textAlign:"center",fontSize:11,color:C.t3,padding:"4px 12px",background:C.s2,borderRadius:16,alignSelf:"center",marginBottom:6}}>🎉 マッチング成立</div>{msgs.map(m=>{const mine=m.from===me.id;const s=users.find(u=>u.id===m.from);return(<div key={m.id} style={{display:"flex",gap:8,alignItems:"flex-end",flexDirection:mine?"row-reverse":"row"}}>{!mine&&<Av name={s?.name||"?"} size={28}/>}<div style={{maxWidth:"72%"}}><div style={{background:mine?"linear-gradient(135deg,#FF6B00,#FF3D00)":C.s2,color:mine?"#000":C.text,borderRadius:mine?"18px 18px 4px 18px":"18px 18px 18px 4px",padding:"10px 14px",fontSize:14,lineHeight:1.5,wordBreak:"break-word"}}>{m.text}</div><div style={{fontSize:10,color:C.t3,marginTop:3,textAlign:mine?"right":"left"}}>{ago(m.time)}</div></div></div>);})}<div ref={btm}/></div><div style={{padding:"12px 16px",borderTop:`1px solid ${C.border}`,display:"flex",gap:8,background:C.s1}}><input value={txt} onChange={e=>setTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send();}} placeholder="メッセージを入力..." style={{flex:1,background:C.s2,border:`1px solid ${C.b2}`,borderRadius:24,padding:"10px 16px",color:C.text,fontSize:14,outline:"none",fontFamily:"inherit"}}/><button onClick={send} style={{width:44,height:44,borderRadius:"50%",background:txt.trim()?"linear-gradient(135deg,#FF6B00,#FF3D00)":"#222",color:txt.trim()?"#000":"#555",border:"none",fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>↑</button></div></div>);}
+const PostCard=memo(function PostCard({post,users,me,onAccept,onLike,onReply,onChat,onFocusMap,onCallDriver}){const user=users.find(u=>u.id===post.userId)||users[0];const driver=DRIVERS.find(d=>d.id===post.userId);const[replyOpen,setReplyOpen]=useState(false);const[replyTxt,setReplyTxt]=useState("");const[accepting,setAccepting]=useState(false);const[justAccepted,setJustAccepted]=useState(false);const[countdown,setCountdown]=useState(15);const isOwn=post.userId===me.id;const isClosed=post.status==="受付終了";const isKaeri=post.type==="kaeri";useEffect(()=>{if(!accepting)return;const t=setInterval(()=>setCountdown(c=>Math.max(0,c-1)),1000);return()=>clearInterval(t);},[accepting]);const handleAccept=async()=>{setAccepting(true);await new Promise(r=>setTimeout(r,1200));setJustAccepted(true);onAccept(post.id);setAccepting(false);};return(<div style={{borderBottom:`1px solid ${C.border}`,padding:"14px 16px",background:justAccepted?"rgba(0,210,106,.04)":C.bg,transition:"background .4s"}}>{isKaeri&&<div style={{background:"rgba(74,144,255,.07)",border:`1px solid ${C.blue}22`,borderRadius:10,padding:"5px 12px",marginBottom:10,fontSize:12,color:C.blue,fontWeight:700,display:"flex",alignItems:"center",gap:6}}>🔄 帰り便募集 <span style={{color:C.t2,fontWeight:400}}>空車でお迎えできます</span></div>}<div style={{display:"flex",gap:10,marginBottom:12}}><Av name={user.name} size={44} status={driver?.active}/><div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><span style={{fontWeight:700,fontSize:15}}>{user.name}</span><Stars rating={user.rating} size={11}/><span style={{color:C.t3,fontSize:11}}>{user.rating}</span><span style={{fontSize:11,color:C.t3,marginLeft:"auto"}}>{ago(post.time)}</span></div><div style={{display:"flex",gap:5,flexWrap:"wrap",alignItems:"center"}}><span style={{fontSize:11,padding:"2px 8px",borderRadius:8,fontWeight:700,background:post.status==="募集中"?C.gL:C.rL,color:post.status==="募集中"?C.green:C.red,border:`1px solid ${post.status==="募集中"?C.green+"33":C.red+"33"}`,display:"flex",alignItems:"center",gap:3}}><span style={{width:5,height:5,borderRadius:"50%",background:post.status==="募集中"?C.green:C.red,display:"inline-block",animation:post.status==="募集中"?"blink 1.4s ease-in-out infinite":undefined}}/>{post.status}</span><span style={{fontSize:10,padding:"2px 7px",borderRadius:8,fontWeight:700,background:C.aL,color:C.accent,border:`1px solid ${C.accent}22`}}>{post.timing==="今すぐ"?"⚡ 今すぐ":"📅 予約"}</span>{post.viewers>0&&<span style={{fontSize:10,color:C.t4}}>👁 {post.viewers}人検討中</span>}</div></div></div><div onClick={()=>onFocusMap&&onFocusMap(post)} style={{background:C.s2,borderRadius:14,padding:"12px 14px",marginBottom:10,border:`1px solid ${C.b2}`,cursor:"pointer"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{display:"flex",flexDirection:"column",alignItems:"center"}}><div style={{width:9,height:9,borderRadius:"50%",background:C.green,boxShadow:`0 0 6px ${C.green}`}}/><div style={{width:1.5,height:18,background:`linear-gradient(${C.green},${C.red})`,margin:"2px 0"}}/><div style={{width:9,height:9,borderRadius:2,background:C.red,boxShadow:`0 0 6px ${C.red}`}}/></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,marginBottom:8}}>{post.from}</div><div style={{fontSize:14,fontWeight:700,color:C.t2}}>{post.to}</div></div>{!isKaeri&&<div style={{textAlign:"right"}}><div style={{fontSize:22,fontWeight:900,color:C.accent,lineHeight:1}}>{fmtYen(post.price)}</div>{post.km&&<div style={{fontSize:10,color:C.t2,marginTop:2}}>{post.km.toFixed(1)}km</div>}</div>}</div>{!isKaeri&&<div style={{display:"flex",gap:12,paddingTop:8,borderTop:`1px solid ${C.border}`,fontSize:11,color:C.t2}}><span>📍 {post.dist}km</span>{driver&&<span>⏱ 約{driver.eta}分</span>}<span style={{marginLeft:"auto",color:C.accent,fontSize:10}}>🗺 地図で見る</span></div>}</div>{post.note&&<div style={{fontSize:13,color:C.t2,lineHeight:1.6,marginBottom:10,padding:"8px 12px",background:C.s2,borderRadius:10,border:`1px solid ${C.b2}`}}>{post.note}</div>}<div style={{display:"flex",gap:8,alignItems:"center"}}>{!isOwn&&!isClosed&&(<button onClick={handleAccept} disabled={accepting} style={{flex:1,padding:"12px 0",border:"none",borderRadius:14,fontWeight:900,fontSize:14,cursor:accepting?"default":"pointer",fontFamily:"inherit",background:justAccepted?C.s2:accepting?"#102210":"linear-gradient(135deg,#FF6B00,#FF3D00)",color:justAccepted?C.t3:accepting?C.green:"#000",display:"flex",alignItems:"center",justifyContent:"center",gap:8,opacity:justAccepted?.5:1}}>{accepting?(<><span style={{display:"inline-block",animation:"spin .6s linear infinite"}}>⟳</span><span>受付中 {countdown}秒</span></>):justAccepted?"✓ 受付完了":"🔥 即受ける"}</button>)}{!isOwn&&!isClosed&&<button onClick={()=>onCallDriver&&onCallDriver(user)} style={{padding:"12px 13px",background:C.aL,color:C.accent,border:`1px solid ${C.accent}33`,borderRadius:14,fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🚗 呼ぶ</button>}{isClosed&&<button onClick={()=>onChat(post)} style={{flex:1,padding:"12px 0",background:C.bL,color:C.blue,border:`1px solid ${C.blue}33`,borderRadius:14,fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>💬 チャットを開く</button>}{isOwn&&!isClosed&&<div style={{flex:1,padding:"12px 0",background:C.aL,color:C.accent,border:`1px solid ${C.accent}22`,borderRadius:14,fontWeight:700,fontSize:13,textAlign:"center"}}>📢 あなたの依頼</div>}<button onClick={()=>onLike(post.id)} style={{width:44,height:44,borderRadius:12,background:post.liked?C.rL:C.s2,color:post.liked?C.red:C.t3,border:`1px solid ${post.liked?C.red+"33":C.b2}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:3,fontSize:12,fontWeight:700,fontFamily:"inherit"}}>{post.liked?"❤️":"🤍"}{post.likes>0&&<span style={{fontSize:11}}>{post.likes}</span>}</button><button onClick={()=>setReplyOpen(v=>!v)} style={{width:44,height:44,borderRadius:12,background:replyOpen?C.bL:C.s2,color:replyOpen?C.blue:C.t3,border:`1px solid ${replyOpen?C.blue+"33":C.b2}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:3,fontSize:12,fontFamily:"inherit"}}>💬{post.replies.length>0&&<span style={{fontSize:11}}>{post.replies.length}</span>}</button></div>{replyOpen&&(<div style={{marginTop:10,background:C.s2,borderRadius:12,padding:"10px 12px",border:`1px solid ${C.b2}`}}>{post.replies.map(r=>{const ru=users.find(u=>u.id===r.userId)||{name:"?"};return(<div key={r.id} style={{display:"flex",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><Av name={ru.name} size={26}/><div style={{flex:1}}><div style={{fontWeight:700,fontSize:12,color:C.t2}}>{ru.name}<span style={{fontSize:10,marginLeft:6}}>{ago(r.time)}</span></div><div style={{fontSize:13,color:C.text,marginTop:2}}>{r.text}</div></div></div>);})}<div style={{display:"flex",gap:8,marginTop:8}}><input value={replyTxt} onChange={e=>setReplyTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&replyTxt.trim()){onReply(post.id,replyTxt);setReplyTxt("");}}} placeholder="コメントする..." style={{flex:1,background:C.bg,border:`1px solid ${C.b2}`,borderRadius:18,padding:"8px 14px",color:C.text,fontSize:13,outline:"none",fontFamily:"inherit"}}/><button onClick={()=>{if(replyTxt.trim()){onReply(post.id,replyTxt);setReplyTxt("");}}} style={{padding:"8px 14px",background:C.accent,color:"#000",border:"none",borderRadius:18,fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>送信</button></div></div>)}</div>);});
+const TLCard=memo(function TLCard({post,users,me,onLike,onReply,onCallDriver}){const user=users.find(u=>u.id===post.userId)||users[0];const driver=DRIVERS.find(d=>d.id===post.userId);const[open,setOpen]=useState(false);const[txt,setTxt]=useState("");const isActive=post.status==="active";return(<div style={{padding:"14px 16px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",gap:12}}><Av name={user.name} size={44} status={isActive}/><div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><span style={{fontWeight:700,fontSize:15}}>{user.name}</span><span style={{fontSize:10,padding:"1px 7px",borderRadius:6,background:isActive?C.gL:C.rL,color:isActive?C.green:C.red,fontWeight:700,border:`1px solid ${isActive?C.green+"33":C.red+"33"}`}}>{isActive?"🟢 稼働中":"🔴 対応中"}</span><span style={{fontSize:11,color:C.t3,marginLeft:"auto"}}>{ago(post.time)}</span></div><div style={{fontSize:14,color:"#d0d0d0",lineHeight:1.65,marginBottom:8,wordBreak:"break-word"}}>{post.text}</div>{driver&&<div style={{background:C.s2,borderRadius:10,padding:"8px 12px",marginBottom:10,border:`1px solid ${C.b2}`,display:"flex",gap:12,fontSize:12,alignItems:"center"}}><span style={{color:C.accent,fontWeight:700}}>{fmtYen(driver.price)}〜</span><span style={{color:C.t2}}>📍 {driver.dist}km</span><span style={{color:C.green,fontWeight:700}}>⏱ {driver.eta}分</span><div style={{display:"flex",gap:4,marginLeft:"auto"}}>{driver.tags.slice(0,1).map(t=><Tag key={t} label={t}/>)}</div></div>}<div style={{display:"flex",gap:4,alignItems:"center"}}><button onClick={()=>setOpen(v=>!v)} style={{display:"flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",color:open?C.blue:C.t3,fontSize:13,padding:"4px 8px 4px 0",fontFamily:"inherit"}}>💬{post.replies.length>0&&<span>{post.replies.length}</span>}</button><button onClick={()=>onLike(post.id)} style={{display:"flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",color:post.liked?C.red:C.t3,fontSize:13,padding:"4px 8px 4px 0",fontFamily:"inherit"}}>{post.liked?"❤️":"🤍"}{post.likes>0&&<span>{post.likes}</span>}</button>{isActive&&driver&&<button onClick={()=>onCallDriver&&onCallDriver(user)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,padding:"7px 14px",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:20,fontSize:12,fontWeight:900,cursor:"pointer",fontFamily:"inherit"}}>🚗 このドライバーを呼ぶ</button>}</div>{open&&(<div style={{marginTop:8,background:C.s2,borderRadius:12,padding:"10px 12px",border:`1px solid ${C.b2}`}}>{post.replies.map(r=>{const ru=users.find(u=>u.id===r.userId)||{name:"?"};return(<div key={r.id} style={{display:"flex",gap:8,padding:"5px 0",borderBottom:`1px solid ${C.border}`}}><Av name={ru.name} size={26}/><div style={{fontSize:12,color:C.t2,paddingTop:2}}><span style={{fontWeight:700,color:C.text}}>{ru.name}</span> {r.text}</div></div>);})}<div style={{display:"flex",gap:8,marginTop:8}}><input value={txt} onChange={e=>setTxt(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&txt.trim()){onReply(post.id,txt);setTxt("");}}} placeholder="返信する..." style={{flex:1,background:C.bg,border:`1px solid ${C.b2}`,borderRadius:18,padding:"8px 14px",color:C.text,fontSize:13,outline:"none",fontFamily:"inherit"}}/><button onClick={()=>{if(txt.trim()){onReply(post.id,txt);setTxt("");}}} style={{padding:"8px 14px",background:C.green,color:"#000",border:"none",borderRadius:18,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>返信</button></div></div>)}</div></div></div>);});
+function FareTable(){const h=new Date().getHours();const isLate=h>=23||h<5;const rows=[{label:"〜2km",fare:"¥1,500〜",ex:"博多駅→天神"},{label:"〜5km",fare:"¥2,200〜",ex:"天神→大橋"},{label:"〜10km",fare:"¥3,400〜",ex:"博多→春日"},{label:"〜20km",fare:"¥5,400〜",ex:"博多→古賀"},{label:"20km〜",fare:"¥8,000〜",ex:"博多→久留米"}];return(<div style={{background:C.s2,borderRadius:14,overflow:"hidden",border:`1px solid ${C.b2}`,marginBottom:14}}><div style={{padding:"10px 14px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:12,fontWeight:800,color:C.t2}}>📋 料金表（距離別）</span>{isLate&&<span style={{fontSize:10,color:"#AA00FF",fontWeight:700,background:"rgba(170,0,255,.1)",padding:"2px 8px",borderRadius:8,border:"1px solid rgba(170,0,255,.25)"}}>🌙 深夜割増 +30%中</span>}</div>{rows.map((r,i)=>(<div key={i} style={{display:"flex",alignItems:"center",padding:"9px 14px",borderBottom:i<rows.length-1?`1px solid ${C.border}`:undefined,background:i%2===0?"transparent":"rgba(255,255,255,.01)"}}><div style={{width:70,fontSize:12,fontWeight:700,color:C.text}}>{r.label}</div><div style={{flex:1,fontSize:13,fontWeight:900,color:C.accent}}>{r.fare}</div><div style={{fontSize:11,color:C.t3}}>{r.ex}</div></div>))}</div>);}
+function PostForm({me,onPost,onClose}){const[type,setType]=useState("request");const[from,setFrom]=useState("");const[to,setTo]=useState("");const[note,setNote]=useState("");const[err,setErr]=useState("");const[fareResult,setFareResult]=useState(null);const[calcStatus,setCalcStatus]=useState("");const[showTable,setShowTable]=useState(false);const inp={width:"100%",background:"transparent",border:"none",padding:0,color:C.text,fontSize:15,outline:"none",fontFamily:"inherit"};const calcTimer=useRef(null);useEffect(()=>{if(!from.trim()||!to.trim()){setFareResult(null);setCalcStatus("");return;}clearTimeout(calcTimer.current);calcTimer.current=setTimeout(async()=>{setCalcStatus("loading");setFareResult(null);try{const[fr,t2]=await Promise.all([fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(from+" 福岡")}&format=json&limit=1`).then(r=>r.json()),fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(to+" 福岡")}&format=json&limit=1`).then(r=>r.json())]);if(!fr.length||!t2.length){setCalcStatus("error");return;}const km=calcKmSimple(parseFloat(fr[0].lat),parseFloat(fr[0].lon),parseFloat(t2[0].lat),parseFloat(t2[0].lon));const result=calcFare(km);setFareResult(result);setCalcStatus("done");}catch{setCalcStatus("error");}},800);return()=>clearTimeout(calcTimer.current);},[from,to]);const submit=()=>{if(!from.trim()||!to.trim()){setErr("出発地と目的地を入力してください");return;}if(type==="request"&&!fareResult){setErr("料金を計算中です。少し待ってください");return;}onPost({from,to,price:fareResult?fareResult.fare:0,km:fareResult?.km,timing:"今すぐ",note,type,fareResult});onClose();};return(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.92)",zIndex:150,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div style={{background:C.s1,borderRadius:"20px 20px 0 0",padding:"20px 16px 36px",maxHeight:"92vh",overflowY:"auto",border:`1px solid ${C.b2}`,borderBottom:"none"}}><div style={{width:36,height:3,borderRadius:2,background:C.b3,margin:"0 auto 18px"}}/><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}><span style={{fontSize:17,fontWeight:900}}>投稿する</span><button onClick={onClose} style={{background:"none",border:"none",color:C.t2,fontSize:24,cursor:"pointer",lineHeight:1}}>×</button></div><div style={{display:"flex",gap:6,marginBottom:18,background:C.s2,borderRadius:14,padding:4}}>{[["request","🚗 代行依頼"],["kaeri","🔄 帰り便"]].map(([v,l])=>(<button key={v} onClick={()=>setType(v)} style={{flex:1,padding:"10px 0",borderRadius:10,border:"none",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit",background:type===v?"linear-gradient(135deg,#FF6B00,#FF3D00)":"transparent",color:type===v?"#000":C.t2}}>{l}</button>))}</div>{type==="kaeri"&&<div style={{background:C.bL,border:`1px solid ${C.blue}22`,borderRadius:12,padding:"10px 14px",marginBottom:14,fontSize:12,color:C.blue}}>💡 帰り便は無料で募集できます。</div>}<div style={{background:C.s2,borderRadius:16,padding:"14px",marginBottom:type==="request"?0:14,border:`1px solid ${fareResult?C.accent+"44":C.b2}`,transition:"border-color .3s"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}><div style={{width:10,height:10,borderRadius:"50%",background:C.green,flexShrink:0,boxShadow:`0 0 6px ${C.green}`}}/><input value={from} onChange={e=>setFrom(e.target.value)} placeholder={type==="kaeri"?"出発地（空車の現在地）":"出発地（例：博多駅）"} style={inp}/></div><div style={{width:1.5,height:14,background:C.b3,marginLeft:4,marginBottom:12}}/><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:10,height:10,borderRadius:2,background:C.red,flexShrink:0,boxShadow:`0 0 6px ${C.red}`}}/><input value={to} onChange={e=>setTo(e.target.value)} placeholder={type==="kaeri"?"目的地（どこまで行けるか）":"目的地（例：天神、大橋）"} style={inp}/></div></div>{type==="request"&&(<div style={{marginBottom:14}}>{calcStatus==="loading"&&<div style={{padding:"12px 14px",background:C.s2,borderRadius:"0 0 14px 14px",border:`1px solid ${C.b2}`,borderTop:"none",display:"flex",alignItems:"center",gap:8,fontSize:12,color:C.t2}}><span style={{display:"inline-block",animation:"spin .7s linear infinite",fontSize:14}}>⟳</span>距離を計算して料金を算出中...</div>}{calcStatus==="done"&&fareResult&&(<div style={{background:"linear-gradient(135deg,rgba(255,107,0,.1),rgba(255,61,0,.06))",borderRadius:"0 0 16px 16px",border:`1px solid ${C.accent}44`,borderTop:"none",overflow:"hidden"}}><div style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}><div style={{flex:1}}><div style={{fontSize:11,color:C.t2,marginBottom:3}}>距離 {fareResult.km.toFixed(1)}km · 自動計算料金</div><div style={{fontSize:30,fontWeight:900,color:C.accent,lineHeight:1}}>{fmtYen(fareResult.fare)}</div><div style={{fontSize:11,color:C.t2,marginTop:3}}>範囲: {fmtYen(fareResult.min)} 〜 {fmtYen(fareResult.max)}{fareResult.isLate&&<span style={{color:"#AA00FF",fontWeight:700,marginLeft:6}}>🌙 深夜+30%</span>}</div></div><div style={{width:48,height:48,borderRadius:14,background:C.aL,border:`1px solid ${C.accent}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>✅</div></div></div>)}{calcStatus==="error"&&<div style={{padding:"10px 14px",background:C.rL,borderRadius:"0 0 12px 12px",border:`1px solid ${C.red}33`,borderTop:"none",fontSize:12,color:C.red}}>⚠️ 場所を確認できませんでした</div>}<button onClick={()=>setShowTable(v=>!v)} style={{width:"100%",padding:"8px 0",background:"none",border:"none",color:C.t2,fontSize:11,cursor:"pointer",fontFamily:"inherit",marginTop:8,display:"flex",alignItems:"center",justifyContent:"center",gap:5}}>{showTable?"▲ 料金表を閉じる":"▼ 距離別の料金表を見る"}</button>{showTable&&<FareTable/>}</div>)}<div style={{marginBottom:18}}><div style={{fontSize:12,color:C.t2,marginBottom:6,fontWeight:700}}>メモ（任意）</div><textarea value={note} onChange={e=>setNote(e.target.value)} placeholder={type==="kaeri"?"乗車可能人数・メッセージなど":"駐車場所・その他の要望など"} style={{width:"100%",background:C.s2,border:`1px solid ${C.b2}`,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:14,outline:"none",fontFamily:"inherit",minHeight:64,resize:"none",lineHeight:1.6,boxSizing:"border-box"}}/></div>{err&&<div style={{color:C.red,fontSize:12,marginBottom:10,textAlign:"center",fontWeight:600}}>{err}</div>}<button onClick={submit} style={{width:"100%",padding:"16px 0",background:type==="request"&&fareResult?"linear-gradient(135deg,#FF6B00,#FF3D00)":type==="request"&&!fareResult?"#2a2a2a":"linear-gradient(135deg,#2979FF,#1565C0)",color:type==="request"&&fareResult?"#000":type==="request"?"#555":"#fff",border:"none",borderRadius:16,fontWeight:900,fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>{type==="kaeri"?"🔄 帰り便を募集する":fareResult?`🚗 ${fmtYen(fareResult.fare)}で依頼を投稿`:calcStatus==="loading"?"料金計算中...":"出発地と目的地を入力してください"}</button></div></div>);}
+function RankingScreen({me}){return(<div style={{padding:16,paddingBottom:80}}><div style={{fontSize:18,fontWeight:900,marginBottom:4}}>📊 今月のランキング</div><div style={{fontSize:12,color:C.t2,marginBottom:20}}>{new Date().getMonth()+1}月 売上・件数ランキング</div><div style={{background:"linear-gradient(135deg,rgba(255,107,0,.1),rgba(255,61,0,.05))",borderRadius:18,padding:16,marginBottom:20,border:`1px solid ${C.accent}22`}}><div style={{fontSize:12,color:C.accent,fontWeight:800,marginBottom:10}}>あなたの今日の成績</div><div style={{display:"flex",gap:10}}>{[["本日売上",fmtYen(me.todaySales||24800),C.gold],["件数","12件",C.green],["評価",`★${me.rating}`,C.accent]].map(([l,v,c])=>(<div key={l} style={{flex:1,textAlign:"center",background:`${c}10`,borderRadius:12,padding:"12px 0",border:`1px solid ${c}22`}}><div style={{fontSize:18,fontWeight:900,color:c}}>{v}</div><div style={{fontSize:10,color:C.t2,marginTop:2}}>{l}</div></div>))}</div></div>{RANKING.map((r,i)=>{const u=DRIVERS.find(d=>d.id===r.userId)||{name:"?",rating:4.5,active:false};const isMe=r.userId===me.id;const rankColor=i===0?C.gold:i===1?"#aaa":i===2?"#CD7F32":C.t3;return(<div key={r.userId} style={{background:isMe?C.aL:C.card,borderRadius:14,padding:"12px 14px",marginBottom:8,border:`1px solid ${isMe?C.accent+"33":C.b2}`,display:"flex",alignItems:"center",gap:12}}><div style={{width:32,height:32,borderRadius:10,background:i<3?`${rankColor}20`:C.s2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:i<3?18:14,fontWeight:900,color:i<3?rankColor:C.t2,border:`1px solid ${i<3?rankColor+"33":C.b2}`,flexShrink:0}}>{r.badge||r.rank}</div><Av name={u.name} size={36} status={u.active}/><div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,display:"flex",alignItems:"center",gap:6}}>{u.name}{isMe&&<span style={{fontSize:10,color:C.accent,fontWeight:700}}>(あなた)</span>}</div><div style={{fontSize:11,color:C.t2,marginTop:2}}>{r.sales}件</div></div><div style={{textAlign:"right"}}><div style={{fontSize:16,fontWeight:800,color:C.gold}}>{fmtYen(r.amount)}</div></div></div>);})}</div>);}
+function TodayBattleBanner({onGo}){const topic=BATTLE_TOPICS[0];const tc=INIT_COMMENTS[topic.id]||[];const pl=tc.filter(c=>c.side==="pro").reduce((s,c)=>s+c.likes,0);const cl=tc.filter(c=>c.side==="con").reduce((s,c)=>s+c.likes,0);const tot=pl+cl||1;const pct=Math.round(pl/tot*100);const top1=Object.entries(BATTLE_STATS).sort((a,b)=>b[1].monthLikes-a[1].monthLikes)[0];const top1User=DRIVERS.find(d=>d.id===top1[0])||{name:"山田 スピード"};const myStats=BATTLE_STATS["u1"]||{monthLikes:42};const gap=top1[1].monthLikes-myStats.monthLikes;return(<div style={{margin:"12px 16px",borderRadius:18,overflow:"hidden",border:`1px solid rgba(255,107,0,.25)`,animation:"battlePulse 3s ease-in-out infinite"}}><div style={{background:"linear-gradient(135deg,#1a0800,#0d0500,#080808)",padding:"12px 14px 10px"}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:7}}><span style={{fontSize:16}}>⚔️</span><span style={{fontSize:12,fontWeight:900,color:C.accent,letterSpacing:.5}}>今日のバトル</span><span style={{fontSize:9,background:C.rL,color:C.red,border:`1px solid ${C.red}44`,padding:"1px 6px",borderRadius:6,fontWeight:800}}>LIVE</span></div><span style={{fontSize:10,color:C.t2}}>{tc.length}件参加中</span></div><div style={{fontWeight:900,fontSize:17,marginBottom:4,display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:18}}>{topic.icon}</span><span>{topic.theme}について、どう思う？</span></div><div style={{marginBottom:10}}><div style={{display:"flex",alignItems:"center",marginBottom:5}}><div style={{flex:pct,textAlign:"left"}}><span style={{fontSize:11,fontWeight:800,color:C.blue}}>👍 賛成</span></div><div style={{fontSize:13,fontWeight:900,color:C.accent,padding:"0 8px",animation:"vsFlash 2s ease-in-out infinite"}}>VS</div><div style={{flex:100-pct,textAlign:"right"}}><span style={{fontSize:11,fontWeight:800,color:C.red}}>反対 👎</span></div></div><div style={{height:12,background:C.b2,borderRadius:6,overflow:"hidden",display:"flex"}}><div style={{width:`${pct}%`,background:"linear-gradient(90deg,#2979FF,#6ab0ff)",display:"flex",alignItems:"center",justifyContent:"flex-end",paddingRight:4}}><span style={{fontSize:9,fontWeight:900,color:"#fff",opacity:.9}}>{pct}%</span></div><div style={{flex:1,background:"linear-gradient(90deg,#FF4757,#ff7070)",display:"flex",alignItems:"center",paddingLeft:4}}><span style={{fontSize:9,fontWeight:900,color:"#fff",opacity:.9}}>{100-pct}%</span></div></div></div><div style={{background:"rgba(255,215,0,.06)",borderRadius:10,padding:"7px 10px",border:"1px solid rgba(255,215,0,.15)",display:"flex",alignItems:"center",gap:8,marginBottom:10}}><span style={{fontSize:14}}>🥇</span><div style={{flex:1,fontSize:11,color:C.t2}}>今月1位: <b style={{color:C.gold}}>{top1User.name}</b> ❤️{top1[1].monthLikes}</div>{gap>0&&<div style={{fontSize:10,color:C.gold,fontWeight:700}}>あと<b>{gap}</b>いいねで1位！</div>}{gap<=0&&<div style={{fontSize:10,color:C.green,fontWeight:700}}>🎉 1位！</div>}</div><div style={{display:"flex",gap:8}}><button onClick={()=>onGo("pro")} style={{flex:1,padding:"11px 0",background:"linear-gradient(135deg,#2979FF,#1565C0)",color:"#fff",border:"none",borderRadius:12,fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>👍 賛成で参加</button><button onClick={()=>onGo("con")} style={{flex:1,padding:"11px 0",background:"linear-gradient(135deg,#FF4757,#c0000f)",color:"#fff",border:"none",borderRadius:12,fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>👎 反対で参加</button><button onClick={()=>onGo(null)} style={{padding:"11px 12px",background:C.s2,color:C.t2,border:`1px solid ${C.b2}`,borderRadius:12,fontWeight:700,fontSize:11,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>全部見る</button></div></div></div>);}
+function MapView({fromPos,toPos,focusPost,visible}){const ref=useRef(null);const M=useRef(null);const MK=useRef([]);const LN=useRef(null);const dMK=useRef([]);const mvTimer=useRef(null);const initialized=useRef(false);const initMap=useCallback(()=>{if(initialized.current||!ref.current||!window.L)return;initialized.current=true;const L=window.L;const m=L.map(ref.current,{center:[33.590,130.401],zoom:13,preferCanvas:true});L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OSM"}).addTo(m);M.current=m;DRIVERS.filter(d=>d.active).forEach(d=>{const ic=L.divIcon({html:`<div style="background:#FF6B00;color:#000;border-radius:16px;padding:3px 8px;font-size:10px;font-weight:800;white-space:nowrap;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4)">${d.eta}分·${d.shortName}</div>`,className:"",iconAnchor:[30,12]});const mk=L.marker([d.lat,d.lon],{icon:ic}).addTo(m);dMK.current.push({mk,d:{...d}});});mvTimer.current=setInterval(()=>{dMK.current.forEach(({mk,d})=>{mk.setLatLng([d.lat+(Math.random()-.5)*.002,d.lon+(Math.random()-.5)*.002]);});},6000);},[]);useEffect(()=>{if(window.L){initMap();return;}const w=setInterval(()=>{if(window.L){clearInterval(w);initMap();}},150);return()=>{clearInterval(w);clearInterval(mvTimer.current);};},[]);useEffect(()=>{if(!visible||!M.current||!window.L)return;setTimeout(()=>{if(M.current&&window.L)M.current.invalidateSize();},80);if(!initialized.current&&window.L)initMap();},[visible]);useEffect(()=>{const L=window.L,m=M.current;if(!L||!m)return;MK.current.forEach(x=>m.removeLayer(x));MK.current=[];if(LN.current){m.removeLayer(LN.current);LN.current=null;}const ic=(c,big=false)=>L.divIcon({html:`<div style="background:${c};width:${big?14:10}px;height:${big?14:10}px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px ${c}"></div>`,iconSize:[big?14:10,big?14:10],iconAnchor:[big?7:5,big?7:5],className:""});if(fromPos)MK.current.push(L.marker([fromPos.lat,fromPos.lon],{icon:ic(C.green,true)}).addTo(m).bindPopup("🟢 出発地"));if(toPos)MK.current.push(L.marker([toPos.lat,toPos.lon],{icon:ic(C.red,true)}).addTo(m).bindPopup("🔴 目的地"));if(fromPos&&toPos){LN.current=L.polyline([[fromPos.lat,fromPos.lon],[toPos.lat,toPos.lon]],{color:C.accent,weight:3,dashArray:"8 6",opacity:.8}).addTo(m);m.fitBounds([[fromPos.lat,fromPos.lon],[toPos.lat,toPos.lon]],{padding:[60,60]});}},[fromPos,toPos]);useEffect(()=>{if(!focusPost||!M.current||!window.L)return;let dead=false;(async()=>{try{const[fr,to]=await Promise.all([fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusPost.from+" 福岡")}&format=json&limit=1`).then(r=>r.json()),fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(focusPost.to+" 福岡")}&format=json&limit=1`).then(r=>r.json())]);if(dead||!fr.length||!to.length)return;const L=window.L,m=M.current;const ic=c=>L.divIcon({html:`<div style="background:${c};width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px ${c}"></div>`,iconSize:[12,12],iconAnchor:[6,6],className:""});MK.current.forEach(x=>m.removeLayer(x));MK.current=[];if(LN.current){m.removeLayer(LN.current);LN.current=null;}const fpos=[parseFloat(fr[0].lat),parseFloat(fr[0].lon)];const tpos=[parseFloat(to[0].lat),parseFloat(to[0].lon)];MK.current.push(L.marker(fpos,{icon:ic(C.green)}).addTo(m).bindPopup(`🟢 ${focusPost.from}`).openPopup());MK.current.push(L.marker(tpos,{icon:ic(C.red)}).addTo(m).bindPopup(`🔴 ${focusPost.to}`));LN.current=L.polyline([fpos,tpos],{color:C.accent,weight:3,dashArray:"8 6"}).addTo(m);m.fitBounds([fpos,tpos],{padding:[60,60]});}catch{}})();return()=>{dead=true;};},[focusPost]);return(<div ref={ref} style={{width:"100%",height:300,borderRadius:16,overflow:"hidden",border:`1px solid ${C.border}`}}/>);}
+const NAV=[{id:"tl",icon:"📢",label:"TL"},{id:"order",icon:"🚗",label:"依頼"},{id:"map",icon:"🗺️",label:"地図"},{id:"battle",icon:"⚔️",label:"バトル"},{id:"ranking",icon:"📊",label:"ランク"}];
+function BattleScreen({me,showToast,quickSide,onClearQuickSide,onScrollTop}){const[view,setView]=useState("list");const[activeTopic,setActiveTopic]=useState(null);const[comments,setComments]=useState(INIT_COMMENTS);const[newComment,setNewComment]=useState("");const[side,setSide]=useState("pro");const[rankPeriod,setRankPeriod]=useState("month");const[reportModal,setReportModal]=useState(null);const nextCid=useRef(200);useEffect(()=>{onScrollTop&&onScrollTop();},[view]);useEffect(()=>{if(quickSide&&view==="list"){setActiveTopic(BATTLE_TOPICS[0]);setSide(quickSide);setView("topic");onClearQuickSide&&onClearQuickSide();}},[quickSide]);const myStats=BATTLE_STATS[me.id]||{wins:0,streak:0,totalLikes:0,monthLikes:0};const myBadge=getBadge(myStats.wins);const likeComment=(topicId,cid)=>{setComments(prev=>({...prev,[topicId]:prev[topicId].map(c=>c.id===cid?{...c,liked:!c.liked,likes:c.liked?c.likes-1:c.likes+1}:c)}));};const reportComment=(topicId,cid)=>{setComments(prev=>({...prev,[topicId]:prev[topicId].map(c=>c.id===cid?{...c,reported:true}:c)}));setReportModal(null);showToast("🚨 通報しました。運営が確認します。");};const shareToSNS=(topic,pct)=>{const text=`⚔️【代行なう バトル】「${topic.theme}」\n賛成${pct}% vs 反対${100-pct}%\n#代行なう #バトル`;if(navigator.share){navigator.share({title:"代行なう バトル",text}).catch(()=>{});}else{navigator.clipboard?.writeText(text).then(()=>showToast("📋 コピーしました！"));}};const postComment=()=>{if(!newComment.trim())return;if(filterNG(newComment)){showToast("⚠️ 不適切なワードが含まれています");return;}if(newComment.length>200){showToast("⚠️ 200文字以内で入力してください");return;}const nc={id:`c${nextCid.current++}`,userId:me.id,text:newComment.trim(),likes:0,liked:false,time:Date.now(),reported:false,hidden:false,side};setComments(prev=>({...prev,[activeTopic.id]:[...(prev[activeTopic.id]||[]),nc]}));setNewComment("");showToast("💬 コメントを投稿しました！");};const rankData=Object.entries(BATTLE_STATS).map(([uid,s])=>({uid,u:DRIVERS.find(d=>d.id===uid)||{name:"?",active:false},...s})).sort((a,b)=>rankPeriod==="month"?b.monthLikes-a.monthLikes:b.totalLikes-a.totalLikes);const timeLeft=ts=>{const d=ts-Date.now();if(d<=0)return"終了";const h=Math.floor(d/3600000);return h>=24?`${Math.floor(h/24)}日後終了`:`${h}時間後終了`;};
+if(view==="list")return(<div style={{paddingBottom:80}}><div style={{background:"linear-gradient(160deg,#1a0800,#0d0300,#080808)",padding:"18px 16px 14px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}><div><div style={{fontSize:26,fontWeight:900,letterSpacing:"-1.5px",display:"flex",alignItems:"center",gap:8}}><span style={{animation:"vsFlash 2.5s ease-in-out infinite"}}>⚔️</span><span style={{background:"linear-gradient(90deg,#FF6B00,#FF3D00)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>バトル</span><span style={{fontSize:10,background:C.rL,color:C.red,border:`1px solid ${C.red}44`,padding:"2px 8px",borderRadius:8,fontWeight:800,WebkitTextFillColor:C.red,animation:"blink 1.2s ease-in-out infinite"}}>LIVE</span></div><div style={{fontSize:12,color:C.t2,marginTop:2}}>意見を言い合ってバッジを獲得</div></div><button onClick={()=>setView("ranking")} style={{padding:"8px 14px",background:"linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,107,0,.08))",color:C.gold,border:`1px solid rgba(255,215,0,.25)`,borderRadius:14,fontWeight:800,fontSize:12,cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:5}}>🏆 ランク</button></div><div style={{background:"rgba(255,255,255,.03)",borderRadius:14,padding:"12px 14px",border:`1px solid ${C.b2}`,marginBottom:12}}><div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}><Av name={me.name} size={44} status={true}/><div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,display:"flex",alignItems:"center",gap:6,marginBottom:4}}>{me.name}<span style={{fontSize:11,padding:"2px 8px",borderRadius:8,fontWeight:800,background:`${myBadge.color}20`,color:myBadge.color,border:`1px solid ${myBadge.color}33`}}>{myBadge.icon} {myBadge.label}</span></div><div style={{display:"flex",gap:12,fontSize:11,color:C.t2}}><span>🏆 <b style={{color:C.text}}>{myStats.wins}</b>勝</span>{myStats.streak>=2&&<span style={{color:C.red,fontWeight:700}}>🔥 {myStats.streak}連勝中！</span>}<span>❤️ <b style={{color:C.text}}>{myStats.monthLikes}</b>今月</span></div></div></div></div></div><div style={{padding:"14px 16px 0"}}><div style={{fontSize:11,color:C.t2,fontWeight:700,marginBottom:12,letterSpacing:1}}>開催中のバトル</div>{BATTLE_TOPICS.filter(t=>t.status==="open").map((topic,i)=>{const tc=comments[topic.id]||[];const pl=tc.filter(c=>c.side==="pro"&&!c.hidden).reduce((s,c)=>s+c.likes,0);const cl=tc.filter(c=>c.side==="con"&&!c.hidden).reduce((s,c)=>s+c.likes,0);const tot=pl+cl||1;const pct=Math.round(pl/tot*100);return(<div key={topic.id} onClick={()=>{setActiveTopic(topic);setView("topic");}} style={{background:C.card,borderRadius:18,padding:16,marginBottom:12,border:`1px solid ${C.b2}`,cursor:"pointer"}}><div style={{display:"flex",gap:12,marginBottom:12}}><div style={{width:48,height:48,borderRadius:14,background:`${topic.color}18`,border:`1px solid ${topic.color}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{topic.icon}</div><div style={{flex:1}}><div style={{fontWeight:900,fontSize:17,marginBottom:3}}>{topic.theme}</div><div style={{fontSize:12,color:C.t2,lineHeight:1.5}}>{topic.desc}</div></div></div><div style={{marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:4}}><span style={{color:C.blue,fontWeight:700}}>👍 賛成 {pct}%</span><span style={{color:C.red,fontWeight:700}}>{100-pct}% 反対 👎</span></div><div style={{height:8,background:C.b2,borderRadius:4,overflow:"hidden",display:"flex"}}><div style={{width:`${pct}%`,background:`linear-gradient(90deg,${C.blue},#6ab0ff)`}}/><div style={{flex:1,background:`linear-gradient(90deg,${C.red},#ff7070)`}}/></div></div><div style={{display:"flex",gap:10,fontSize:11,color:C.t2}}><span>💬 {tc.length}件</span><span>❤️ {pl+cl}</span><span style={{marginLeft:"auto",color:topic.color,fontWeight:700,fontSize:10}}>{timeLeft(topic.endTime)}</span></div></div>);})}</div></div>);
+if(view==="topic"&&activeTopic){const tc=comments[activeTopic.id]||[];const vPro=tc.filter(c=>c.side==="pro"&&!c.hidden);const vCon=tc.filter(c=>c.side==="con"&&!c.hidden);const tP=vPro.reduce((s,c)=>s+c.likes,0);const tC=vCon.reduce((s,c)=>s+c.likes,0);const tot=tP+tC||1;const pct=Math.round(tP/tot*100);const isEnded=activeTopic.status==="ended";return(<div style={{paddingBottom:isEnded?40:160}}><div style={{background:`linear-gradient(160deg,${activeTopic.color}12,#080808)`,padding:"12px 16px 0",borderBottom:`1px solid ${C.border}`,position:"sticky",top:57,zIndex:40}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}><button onClick={()=>setView("list")} style={{background:"none",border:"none",color:C.t2,fontSize:20,cursor:"pointer",padding:0,lineHeight:1}}>←</button><div style={{width:34,height:34,borderRadius:10,background:`${activeTopic.color}20`,border:`1px solid ${activeTopic.color}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17}}>{activeTopic.icon}</div><div style={{flex:1}}><div style={{fontWeight:900,fontSize:16}}>{activeTopic.theme}</div><div style={{fontSize:10,color:C.t2}}>{tc.filter(c=>!c.hidden).length}件 · {timeLeft(activeTopic.endTime)}</div></div><button onClick={()=>shareToSNS(activeTopic,pct)} style={{background:"rgba(74,144,255,.1)",border:`1px solid ${C.blue}33`,borderRadius:10,padding:"5px 9px",color:C.blue,fontSize:10,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>📤 シェア</button></div><div style={{marginBottom:12}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><div><div style={{fontSize:10,color:C.blue,fontWeight:700}}>👍 賛成</div><div style={{fontSize:22,fontWeight:900,color:C.blue,lineHeight:1.1}}>{pct}<span style={{fontSize:12}}>%</span></div><div style={{fontSize:10,color:C.t2}}>❤️{tP}</div></div><div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}><div style={{fontSize:18}}>⚔️</div>{isEnded&&<div style={{fontSize:10,color:C.gold,fontWeight:800,marginTop:2}}>{pct>=50?"賛成の勝ち！":"反対の勝ち！"}</div>}</div><div style={{textAlign:"right"}}><div style={{fontSize:10,color:C.red,fontWeight:700}}>反対 👎</div><div style={{fontSize:22,fontWeight:900,color:C.red,lineHeight:1.1}}>{100-pct}<span style={{fontSize:12}}>%</span></div><div style={{fontSize:10,color:C.t2}}>❤️{tC}</div></div></div><div style={{height:10,background:C.b2,borderRadius:5,overflow:"hidden",display:"flex"}}><div style={{width:`${pct}%`,background:`linear-gradient(90deg,${C.blue},#6ab0ff)`}}/><div style={{flex:1,background:`linear-gradient(90deg,${C.red},#ff7070)`}}/></div></div></div><div style={{padding:"12px 16px"}}><div style={{fontSize:11,color:C.t3,fontWeight:700,marginBottom:10,letterSpacing:1}}>コメント ({tc.filter(c=>!c.hidden).length}件)</div>{tc.filter(c=>!c.hidden).sort((a,b)=>b.likes-a.likes).map((c,i)=>{const u=DRIVERS.find(d=>d.id===c.userId)||{name:"?",active:false};const isPro=c.side==="pro";const sc=isPro?C.blue:C.red;return(<div key={c.id} style={{background:C.card,borderRadius:16,padding:"12px 14px",marginBottom:10,border:`1px solid ${isPro?C.blue+"20":C.red+"20"}`}}><div style={{display:"flex",gap:10}}><Av name={u.name} size={36} status={u.active}/><div style={{flex:1}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><span style={{fontWeight:700,fontSize:13}}>{u.name}</span><span style={{fontSize:10,padding:"1px 7px",borderRadius:6,background:`${sc}18`,color:sc,fontWeight:800,border:`1px solid ${sc}30`}}>{isPro?"👍 賛成":"👎 反対"}</span><span style={{fontSize:10,color:C.t3,marginLeft:"auto"}}>{ago(c.time)}</span></div><div style={{fontSize:14,color:C.text,lineHeight:1.6,marginBottom:8}}>{c.text}</div><div style={{display:"flex",gap:5,alignItems:"center"}}><button onClick={()=>likeComment(activeTopic.id,c.id)} style={{display:"flex",alignItems:"center",gap:4,background:c.liked?"linear-gradient(135deg,rgba(255,71,87,.15),rgba(255,71,87,.08))":"none",border:`1px solid ${c.liked?C.red+"55":C.b2}`,borderRadius:20,padding:"6px 14px",color:c.liked?C.red:C.t2,fontSize:13,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>{c.liked?"❤️":"🤍"} {c.likes}</button>{!c.reported&&c.userId!==me.id&&<button onClick={()=>setReportModal({topicId:activeTopic.id,cid:c.id})} style={{background:"rgba(255,71,87,.06)",border:`1px solid ${C.red}22`,borderRadius:16,padding:"5px 10px",color:C.red,fontSize:10,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>🚨 通報</button>}</div></div></div></div>);})} {tc.filter(c=>!c.hidden).length===0&&<div style={{textAlign:"center",color:C.t3,padding:"32px 0",fontSize:13}}>まだコメントがありません。最初に投稿しよう！</div>}</div>{!isEnded&&<div style={{position:"fixed",bottom:72,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:C.s1,borderTop:`1px solid ${C.border}`,padding:"12px 16px",zIndex:60}}><div style={{display:"flex",gap:8,marginBottom:8}}><button onClick={()=>setSide("pro")} style={{flex:1,padding:"8px 0",borderRadius:12,border:`2px solid ${side==="pro"?C.blue:C.b2}`,background:side==="pro"?C.bL:"transparent",color:side==="pro"?C.blue:C.t2,fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>👍 賛成で投稿</button><button onClick={()=>setSide("con")} style={{flex:1,padding:"8px 0",borderRadius:12,border:`2px solid ${side==="con"?C.red:C.b2}`,background:side==="con"?C.rL:"transparent",color:side==="con"?C.red:C.t2,fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>👎 反対で投稿</button></div><div style={{display:"flex",gap:8}}><textarea value={newComment} onChange={e=>setNewComment(e.target.value.slice(0,200))} placeholder={`「${activeTopic.theme}」について意見を書こう...`} rows={2} style={{flex:1,background:C.s2,border:`1px solid ${side==="pro"?C.blue+"44":C.red+"44"}`,borderRadius:14,padding:"10px 14px",color:C.text,fontSize:13,outline:"none",fontFamily:"inherit",resize:"none",lineHeight:1.5}}/><button onClick={postComment} style={{padding:"0 16px",background:side==="pro"?`linear-gradient(135deg,${C.blue},#2060cc)`:`linear-gradient(135deg,${C.red},#cc2030)`,color:"#fff",border:"none",borderRadius:14,fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"inherit",minWidth:54}}>送信</button></div><div style={{fontSize:10,color:C.t3,marginTop:4,textAlign:"right"}}>{200-newComment.length}文字</div></div>}{reportModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div style={{background:C.s1,borderRadius:"20px 20px 0 0",padding:"20px 16px 36px",width:"100%",maxWidth:480}}><div style={{fontSize:16,fontWeight:900,marginBottom:6}}>🚨 このコメントを通報</div><button onClick={()=>reportComment(reportModal.topicId,reportModal.cid)} style={{width:"100%",padding:"14px 0",background:C.rL,color:C.red,border:`1px solid ${C.red}44`,borderRadius:14,fontWeight:800,fontSize:15,cursor:"pointer",fontFamily:"inherit",marginBottom:8}}>通報する</button><button onClick={()=>setReportModal(null)} style={{width:"100%",padding:"14px 0",background:"none",color:C.t2,border:`1px solid ${C.b2}`,borderRadius:14,fontWeight:700,fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>キャンセル</button></div></div>}</div>);}
+if(view==="ranking"){const rCols=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{paddingBottom:80}}><div style={{background:"linear-gradient(160deg,#1a0e00,#080808)",padding:"16px 16px 14px",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}><button onClick={()=>setView("list")} style={{background:"none",border:"none",color:C.t2,fontSize:20,cursor:"pointer",padding:0,lineHeight:1}}>←</button><div style={{fontWeight:900,fontSize:20}}>🏆 バトルランキング</div></div><div style={{display:"flex",gap:6,background:C.s2,borderRadius:12,padding:4}}>{[["month","今月"],["all","累計"]].map(([v,l])=>(<button key={v} onClick={()=>setRankPeriod(v)} style={{flex:1,padding:"9px 0",borderRadius:8,border:"none",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",background:rankPeriod===v?"linear-gradient(135deg,#FF6B00,#FF3D00)":"transparent",color:rankPeriod===v?"#000":C.t2}}>{l}</button>))}</div></div><div style={{padding:"14px 16px"}}>{rankData.map((r,i)=>{const badge=getBadge(r.wins);const isMe=r.uid===me.id;const score=rankPeriod==="month"?r.monthLikes:r.totalLikes;const topScore=rankPeriod==="month"?rankData[0].monthLikes:rankData[0].totalLikes;const barWidth=Math.max(4,Math.round(score/topScore*100));return(<div key={r.uid} style={{background:isMe?"linear-gradient(135deg,rgba(255,107,0,.08),rgba(255,61,0,.04))":C.card,borderRadius:16,padding:"14px 14px 12px",marginBottom:10,border:`1px solid ${isMe?C.accent+"44":i===0?"rgba(255,215,0,.25)":C.b2}`}}><div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}><div style={{width:34,height:34,borderRadius:10,background:i<3?`${rCols[i]}20`:C.s2,display:"flex",alignItems:"center",justifyContent:"center",fontSize:i<3?18:14,fontWeight:900,color:i<3?rCols[i]:C.t2,flexShrink:0,border:`1px solid ${i<3?rCols[i]+"44":C.b2}`}}>{i<3?["🥇","🥈","🥉"][i]:i+1}</div><Av name={r.u.name} size={40} status={r.u.active}/><div style={{flex:1}}><div style={{fontWeight:800,fontSize:14,display:"flex",alignItems:"center",gap:5,marginBottom:3,flexWrap:"wrap"}}>{r.u.name}{isMe&&<span style={{fontSize:10,color:C.accent,fontWeight:700}}>(あなた)</span>}<span style={{fontSize:10,padding:"1px 6px",borderRadius:6,background:`${badge.color}18`,color:badge.color,fontWeight:800,border:`1px solid ${badge.color}28`}}>{badge.icon} {badge.label}</span></div><div style={{fontSize:11,color:C.t2,display:"flex",gap:8}}><span>🏆 {r.wins}勝</span>{r.streak>=2&&<span style={{color:C.red,fontWeight:700}}>🔥 {r.streak}連勝</span>}</div></div><div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:20,fontWeight:900,color:i===0?C.gold:isMe?C.accent:C.text}}>❤️{score}</div><div style={{fontSize:9,color:C.t2,marginTop:1}}>{rankPeriod==="month"?"今月":"累計"}</div></div></div><div style={{height:5,background:C.b2,borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:`${barWidth}%`,background:i===0?"linear-gradient(90deg,#FFD700,#FF6B00)":isMe?"linear-gradient(90deg,#FF6B00,#FF3D00)":"linear-gradient(90deg,#4A90FF,#2060cc)",borderRadius:3,transition:"width 1s ease"}}/></div></div>);})}</div></div>);}
+return null;}
+const ME=DRIVERS[0];
+function App(){const[ready,setReady]=useState(false);const[screen,setScreen]=useState("tl");const[posts,setPosts]=useState(DEMO_POSTS);const[tlPosts,setTlPosts]=useState(DEMO_TL);const[myStatus,setMyStatus]=useState("空き");const[chat,setChat]=useState(null);const[showForm,setShowForm]=useState(false);const[matching,setMatching]=useState(null);const[inProgress,setInProgress]=useState(null);const[filterSort,setFilterSort]=useState("新着順");const[filterStatus,setFilterStatus]=useState("すべて");const[tlText,setTlText]=useState("");const[toast,setToast]=useState(null);const[focusPost,setFocusPost]=useState(null);const[fromPos,setFromPos]=useState(null);const[toPos,setToPos]=useState(null);const[fromInput,setFromInput]=useState("");const[toInput,setToInput]=useState("");const[calcMsg,setCalcMsg]=useState("");const[distance,setDistance]=useState(null);const[matchPop,setMatchPop]=useState(false);const[notif,setNotif]=useState(null);const[battleQuickSide,setBattleQuickSide]=useState(null);const nextId=useRef(1000);const saveTimer=useRef(null);const toastTimer=useRef(null);const scrollRef=useRef(null);
+useEffect(()=>{if(scrollRef.current)scrollRef.current.scrollTop=0;},[screen]);
+useEffect(()=>{(async()=>{const[sp,st]=await Promise.all([load("daiko5:p"),load("daiko5:tl")]);if(sp)setPosts(sp);if(st)setTlPosts(st);setReady(true);setTimeout(()=>setNotif({msg:"新しい代行依頼が届きました",sub:"博多駅→天神 ¥3,200"}),3000);})();},[]);
+useEffect(()=>{if(!ready)return;clearTimeout(saveTimer.current);saveTimer.current=setTimeout(()=>{save("daiko5:p",posts);save("daiko5:tl",tlPosts);},800);},[posts,tlPosts,ready]);
+const showToast=useCallback((msg)=>{setToast(msg);clearTimeout(toastTimer.current);toastTimer.current=setTimeout(()=>setToast(null),2800);},[]);
+const callDriver=useCallback((targetUser)=>{const driver=DRIVERS.find(d=>d.id===targetUser.id)||DRIVERS[0];if(!driver.active){showToast("このドライバーは現在対応中です");return;}setMatching({driver});},[showToast]);
+const handleAccept=useCallback((id)=>{setPosts(prev=>prev.map(p=>p.id===id?{...p,status:"受付終了",accepted:ME.id}:p));setMatchPop(true);setTimeout(()=>setMatchPop(false),1800);setPosts(prev=>{const p=prev.find(x=>x.id===id);if(p)setInProgress({from:p.from,to:p.to,driver:ME.name,rating:ME.rating,eta:ME.eta});return prev;});showToast("🎉 受注しました！");setTimeout(()=>{setPosts(prev=>{const p=prev.find(x=>x.id===id);if(p)setChat({...p,status:"受付終了",accepted:ME.id});return prev;});},900);},[showToast]);
+const handlePostLike=useCallback(id=>setPosts(p=>p.map(x=>x.id===id?{...x,liked:!x.liked,likes:x.liked?x.likes-1:x.likes+1}:x)),[]);
+const handleTlLike=useCallback(id=>setTlPosts(p=>p.map(x=>x.id===id?{...x,liked:!x.liked,likes:x.liked?x.likes-1:x.likes+1}:x)),[]);
+const handlePostReply=useCallback((id,text)=>setPosts(p=>p.map(x=>x.id===id?{...x,replies:[...x.replies,{id:nextId.current++,userId:ME.id,text,time:Date.now()}]}:x)),[]);
+const handleTlReply=useCallback((id,text)=>setTlPosts(p=>p.map(x=>x.id===id?{...x,replies:[...x.replies,{id:nextId.current++,userId:ME.id,text,time:Date.now()}]}:x)),[]);
+const handleNewPost=useCallback(({from,to,price,timing,note,type,km,fareResult})=>{setPosts(prev=>[{id:`p${nextId.current++}`,userId:ME.id,from,to,price,timing,note,status:"募集中",time:Date.now(),dist:km?parseFloat(km.toFixed(1)):+(Math.random()*3+0.5).toFixed(1),km,fareResult,likes:0,liked:false,replies:[],accepted:null,viewers:0,type:type||"request"},...prev]);showToast("✅ 投稿しました！");},[showToast]);
+const addTlPost=useCallback(()=>{if(!tlText.trim())return;setTlPosts(prev=>[{id:`t${nextId.current++}`,userId:ME.id,text:tlText,time:Date.now(),likes:0,liked:false,replies:[],status:"active"},...prev]);setTlText("");},[tlText]);
+const filtered=useMemo(()=>posts.filter(p=>filterStatus==="募集中のみ"?p.status==="募集中":true).sort((a,b)=>filterSort==="距離順"?a.dist-b.dist:filterSort==="金額順"?b.price-a.price:b.time-a.time),[posts,filterStatus,filterSort]);
+const myPosts=useMemo(()=>posts.filter(p=>p.userId===ME.id),[posts]);
+const doCalc=useCallback(async()=>{if(!fromInput.trim()||!toInput.trim()){setCalcMsg("⚠️ 両方入力してください");return;}setCalcMsg("計算中...");setDistance(null);try{const[fr,to2]=await Promise.all([fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fromInput+" 福岡")}&format=json&limit=1`).then(r=>r.json()),fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(toInput+" 福岡")}&format=json&limit=1`).then(r=>r.json())]);if(!fr.length||!to2.length){setCalcMsg("❌ 場所が見つかりませんでした");return;}const fP={lat:parseFloat(fr[0].lat),lon:parseFloat(fr[0].lon)};const tP={lat:parseFloat(to2[0].lat),lon:parseFloat(to2[0].lon)};setFromPos(fP);setToPos(tP);const R=6371,dL=(tP.lat-fP.lat)*Math.PI/180,dO=(tP.lon-fP.lon)*Math.PI/180;const a=Math.sin(dL/2)**2+Math.cos(fP.lat*Math.PI/180)*Math.cos(tP.lat*Math.PI/180)*Math.sin(dO/2)**2;setDistance(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));setCalcMsg("✅ 計算完了");}catch{setCalcMsg("❌ エラーが発生しました");}},[fromInput,toInput]);
+const SI={width:"100%",background:C.s2,border:`1px solid ${C.b2}`,borderRadius:12,padding:"12px 14px",color:C.text,fontSize:15,outline:"none",fontFamily:"inherit",boxSizing:"border-box"};
+if(!ready)return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100vh",background:C.bg,gap:12}}><style>{CSS}</style><div style={{fontSize:42,animation:"float 1.5s ease-in-out infinite"}}>🚗</div><div style={{fontSize:13,color:C.t2,fontWeight:500,letterSpacing:1}}>代行なう — 読み込み中</div></div>);
+return(<div style={{fontFamily:"'Noto Sans JP',sans-serif",background:C.bg,minHeight:"100vh",color:C.text,maxWidth:480,margin:"0 auto",display:"flex",flexDirection:"column"}}><style>{CSS}</style>{chat&&<ChatModal post={chat} me={ME} users={DRIVERS} onClose={()=>setChat(null)}/>}{showForm&&<PostForm me={ME} onPost={handleNewPost} onClose={()=>setShowForm(false)}/>}{matching&&<MatchingOverlay driver={matching.driver} onCancel={()=>setMatching(null)} onConfirm={()=>{setInProgress({from:"現在地",to:"目的地",driver:matching.driver.name,rating:matching.driver.rating,eta:matching.driver.eta});setMatching(null);setMatchPop(true);setTimeout(()=>setMatchPop(false),1800);showToast("🎉 マッチング完了！ドライバーが向かっています");}}/>}{notif&&<NotifToast msg={notif.msg} sub={notif.sub} onDone={()=>setNotif(null)}/>}{toast&&<div style={{position:"fixed",bottom:88,left:"50%",transform:"translateX(-50%)",background:"#1e1e1e",color:C.text,padding:"10px 20px",borderRadius:20,fontSize:13,fontWeight:700,zIndex:8000,border:`1px solid ${C.b3}`,whiteSpace:"nowrap",animation:"fadeIn .25s ease"}}>{toast}</div>}{matchPop&&<div style={{position:"fixed",inset:0,zIndex:8500,display:"flex",alignItems:"center",justifyContent:"center",pointerEvents:"none"}}><div style={{background:"linear-gradient(135deg,#00D26A,#00a050)",color:"#000",padding:"20px 40px",borderRadius:24,fontSize:26,fontWeight:900,animation:"matchPop .45s cubic-bezier(.34,1.56,.64,1)"}}>🤝 マッチ成立！</div></div>}
+<div style={{background:C.s1,padding:"13px 16px 11px",borderBottom:`1px solid ${C.border}`,position:"sticky",top:0,zIndex:50}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{display:"flex",alignItems:"baseline",gap:0}}><span style={{fontWeight:900,fontSize:20,color:C.text,letterSpacing:"-.5px"}}>代行</span><span style={{fontWeight:900,fontSize:20,color:C.accent,letterSpacing:"-.5px"}}>なう</span></div><span style={{fontSize:10,color:C.green,fontWeight:700,display:"flex",alignItems:"center",gap:4,background:C.gL,padding:"3px 8px",borderRadius:10,border:`1px solid ${C.green}22`}}><span style={{width:5,height:5,borderRadius:"50%",background:C.green,display:"inline-block",animation:"blink 1.4s ease-in-out infinite"}}/>{ONLINE_COUNT}人</span></div><div style={{display:"flex",gap:8,alignItems:"center"}}><div style={{display:"flex",background:C.s2,borderRadius:16,overflow:"hidden",border:`1px solid ${C.b2}`}}>{["空き","対応中"].map(s=>(<button key={s} onClick={()=>setMyStatus(s)} style={{padding:"6px 11px",fontWeight:700,fontSize:11,border:"none",cursor:"pointer",fontFamily:"inherit",background:myStatus===s?(s==="空き"?C.green:"#7a0000"):"transparent",color:myStatus===s?"#000":C.t2}}>{s==="空き"?"● 空き":"● 対応中"}</button>))}</div><button onClick={()=>setShowForm(true)} style={{padding:"8px 13px",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:16,fontWeight:800,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>＋ 投稿</button></div></div></div>
+<div ref={scrollRef} style={{flex:1,overflowY:"auto",paddingBottom:72}}>
+{inProgress&&(<div style={{background:"linear-gradient(135deg,rgba(0,210,106,.07),rgba(0,160,80,.03))",borderBottom:`1px solid ${C.green}22`,padding:"10px 16px",display:"flex",alignItems:"center",gap:10}}><div style={{fontSize:18,animation:"float 1.5s ease-in-out infinite"}}>🚗</div><div style={{flex:1}}><div style={{fontSize:12,color:C.green,fontWeight:800}}>ドライバーが向かっています</div><div style={{fontSize:11,color:C.t2,marginTop:1}}>{inProgress.from} → {inProgress.to}</div></div><div style={{textAlign:"right",marginRight:8}}><div style={{fontSize:18,fontWeight:900,color:C.green}}>{inProgress.eta}分</div><div style={{fontSize:10,color:C.t2}}>到着</div></div><button onClick={()=>{setInProgress(null);showToast("✅ 取引完了！お疲れさまでした");}} style={{background:"none",border:`1px solid ${C.green}33`,borderRadius:10,padding:"4px 10px",color:C.green,fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>完了</button></div>)}
+{screen==="tl"&&<div><div style={{background:C.s1,borderBottom:`1px solid ${C.border}`,padding:"10px 16px",position:"sticky",top:57,zIndex:40}}><div style={{display:"flex",gap:5,alignItems:"center"}}>{["すべて","募集中のみ"].map(s=>(<button key={s} onClick={()=>setFilterStatus(s)} style={{padding:"5px 13px",borderRadius:14,border:`1px solid ${filterStatus===s?C.accent:C.b2}`,background:filterStatus===s?C.aL:"transparent",color:filterStatus===s?C.accent:C.t2,fontSize:12,fontWeight:filterStatus===s?700:400,cursor:"pointer",fontFamily:"inherit"}}>{s==="募集中のみ"?"🟢 "+s:s}</button>))}<div style={{marginLeft:"auto",display:"flex",gap:4}}>{["新着順","距離順","金額順"].map(s=>(<button key={s} onClick={()=>setFilterSort(s)} style={{padding:"4px 9px",borderRadius:12,border:`1px solid ${filterSort===s?C.blue:C.b2}`,background:filterSort===s?C.bL:"transparent",color:filterSort===s?C.blue:C.t2,fontSize:11,fontWeight:filterSort===s?700:400,cursor:"pointer",fontFamily:"inherit"}}>{s}</button>))}</div></div></div><div style={{background:C.s1,borderBottom:`1px solid ${C.border}`,padding:"12px 16px"}}><div style={{display:"flex",gap:10,alignItems:"flex-start"}}><Av name={ME.name} size={38} status={true}/><div style={{flex:1}}><textarea value={tlText} onChange={e=>setTlText(e.target.value.slice(0,140))} placeholder="稼働情報・ひとことを投稿..." rows={2} style={{width:"100%",background:"transparent",border:"none",color:C.text,fontSize:14,resize:"none",outline:"none",fontFamily:"inherit",lineHeight:1.5}}/><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:4}}><div style={{display:"flex",gap:6}}><button onClick={()=>setShowForm(true)} style={{background:"none",border:`1px solid ${C.b2}`,borderRadius:14,padding:"5px 10px",color:C.accent,fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>🚗 依頼</button><button onClick={()=>setShowForm(true)} style={{background:"none",border:`1px solid ${C.b2}`,borderRadius:14,padding:"5px 10px",color:C.blue,fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>🔄 帰り便</button></div><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:11,color:140-tlText.length<=20?C.red:C.t3}}>{140-tlText.length}</span><button onClick={addTlPost} disabled={!tlText.trim()} style={{padding:"6px 16px",background:tlText.trim()?"linear-gradient(135deg,#FF6B00,#FF3D00)":"#222",color:tlText.trim()?"#000":"#444",border:"none",borderRadius:16,fontWeight:800,fontSize:12,cursor:tlText.trim()?"pointer":"default",fontFamily:"inherit"}}>投稿</button></div></div></div></div></div>
+<TodayBattleBanner onGo={(side)=>{setBattleQuickSide(side);setScreen("battle");}}/>
+{filtered.length===0&&<div style={{textAlign:"center",color:C.t3,padding:"50px 20px",fontSize:14}}>条件に合う依頼がありません</div>}
+{filtered.map(p=>(<PostCard key={p.id} post={p} users={DRIVERS} me={ME} onAccept={handleAccept} onLike={handlePostLike} onReply={handlePostReply} onChat={setChat} onFocusMap={post=>{setFocusPost(post);setScreen("map");}} onCallDriver={callDriver}/>))}
+<div style={{padding:"8px 16px",fontSize:10,color:C.t3,borderBottom:`1px solid ${C.border}`,letterSpacing:1.5,fontWeight:600}}>── つぶやき</div>
+{tlPosts.map(p=><TLCard key={p.id} post={p} users={DRIVERS} me={ME} onLike={handleTlLike} onReply={handleTlReply} onCallDriver={callDriver}/>)}</div>}
+{screen==="order"&&<div style={{padding:16}}><div style={{fontSize:18,fontWeight:900,marginBottom:4}}>🚗 代行を呼ぶ</div><div style={{fontSize:12,color:C.t2,marginBottom:20}}>ワンタップで最短マッチング</div><div style={{marginBottom:20}}><CallButton driver={BEST_DRIVER} onPress={()=>setMatching({driver:BEST_DRIVER})} waitCount={ONLINE_COUNT}/></div><div style={{fontSize:13,fontWeight:700,color:C.t2,marginBottom:12}}>他のドライバー</div>{DRIVERS.filter(d=>d.id!==BEST_DRIVER.id).map(d=>(<div key={d.id} onClick={()=>d.active&&setMatching({driver:d})} style={{background:C.card,borderRadius:14,padding:"12px 14px",marginBottom:8,border:`1px solid ${C.b2}`,display:"flex",alignItems:"center",gap:12,cursor:d.active?"pointer":"default",opacity:d.active?1:.55}}><Av name={d.name} size={44} status={d.active}/><div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,marginBottom:3}}>{d.name}</div><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{d.tags.map(t=><Tag key={t} label={t}/>)}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:20,fontWeight:900,color:d.active?C.accent:C.t3}}>{d.active?`${d.eta}分`:"対応中"}</div><div style={{fontSize:11,color:C.t2}}>{fmtYen(d.price)}〜</div></div></div>))}<div style={{marginTop:20,background:C.card,borderRadius:16,padding:16,border:`1px solid ${C.b2}`}}><div style={{fontSize:13,fontWeight:700,color:C.t2,marginBottom:12}}>あなたの依頼履歴</div>{myPosts.length===0?<div style={{textAlign:"center",color:C.t3,padding:"20px 0",fontSize:13}}>まだ投稿がありません</div>:myPosts.slice(0,3).map(p=>(<div key={p.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><div style={{flex:1,fontSize:13}}>{p.from} → {p.to}</div><span style={{fontSize:11,color:p.status==="募集中"?C.green:C.t3,fontWeight:700}}>{p.status}</span>{p.status==="受付終了"&&<button onClick={()=>setChat(p)} style={{fontSize:11,padding:"4px 10px",background:C.bL,color:C.blue,border:"none",borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>チャット</button>}</div>))}</div></div>}
+<div style={{display:screen==="map"?"block":"none",padding:16}}><div style={{fontSize:18,fontWeight:900,marginBottom:4}}>🗺️ マップ</div><div style={{fontSize:12,color:C.t2,marginBottom:12}}>オレンジ = ドライバー（6秒ごと更新）</div>{focusPost&&<div style={{background:C.aL,border:`1px solid ${C.accent}22`,borderRadius:10,padding:"8px 12px",marginBottom:10,display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:13}}>📍</span><div style={{flex:1,fontSize:13,color:C.accent,fontWeight:600}}>{focusPost.from} → {focusPost.to}</div><button onClick={()=>setFocusPost(null)} style={{background:"none",border:"none",color:C.t3,fontSize:16,cursor:"pointer"}}>×</button></div>}<MapView fromPos={fromPos} toPos={toPos} focusPost={focusPost} visible={screen==="map"}/><div style={{marginTop:14,background:C.card,borderRadius:16,padding:16,border:`1px solid ${C.b2}`}}><div style={{color:C.accent,fontWeight:800,fontSize:14,marginBottom:12}}>📏 距離・料金計算</div><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:9,height:9,borderRadius:"50%",background:C.green,flexShrink:0}}/><input value={fromInput} onChange={e=>{setFromInput(e.target.value);setFromPos(null);setDistance(null);}} placeholder="出発地（例：博多駅）" style={{...SI,flex:1}}/></div><div style={{paddingLeft:4,marginBottom:8}}><div style={{width:1.5,height:14,background:C.b3,marginLeft:4}}/></div><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}><div style={{width:9,height:9,borderRadius:2,background:C.red,flexShrink:0}}/><input value={toInput} onChange={e=>{setToInput(e.target.value);setToPos(null);setDistance(null);}} placeholder="目的地（例：天神）" style={{...SI,flex:1}}/></div><div style={{display:"flex",gap:8}}><button onClick={doCalc} style={{flex:1,padding:"12px 0",background:"linear-gradient(135deg,#FF6B00,#FF3D00)",color:"#000",border:"none",borderRadius:12,fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>📏 計算</button><button onClick={()=>{if(!fromInput||!toInput)return;window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fromInput)}&destination=${encodeURIComponent(toInput)}&travelmode=driving`,"_blank");}} style={{flex:1,padding:"12px 0",background:"#0d2a0d",color:C.green,border:`1px solid ${C.green}22`,borderRadius:12,fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>🗺️ Gマップ</button></div>{calcMsg&&<div style={{marginTop:10,fontSize:12,textAlign:"center",color:calcMsg.startsWith("✅")?C.green:calcMsg.startsWith("❌")||calcMsg.startsWith("⚠️")?C.red:C.accent}}>{calcMsg}</div>}{distance!==null&&(<div style={{marginTop:12,background:C.bg,borderRadius:14,padding:14,border:`1px solid ${C.accent}22`,textAlign:"center"}}><div style={{color:C.t2,fontSize:11,marginBottom:4}}>直線距離</div><div style={{color:C.accent,fontSize:30,fontWeight:900,lineHeight:1}}>{distance>=1?`${distance.toFixed(1)} km`:`${(distance*1000).toFixed(0)} m`}</div>{distance>=1&&<><div style={{color:C.t2,fontSize:11,marginTop:4}}>車で約{Math.round(distance/40*60)}分（40km/h想定）</div>{(()=>{const r=calcFare(distance);return r?(<><div style={{color:C.accent,fontSize:24,fontWeight:900,marginTop:6}}>{fmtYen(r.fare)}</div><div style={{color:C.t2,fontSize:11,marginTop:2}}>{fmtYen(r.min)} 〜 {fmtYen(r.max)}{r.isLate&&<span style={{color:"#AA00FF",marginLeft:4}}>🌙深夜割増+30%</span>}</div></>):null;})()}</>}</div>)}</div>}</div>}
+{screen==="ranking"&&<RankingScreen me={ME}/>}
+{screen==="battle"&&<BattleScreen me={ME} showToast={showToast} quickSide={battleQuickSide} onClearQuickSide={()=>setBattleQuickSide(null)} onScrollTop={()=>{if(scrollRef.current)scrollRef.current.scrollTop=0;}}/>}
+</div>
+<div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:"rgba(8,8,8,.97)",borderTop:`1px solid ${C.border}`,display:"flex",backdropFilter:"blur(16px)",zIndex:100}}>{NAV.map(n=>(<button key={n.id} onClick={()=>setScreen(n.id)} style={{flex:1,padding:"10px 0 14px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,fontFamily:"inherit",color:screen===n.id?C.accent:C.t3,transition:"color .15s"}}><span style={{fontSize:18,lineHeight:1}}>{n.icon}</span><span style={{fontSize:9,fontWeight:screen===n.id?700:400,letterSpacing:.3}}>{n.label}</span>{screen===n.id&&<div style={{width:18,height:2,borderRadius:1,background:C.accent,marginTop:1}}/>}</button>))}</div>
+</div>);}
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
+</script>
+</body>
+</html>
+ 
 
 
