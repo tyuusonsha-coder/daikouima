@@ -18,6 +18,11 @@ html,body,#root{margin:0;padding:0;height:100%;background:#080808;}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useRef,useCallback,useMemo,memo}=React;
+
+// ══ SUPABASE CONFIG ══
+const SUPABASE_URL = "https://kjfmcpwstubgezebmstt.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_tL5c2L8O_N41MwP9eiajvw_D9cVZgJg";
+
 if(!window.storage){window.storage={_s:{},get:async k=>{const v=window.storage._s[k];return v!==undefined?{key:k,value:v}:null;},set:async(k,v)=>{window.storage._s[k]=v;return{key:k,value:v};},delete:async k=>{delete window.storage._s[k];return{key:k,deleted:true};},list:async p=>{const keys=Object.keys(window.storage._s).filter(k=>!p||k.startsWith(p));return{keys};}};}
 async function save(k,v){try{await window.storage.set(k,JSON.stringify(v));}catch{}}
 async function load(k){try{const r=await window.storage.get(k);return r?JSON.parse(r.value):null;}catch{return null;}}
