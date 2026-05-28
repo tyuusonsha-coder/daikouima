@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>代行なう運転代行 | 福岡県の運転代行</title>
-  <meta name="description" content="福岡県の運転代行なら代行なう運転代行。高速無料・初乗り半額・長距離5000円キャッシュバック実施中。21時〜翌6時、年中無休。050-1724-3179"/>
+  <meta name="description" content="福岡県の運転代行なら代行なう運転代行。高速無料・初乗り半額・長距離5000円キャッシュバック実施中。21時〜翌6時（木・日休み）。050-1724-3179"/>
   <meta name="keywords" content="運転代行,福岡,代行なう,代行なう運転代行,福岡県,代行,飲酒運転代行,格安代行,深夜代行,那珂川,春日,大野城,太宰府,福岡市南区"/>
   <meta name="robots" content="index, follow"/>
   <meta name="author" content="代行なう運転代行"/>
@@ -20,7 +20,7 @@
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="代行なう運転代行"/>
   <meta property="og:title" content="代行なう運転代行 | 福岡県の運転代行"/>
-  <meta property="og:description" content="福岡県で安心・安全・格安の運転代行。高速無料・初乗り半額キャンペーン実施中。21時〜翌6時、年中無休。"/>
+  <meta property="og:description" content="福岡県で安心・安全・格安の運転代行。高速無料・初乗り半額キャンペーン実施中。21時〜翌6時（木・日休み）。"/>
   <meta property="og:url" content="https://dnud.jp/"/>
   <meta property="og:locale" content="ja_JP"/>
 
@@ -47,7 +47,7 @@
       "addressRegion": "福岡県",
       "addressCountry": "JP"
     },
-    "openingHours": "Mo-Su 21:00-06:00",
+    "openingHours": ["Mo 21:00-06:00","Tu 21:00-06:00","We 21:00-06:00","Fr 21:00-06:00","Sa 21:00-06:00"],
     "priceRange": "¥2,000〜",
     "sameAs": [
       "https://line.me/ti/p/~kuikkusutsa",
@@ -269,7 +269,7 @@
     <div class="stat">
       <div class="stat-icon">🌙</div>
       <div class="stat-val">21:00<em>〜</em></div>
-      <div class="stat-label">深夜対応</div>
+      <div class="stat-label">木・日休み</div>
     </div>
   </div>
 
@@ -504,7 +504,7 @@
     <div class="section-tag">Contact</div>
     <h2 class="section-title">ご予約・お問い合わせ</h2>
     <div class="contact-phone"><a href="tel:05017243179">050-1724-3179</a></div>
-    <div class="contact-hours">営業時間：21:00〜翌6:00</div>
+    <div class="contact-hours">営業時間：21:00〜翌6:00（木・日休み）</div>
     <div class="contact-note">お電話一本で迅速にお迎えに上がります</div>
     <div class="cta-row" style="padding:0;">
       <a href="https://line.me/ti/p/~kuikkusutsa" class="cta-btn cta-line" target="_blank" rel="noopener">💬 LINEで予約</a>
@@ -523,10 +523,18 @@
   <script>
     // 営業時間判定
     function updateStatus() {
-      const h = new Date().getHours();
-      const isOpen = h >= 21 || h < 6;
+      const now = new Date();
+      const h = now.getHours();
+      const day = now.getDay();
+      const isHoliday = (day === 0 || day === 4);
+      const isOpen = !isHoliday && (h >= 21 || h < 6);
       const bar = document.getElementById('status-bar');
-      if (isOpen) {
+      if (isHoliday) {
+        bar.style.background = 'rgba(255,71,87,.06)';
+        bar.style.borderBottomColor = 'rgba(255,71,87,.2)';
+        bar.style.color = '#FF4757';
+        bar.innerHTML = '本日定休日（木・日休み）';
+      } else if (isOpen) {
         bar.style.background = 'rgba(0,210,106,.06)';
         bar.style.borderBottomColor = 'rgba(0,210,106,.2)';
         bar.style.color = '#00D26A';
