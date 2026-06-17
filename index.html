@@ -237,7 +237,10 @@
 }
 ```
 
-  </style>
+  .hero-video{position:relative;width:min(72%,300px);margin:24px auto 6px;border-radius:22px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 0 32px rgba(255,215,0,.22),0 16px 44px rgba(0,0,0,.6);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.hero-video video{display:block;width:100%;height:auto;}
+.hero-video .sound-hint{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px);}
+</style>
 </head>
 <body>
 
@@ -272,6 +275,10 @@
     <h1 class="hero-title">深夜の帰り道、<br><em>任せてください。</em></h1>
     <p class="hero-sub">代行なう運転代行 ─ 福岡県で安心・安全・格安の運転代行</p>
     <p class="hero-sub2">Fukuoka's Premium Driving Service</p>
+    <div class="hero-video" onclick="toggleSound(this)">
+      <video src="intro.mp4" poster="intro-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <span class="sound-hint">🔊 タップで音</span>
+    </div>
   </section>
 
   <!-- 統計バー -->
@@ -623,5 +630,14 @@
     });
   </script>
 
+<script>
+function toggleSound(el){
+  var v=el.querySelector('video');
+  v.muted=!v.muted;
+  if(!v.muted){ v.play(); }
+  var h=el.querySelector('.sound-hint');
+  if(h){ h.textContent = v.muted ? '🔊 タップで音' : '🔇 タップで消音'; }
+}
+</script>
 </body>
 </html>
