@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>運転代行を呼ぶ｜代行なう運転代行</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+:root{
+  --bg:#0B1220; --surface:#142338; --surface-2:#1B2E48; --line:#22385A;
+  --text:#E8EEF7; --muted:#8FA3BF; --amber:#FFB020; --green:#2ECC71; --red:#FF5A5A;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  font-feature-settings:"palt";
+  display:flex; flex-direction:column;
+}
+#map{flex:1;min-height:0;background:#0a0f1c}
+.leaflet-container{background:#0a0f1c}
+
+/* 中央ピン */
+#crosshair{
+  position:absolute; left:50%; top:50%; z-index:500;
+  transform:translate(-50%,-100%); pointer-events:none; text-align:center;
+  transition:transform .12s;
+}
+#crosshair.hidden{display:none}
+#crosshair .pin{
+  width:34px;height:34px;border-radius:50% 50% 50% 0;
+  background:var(--amber); transform:rotate(-45deg);
+  box-shadow:0 4px 14px rgba(0,0,0,.55); margin:0 auto;
+}
+#crosshair .pin::after{
+  content:''; display:block; width:12px;height:12px;border-radius:50%;
+  background:#241400; margin:11px 0 0 11px;
+}
+#crosshair.b .pin{background:var(--green)}
+#crosshair.b .pin::after{background:#06210F}
+
+.sheet{
+  flex:none; background:var(--surface); border-top:1px solid var(--line);
+  border-radius:20px 20px 0 0; padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+  box-shadow:0 -12px 30px rgba(0,0,0,.45); max-height:64vh; overflow-y:auto;
+}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 14px}
+h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
+.sub{font-size:13px;color:var(--muted);margin:0 0 14px;font-weight:600;line-height:1.7}
+
+.btn{
+  width:100%;border:0;border-radius:14px;font-family:inherit;
+  font-size:17px;font-weight:800;letter-spacing:.03em;padding:17px;cursor:pointer;transition:.12s;
+}
+.btn:active{transform:scale(.98)}
+.btn.amber{background:var(--amber);color:#241400}
+.btn.green{background:var(--green);color:#06210F}
+.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--line);font-size:14px;padding:13px}
+.btn:disabled{background:var(--surface-2);color:var(--muted);transform:none}
+.row{display:flex;gap:9px;margin-top:9px}
+
+.route{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pt{display:flex;gap:10px;align-items:flex-start}
+.pt .tag{flex:none;font-size:11px;font-weight:800;padding:3px 7px;border-radius:5px;margin-top:2px}
+.pt.a .tag{background:rgba(255,176,32,.16);color:var(--amber)}
+.pt.b .tag{background:rgba(46,204,113,.16);color:var(--green)}
+.pt .txt{font-size:15px;font-weight:700;line-height:1.45;word-break:break-word}
+
+.fare{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:14px;
+  padding:14px;margin-bottom:14px;display:flex;align-items:baseline;gap:12px;
+}
+.fare .yen{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.fare .yen small{font-size:14px;margin-left:2px}
+.fare .d{font-size:12px;color:var(--muted);font-weight:700;line-height:1.6}
+
+input{
+  width:100%;background:var(--surface-2);color:var(--text);
+  border:1px solid var(--line);border-radius:12px;
+  padding:15px;font-size:16px;font-family:inherit;font-weight:600;margin-bottom:9px;
+}
+input:focus{outline:none;border-color:var(--amber)}
+input::placeholder{color:#59708F}
+
+.pref{
+  background:rgba(255,176,32,.10);border:1px solid rgba(255,176,32,.35);
+  border-radius:12px;padding:12px 14px;margin-bottom:12px;
+  font-size:14px;font-weight:800;color:var(--amber);line-height:1.5;
+}
+.pref span{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-top:4px}
+.eta{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:14px;
+  padding:15px;margin-bottom:14px;
+}
+.eta .n{font-size:32px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.eta .n small{font-size:14px;margin-left:2px}
+.eta .l{font-size:12px;color:var(--muted);font-weight:700;line-height:1.6}
+.eta.near{border-color:var(--green)}
+.eta.near .n{color:var(--green)}
+
+.co{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.co .nm{font-size:16px;font-weight:800}
+.co .st{font-size:12px;color:var(--amber);font-weight:800}
+
+.stars{display:flex;gap:6px;justify-content:center;margin:6px 0 16px}
+.stars button{
+  background:none;border:0;font-size:38px;line-height:1;padding:2px;cursor:pointer;
+  color:var(--line);transition:.1s;
+}
+.stars button.on{color:var(--amber)}
+
+.err{color:var(--red);font-size:13px;font-weight:700;margin-top:10px;text-align:center}
+.spin{
+  width:20px;height:20px;border-radius:50%;border:2px solid var(--line);
+  border-top-color:var(--amber);animation:sp .9s linear infinite;display:inline-block;vertical-align:-4px;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{
+  position:fixed;left:12px;right:12px;bottom:calc(18px + env(safe-area-inset-bottom));
+  background:var(--surface-2);border:1px solid var(--green);color:var(--green);
+  border-radius:12px;padding:15px;font-size:14px;font-weight:800;
+  z-index:900;box-shadow:0 10px 30px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s;
+}
+.toast.show{opacity:1;transform:none}
+.drv-icon{
+  width:30px;height:30px;border-radius:50%;background:var(--amber);
+  border:3px solid #241400;box-shadow:0 0 0 4px rgba(255,176,32,.3);
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="crosshair"><div class="pin"></div></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var SB = "https://kjfmcpwstubgezebmstt.supabase.co/rest/v1/";
+var RPC = SB + "rpc/";
+var SK = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqZm1jcHdzdHViZ2V6ZWJtc3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1ODU3MTksImV4cCI6MjA5NDE2MTcxOX0.GF5QPVI4AUCfIqdmApplwOAEDBoESZTfadi-hbOb7Gs";
+var H = {"apikey":SK,"Authorization":"Bearer "+SK,"Content-Type":"application/json","Prefer":"return=representation"};
+
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function toast(m){ var t=$('toast'); t.textContent=m; t.className='toast show';
+  clearTimeout(t._t); t._t=setTimeout(function(){t.className='toast';},3600); }
+function yen(n){ return Number(n).toLocaleString('ja-JP'); }
+
+/* 料金：3kmまで1,800円、以降1kmごと250円 */
+function fare(km){
+  return 1900 + Math.ceil(km) * 450;
+}
+function hav(a, b){
+  var R=6371, dLat=(b[0]-a[0])*Math.PI/180, dLng=(b[1]-a[1])*Math.PI/180;
+  var x=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+var map, A=null, B=null, aMark=null, bMark=null, line=null, drvMark=null;
+var aName='', bName='', dist=0, price=0;
+var step='a', orderId=null, notified500=false, ratingVal=0, poller=null;
+var qs=new URLSearchParams(location.search);
+var prefId=qs.get('co')||null, prefName='';
+var qLat=parseFloat(qs.get('lat')), qLng=parseFloat(qs.get('lng'));
+
+map = L.map('map', {zoomControl:false, attributionControl:false}).setView([33.5902,130.4017], 15);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(map);
+L.control.attribution({prefix:false}).addAttribution('&copy; OpenStreetMap, CARTO').addTo(map);
+
+if (!isNaN(qLat) && !isNaN(qLng)){
+  map.setView([qLat, qLng], 17);
+} else {
+  navigator.geolocation && navigator.geolocation.getCurrentPosition(function(p){
+    if (step==='a') map.setView([p.coords.latitude, p.coords.longitude], 17);
+  }, function(){}, {enableHighAccuracy:true, timeout:8000});
+}
+
+/* 逆ジオコーディング（失敗時は座標表示） */
+async function place(lat, lng){
+  try {
+    var r = await fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&accept-language=ja&lat='+lat+'&lon='+lng);
+    var d = await r.json();
+    if (d && d.address){
+      var a=d.address;
+      var s=[a.city||a.town||a.village||'', a.suburb||a.neighbourhood||'', a.road||'', a.amenity||a.building||''].filter(Boolean).join(' ');
+      if (s.trim()) return s.trim();
+    }
+  } catch(e){}
+  return lat.toFixed(5)+', '+lng.toFixed(5);
+}
+
+async function route(){
+  try {
+    var u='https://router.project-osrm.org/route/v1/driving/'+A[1]+','+A[0]+';'+B[1]+','+B[0]+'?overview=full&geometries=geojson';
+    var r=await fetch(u); var d=await r.json();
+    if (d.routes && d.routes[0]){
+      var rt=d.routes[0];
+      if (line) map.removeLayer(line);
+      line=L.geoJSON(rt.geometry,{style:{color:'#FFB020',weight:5,opacity:.85}}).addTo(map);
+      return rt.distance/1000;
+    }
+  } catch(e){}
+  return hav(A,B) * 1.3;
+}
+
+function pinIcon(color){
+  return L.divIcon({className:'', iconSize:[18,18], iconAnchor:[9,9],
+    html:'<div style="width:18px;height:18px;border-radius:50%;background:'+color+';border:3px solid #0B1220;box-shadow:0 0 0 3px '+color+'55"></div>'});
+}
+
+/* ===== 画面 ===== */
+function viewPick(){
+  $('crosshair').className = (step==='a') ? '' : 'b';
+  $('sheet').innerHTML =
+    '<div class="grab"></div>' +
+    '<h2>'+(step==='a'?'今いる場所を指定':'行き先を指定')+'</h2>' +
+    '<p class="sub">'+(step==='a'
+      ? '地図を動かしてピンを車のある場所に合わせてください。'
+      : '車を届けてほしい場所にピンを合わせてください。')+'</p>' +
+    '<button class="btn '+(step==='a'?'amber':'green')+'" id="ok">'+
+      (step==='a'?'ここから出発する':'ここへ行く')+'</button>' +
+    (step==='b' ? '<div class="row"><button class="btn ghost" id="back">出発地を選び直す</button></div>' : '');
+
+  $('ok').onclick = async function(){
+    var c = map.getCenter();
+    this.disabled = true; this.textContent = '確認しています…';
+    if (step === 'a'){
+      A=[c.lat,c.lng]; aName = await place(c.lat,c.lng);
+      if (aMark) map.removeLayer(aMark);
+      aMark = L.marker(A,{icon:pinIcon('#FFB020')}).addTo(map);
+      step='b'; viewPick();
+    } else {
+      B=[c.lat,c.lng]; bName = await place(c.lat,c.lng);
+      if (bMark) map.removeLayer(bMark);
+      bMark = L.marker(B,{icon:pinIcon('#2ECC71')}).addTo(map);
+      dist = await route(); price = fare(dist);
+      map.fitBounds(L.latLngBounds([A,B]).pad(0.35));
+      $('crosshair').className='hidden';
+      step='form'; viewForm();
+    }
+  };
+  if ($('back')) $('back').onclick = function(){
+    step='a'; if (aMark){map.removeLayer(aMark);aMark=null;} viewPick();
+  };
+}
+
+function viewForm(){
+  $('sheet').innerHTML =
+    '<div class="grab"></div>' +
+    '<div class="route">' +
+      '<div class="pt a"><span class="tag">出発</span><span class="txt">'+esc(aName)+'</span></div>' +
+      '<div class="pt b"><span class="tag">到着</span><span class="txt">'+esc(bName)+'</span></div>' +
+    '</div>' +
+    '<div class="fare"><div class="yen">'+yen(price)+'<small>円</small></div>' +
+      '<div class="d">約'+dist.toFixed(1)+'km の概算料金<br>初乗り1,900円／1kmごと450円</div></div>' +
+    (prefName ? '<div class="pref">'+esc(prefName)+' を指名しています<span>90秒間この業者が優先して受注します</span></div>' : '') +
+    '<input id="cphone" type="tel" inputmode="tel" placeholder="電話番号（必須）" autocomplete="tel">' +
+    '<input id="cname" placeholder="お名前" autocomplete="name">' +
+    '<input id="memo" placeholder="目印（例：〇〇ビル裏の駐車場）">' +
+    '<button class="btn amber" id="go">この内容で代行を呼ぶ</button>' +
+    '<div class="row"><button class="btn ghost" id="re">場所を選び直す</button></div>' +
+    '<div class="err" id="err"></div>';
+
+  $('re').onclick = function(){
+    step='a'; if(aMark){map.removeLayer(aMark);aMark=null;}
+    if(bMark){map.removeLayer(bMark);bMark=null;} if(line){map.removeLayer(line);line=null;}
+    viewPick();
+  };
+  $('go').onclick = submit;
+}
+
+async function submit(){
+  var ph=$('cphone').value.trim(), nm=$('cname').value.trim(), mo=$('memo').value.trim();
+  if (ph.replace(/[^0-9]/g,'').length < 10){ $('err').textContent='電話番号を正しく入力してください'; return; }
+  $('go').disabled=true; $('go').innerHTML='<span class="spin"></span> 送信しています…'; $('err').textContent='';
+  var body={
+    cname: nm||'お客様', cphone: ph,
+    pickup: aName + (mo ? '（'+mo+'）' : ''), dropoff: bName,
+    km: Math.round(dist), price: price,
+    pickup_lat:A[0], pickup_lng:A[1], dropoff_lat:B[0], dropoff_lng:B[1],
+    status:'open', source:'board', preferred_company_id: prefId,
+    expires_at:new Date(Date.now()+30*60000).toISOString()
+  };
+  try {
+    var r=await fetch(SB+'orders',{method:'POST',headers:H,body:JSON.stringify(body)});
+    var d=await r.json();
+    if (!r.ok || !d || !d[0]) throw new Error();
+    orderId=d[0].id; step='track'; poll();
+  } catch(e){
+    $('go').disabled=false; $('go').textContent='この内容で代行を呼ぶ';
+    $('err').textContent='送信できませんでした。050-1724-3179 でも受け付けています';
+  }
+}
+
+function viewTrack(o, co){
+  var open = (o.status==='open');
+  var eta = null;
+  if (co && co.lat && co.lng){
+    var km = hav([co.lat,co.lng], [o.pickup_lat,o.pickup_lng]);
+    eta = Math.max(1, Math.round(km/25*60));
+    if (!drvMark) drvMark = L.marker([co.lat,co.lng],{icon:pinIcon('#FFFFFF')}).addTo(map);
+    else drvMark.setLatLng([co.lat,co.lng]);
+    map.fitBounds(L.latLngBounds([[co.lat,co.lng],[o.pickup_lat,o.pickup_lng]]).pad(0.4));
+    if (km < 0.5 && !notified500){
+      notified500 = true;
+      if (navigator.vibrate) navigator.vibrate([300,120,300]);
+      toast('代行がまもなく到着します');
+    }
+  }
+  $('sheet').innerHTML =
+    '<div class="grab"></div>' +
+    (open
+      ? '<h2><span class="spin"></span> 運転代行を探しています</h2>' +
+        '<p class="sub">近くの運転代行に依頼を送りました。決まり次第この画面が変わります。</p>'
+      : '<div class="co"><div><div class="nm">'+esc(co&&co.name?co.name:'担当の代行')+'</div>' +
+          '<div class="st">'+(o.status==='arriving'?'運行中':'お迎えに向かっています')+'</div></div></div>' +
+        (eta!==null
+          ? '<div class="eta'+(eta<=2?' near':'')+'"><div class="n">'+eta+'<small>分</small></div>' +
+            '<div class="l">到着予定<br>地図で現在位置を確認できます</div></div>'
+          : '<p class="sub">まもなくお迎えにあがります。</p>')) +
+    '<div class="route">' +
+      '<div class="pt a"><span class="tag">出発</span><span class="txt">'+esc(o.pickup)+'</span></div>' +
+      '<div class="pt b"><span class="tag">到着</span><span class="txt">'+esc(o.dropoff)+'</span></div>' +
+    '</div>' +
+    '<div class="fare"><div class="yen">'+yen(o.price)+'<small>円</small></div>' +
+      '<div class="d">約'+o.km+'km の概算料金<br>実走行距離で精算します</div></div>' +
+    '<a class="btn green" style="display:block;text-align:center;text-decoration:none" href="tel:'+
+      esc(co&&co.phone?co.phone:'050-1724-3179')+'">'+(open?'代行なうに電話する':'担当に電話する')+'</a>';
+}
+
+function viewRate(o, co){
+  if (poller) clearTimeout(poller);
+  $('sheet').innerHTML =
+    '<div class="grab"></div>' +
+    '<h2>ご利用ありがとうございました</h2>' +
+    '<p class="sub">'+esc(co&&co.name?co.name:'担当の代行')+'はいかがでしたか。</p>' +
+    '<div class="stars" id="stars">' +
+      [1,2,3,4,5].map(function(i){ return '<button data-v="'+i+'">★</button>'; }).join('') +
+    '</div>' +
+    '<input id="cmt" placeholder="ひとことコメント（任意）">' +
+    '<button class="btn amber" id="send" disabled>評価を送る</button>';
+
+  var btns = $('stars').querySelectorAll('button');
+  for (var i=0;i<btns.length;i++){
+    (function(b){ b.onclick=function(){
+      ratingVal = Number(b.getAttribute('data-v'));
+      for (var j=0;j<btns.length;j++) btns[j].className = (j < ratingVal) ? 'on' : '';
+      $('send').disabled=false;
+    };})(btns[i]);
+  }
+  $('send').onclick = async function(){
+    this.disabled=true; this.innerHTML='<span class="spin"></span> 送信中…';
+    try {
+      await fetch(RPC+'rate_order',{method:'POST',headers:H,
+        body:JSON.stringify({p_order_id:orderId,p_rating:ratingVal,p_comment:$('cmt').value.trim()})});
+    } catch(e){}
+    $('sheet').innerHTML='<div class="grab"></div><h2>ありがとうございました</h2>' +
+      '<p class="sub">評価を送信しました。またのご利用をお待ちしています。</p>' +
+      '<button class="btn ghost" onclick="location.reload()">もう一度呼ぶ</button>';
+  };
+}
+
+async function poll(){
+  if (!orderId) return;
+  try {
+    var r=await fetch(SB+'orders?id=eq.'+orderId+'&select=*',{headers:H});
+    var d=await r.json();
+    if (d && d[0]){
+      var o=d[0], co=null;
+      if (o.company_id){
+        var r2=await fetch(SB+'companies?id=eq.'+o.company_id+'&select=name,phone,lat,lng',{headers:H});
+        var d2=await r2.json(); if (d2&&d2[0]) co=d2[0];
+      }
+      if (o.status==='done'){ viewRate(o,co); return; }
+      viewTrack(o,co);
+    }
+  } catch(e){}
+  poller = setTimeout(poll, 6000);
+}
+
+(async function(){
+  if (!prefId) return;
+  try{
+    var r=await fetch(SB+'companies?id=eq.'+encodeURIComponent(prefId)+'&select=name',{headers:H});
+    var d=await r.json(); if (d&&d[0]) prefName=d[0].name;
+  }catch(e){}
+})();
+
+viewPick();
+</script>
+</body>
+</html>

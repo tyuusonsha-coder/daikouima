@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>代行なう運転代行｜福岡市・春日市・那珂川市の運転代行</title>
+<meta name="description" content="福岡市・春日市・那珂川市の運転代行なら代行なう運転代行。中洲・天神・博多エリア対応。3kmまで1,800円、以降1kmごと250円。地図から呼べます。">
+<meta name="theme-color" content="#0B1220">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:site_name" content="代行なう運転代行">
+<meta property="og:title" content="代行なう運転代行｜福岡市・春日市・那珂川市">
+<meta property="og:description" content="中洲・天神・博多の運転代行。3kmまで1,800円、以降1kmごと250円。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dnud.jp/">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+:root{
+  --bg:#0B1220; --surface:#111E31; --surface-2:#18293F; --line:#22385A;
+  --hair:rgba(255,255,255,.07);
+  --text:#E8EEF7; --muted:#8FA3BF; --dim:#5E7690;
+  --amber:#FFB020; --amber-soft:#E3C283; --green:#2ECC71;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;overflow:hidden}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  font-feature-settings:"palt"; height:100dvh; position:relative;
+}
+#map{position:absolute;inset:0;z-index:0;background:#0a0f1c}
+.leaflet-container{background:#0a0f1c}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* 上部 */
+.top{
+  position:absolute;left:0;right:0;top:0;z-index:400;
+  padding:calc(13px + env(safe-area-inset-top)) 16px 26px;
+  background:linear-gradient(180deg,rgba(11,18,32,.92) 0%,rgba(11,18,32,.6) 52%,transparent 100%);
+  display:flex;align-items:center;gap:12px;
+}
+.wm{font-size:14.5px;font-weight:800;letter-spacing:.02em;line-height:1.2}
+.wm em{font-style:normal;color:var(--amber)}
+.wm span{display:block;font-size:9px;color:var(--dim);font-weight:800;letter-spacing:.2em;margin-top:3px}
+.st{
+  margin-left:auto;display:flex;align-items:center;gap:7px;
+  background:rgba(17,30,49,.9);border:1px solid var(--line);border-radius:999px;
+  padding:8px 13px;font-size:11.5px;font-weight:800;letter-spacing:.02em;
+}
+.st i{width:6px;height:6px;border-radius:50%;background:var(--muted);font-style:normal}
+.st.on i{background:var(--green);box-shadow:0 0 0 3px rgba(46,204,113,.18);animation:bl 2.2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.28}}
+
+/* 中央ピン */
+#cross{position:absolute;left:50%;top:calc(50% - 118px);z-index:390;
+  transform:translate(-50%,-100%);pointer-events:none;text-align:center;width:78vw;max-width:330px}
+#cross .pin{width:14px;height:14px;border-radius:50%;background:var(--amber);
+  margin:0 auto;box-shadow:0 0 0 6px rgba(255,176,32,.16),0 0 0 13px rgba(255,176,32,.07)}
+#cross .stem{width:1px;height:26px;margin:0 auto;
+  background:linear-gradient(180deg,var(--amber),rgba(255,176,32,0))}
+#cross .lbl{
+  margin-top:7px;font-size:12px;font-weight:800;letter-spacing:.02em;
+  background:rgba(11,18,32,.86);border:1px solid var(--line);border-radius:999px;
+  padding:7px 14px;display:inline-block;max-width:100%;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#cross .lbl b{color:var(--amber);font-weight:800}
+
+/* シート */
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;z-index:410;
+  background:linear-gradient(180deg,var(--surface) 0%,#0F1B2C 100%);
+  border-top:1px solid var(--line);border-radius:24px 24px 0 0;
+  box-shadow:0 -18px 44px rgba(0,0,0,.55);
+  padding:11px 0 calc(13px + env(safe-area-inset-bottom));
+}
+.grab{width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 15px}
+
+/* 見出し行 */
+.hd{display:flex;align-items:flex-end;gap:12px;padding:0 18px 14px}
+.hd .l{min-width:0}
+.hd .t{font-size:17px;font-weight:800;letter-spacing:.01em;line-height:1.3}
+.hd .t em{font-style:normal;color:var(--green)}
+.hd .s{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:5px;line-height:1.5}
+.hd .r{margin-left:auto;flex:none;text-align:right;line-height:1.2}
+.hd .r b{font-size:14px;font-weight:800;color:var(--amber)}
+.hd .r span{display:block;font-size:9.5px;color:var(--dim);font-weight:800;margin-top:4px;letter-spacing:.06em}
+
+/* 料金の3分割 */
+.stats{display:flex;margin:0 18px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.sc{flex:1;padding:14px 2px;text-align:center;position:relative}
+.sc + .sc::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:1px;background:var(--hair)}
+.sc b{display:block;font-size:9.5px;font-weight:800;color:var(--dim);letter-spacing:.14em;margin-bottom:7px}
+.sc .v{font-size:20px;font-weight:800}
+.sc .v small{font-size:11px;font-weight:700;color:var(--muted);margin-left:2px}
+.sc .u{display:block;font-size:10px;color:var(--muted);font-weight:700;margin-top:4px}
+.fnote{padding:11px 18px 0;font-size:10.5px;color:var(--dim);font-weight:600;line-height:1.75}
+
+/* 行動 */
+.acts{padding:15px 18px 0}
+.cta{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  text-decoration:none;background:linear-gradient(180deg,var(--amber-soft),var(--amber));
+  color:#241400;border-radius:15px;padding:19px;
+  box-shadow:0 14px 34px rgba(255,176,32,.2);transition:transform .12s;
+}
+.cta:active{transform:scale(.986)}
+.cta .m{font-size:18px;font-weight:800;letter-spacing:.05em}
+.cta .m small{display:block;font-size:10.5px;font-weight:700;opacity:.6;letter-spacing:.02em;margin-top:3px;text-align:left}
+.cta .ar{font-size:19px;font-weight:800;opacity:.5}
+.row{display:flex;gap:9px;margin-top:9px}
+.row a{
+  flex:1;text-decoration:none;text-align:center;color:var(--text);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:14px 6px;
+  font-size:13px;font-weight:800;letter-spacing:.02em;
+}
+.row a.tel{color:var(--green)}
+.foot{padding:13px 18px 0;font-size:10px;color:var(--dim);line-height:1.85;font-weight:600;text-align:center}
+.foot a{color:var(--dim)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<h1 class="sr">代行なう運転代行｜福岡市・春日市・那珂川市・大野城市の運転代行。中洲・天神・博多エリア対応</h1>
+
+<div id="map"></div>
+
+<div class="top">
+  <div class="wm">代行<em>なう</em>運転代行<span>NAKASU · TENJIN · HAKATA</span></div>
+  <div class="st" id="st"><i></i><span id="stTxt">確認中</span></div>
+</div>
+
+<div id="cross">
+  <div class="pin"></div><div class="stem"></div>
+  <div class="lbl" id="lbl">地図を動かして場所を合わせる</div>
+</div>
+
+<div class="sheet">
+  <div class="grab"></div>
+
+  <div class="hd">
+    <div class="l">
+      <div class="t" id="hT">お迎えにあがります</div>
+      <div class="s" id="hS">代行なう運転代行</div>
+    </div>
+    <div class="r" id="hR"></div>
+  </div>
+
+  <div class="stats">
+    <div class="sc"><b>初乗り</b><div class="v num" id="f1">1,900<small>円</small></div><span class="u">0kmから</span></div>
+    <div class="sc"><b>走行</b><div class="v num" id="f2">450<small>円</small></div><span class="u">1kmごと</span></div>
+    <div class="sc"><b>10kmなら</b><div class="v num" id="f3">6,400<small>円</small></div><span class="u">目安</span></div>
+  </div>
+  <p class="fnote">実際の走行距離で精算いたします。</p>
+
+  <div class="acts">
+    <a class="cta" id="go" href="yobu.html?co=daikounaw">
+      <div class="m">この場所に呼ぶ<small>料金は呼ぶ前にわかります</small></div>
+      <div class="ar">→</div>
+    </a>
+    <div class="row">
+      <a class="tel" href="tel:050-1724-3179">電話で呼ぶ</a>
+      <a href="rireki.html">ご利用履歴</a>
+      <a href="https://daikounaw.com">他社も探す</a>
+    </div>
+  </div>
+
+  <div class="foot">合同会社中尊社｜福岡県那珂川市　·　
+    <a href="https://tyuusonsha.jp">運営会社</a></div>
+</div>
+
+<script>
+var SB="https://kjfmcpwstubgezebmstt.supabase.co/rest/v1/";
+var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqZm1jcHdzdHViZ2V6ZWJtc3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1ODU3MTksImV4cCI6MjA5NDE2MTcxOX0.GF5QPVI4AUCfIqdmApplwOAEDBoESZTfadi-hbOb7Gs";
+var H={"apikey":SK,"Authorization":"Bearer "+SK};
+var CO="daikounaw";
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function yen(n){return Number(n).toLocaleString('ja-JP');}
+
+var map=L.map('map',{zoomControl:false,attributionControl:false}).setView([33.5902,130.4017],16);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(map);
+L.control.attribution({prefix:false}).addAttribution('&copy; OpenStreetMap, CARTO').addTo(map);
+
+navigator.geolocation && navigator.geolocation.getCurrentPosition(function(p){
+  map.setView([p.coords.latitude,p.coords.longitude],17);
+}, function(){}, {enableHighAccuracy:true,timeout:8000});
+
+/* 中心の地名をピンに表示 */
+var geoT=null;
+function paintGo(){
+  var c=map.getCenter();
+  $('go').href='yobu.html?co='+CO+'&lat='+c.lat.toFixed(6)+'&lng='+c.lng.toFixed(6);
+}
+async function reverse(){
+  var c=map.getCenter();
+  try{
+    var r=await fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&accept-language=ja&lat='+c.lat+'&lon='+c.lng);
+    var d=await r.json();
+    if (d && d.address){
+      var a=d.address;
+      var s=[a.suburb||a.neighbourhood||a.city_district||'', a.road||'', a.amenity||''].filter(Boolean).join(' ').trim();
+      if (!s) s=(a.city||a.town||a.village||'');
+      if (s) $('lbl').innerHTML='<b>お迎え</b>　'+esc(s);
+    }
+  }catch(e){}
+}
+map.on('move', function(){ paintGo(); });
+map.on('moveend', function(){ clearTimeout(geoT); geoT=setTimeout(reverse, 500); });
+
+function liveMin(c){
+  if (!c.appeal_until) return 0;
+  var m=Math.ceil((new Date(c.appeal_until).getTime()-Date.now())/60000);
+  return m>0?m:0;
+}
+var mark=null;
+async function load(){
+  try{
+    var r=await fetch(SB+'companies?id=eq.'+CO+'&select=*',{headers:H});
+    var d=await r.json(); if(!d||!d[0]) return;
+    var c=d[0], lm=liveMin(c), free=c.free_cars||0, live=(lm>0&&free>0);
+
+    $('st').className='st'+(c.is_open?' on':'');
+    $('stTxt').textContent = live ? '空車'+free+'台' : (c.is_open?'受付中':'受付停止中');
+
+    $('hT').innerHTML = live ? '<em>すぐ行けます</em>'
+      : (c.is_open ? 'お迎えにあがります' : '本日の受付は終了しました');
+    $('hS').textContent = c.hours ? '営業 '+c.hours : '代行なう運転代行';
+
+    if (c.rating_count){
+      $('hR').innerHTML='<b>★'+Number(c.rating_avg).toFixed(1)+'</b><span>'+c.rating_count+'件の評価</span>';
+    }
+
+    if (c.price_note){
+      var ms=String(c.price_note).match(/[0-9,]+(?=\s*円)/g);
+      if (ms && ms.length>=2){
+        var base=Number(ms[0].replace(/,/g,'')), per=Number(ms[1].replace(/,/g,''));
+        $('f1').innerHTML=ms[0]+'<small>円</small>';
+        $('f2').innerHTML=ms[1]+'<small>円</small>';
+        $('f3').innerHTML=yen(base+per*10)+'<small>円</small>';
+      }
+    }
+
+    if (c.lat && c.lng){
+      var col=live?'#2ECC71':'#8FA3BF';
+      var ic=L.divIcon({className:'',iconSize:[20,20],iconAnchor:[10,10],
+        html:'<div style="width:20px;height:20px;border-radius:50%;background:'+col+
+          ';border:3px solid #0B1220;box-shadow:0 0 0 '+(live?'6px':'3px')+' '+col+'33"></div>'});
+      if (mark){ mark.setLatLng([c.lat,c.lng]); mark.setIcon(ic); }
+      else mark=L.marker([c.lat,c.lng],{icon:ic}).addTo(map);
+    }
+  }catch(e){}
+}
+
+paintGo(); load(); setTimeout(reverse, 1400);
+setInterval(load, 20000);
+</script>
+</body>
+</html>
