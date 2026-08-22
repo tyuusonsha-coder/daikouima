@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dnud.jp/sitemap.xml
