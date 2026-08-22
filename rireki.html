@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ご利用履歴｜代行なう運転代行</title>
+<style>
+:root{
+  --bg:#0B1220; --surface:#142338; --surface-2:#1B2E48; --line:#22385A;
+  --text:#E8EEF7; --muted:#8FA3BF; --amber:#FFB020; --green:#2ECC71; --red:#FF5A5A;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  font-feature-settings:"palt"; padding-bottom:env(safe-area-inset-bottom);
+}
+.bar{border-bottom:1px solid var(--line);padding:calc(14px + env(safe-area-inset-top)) 18px 14px}
+.bar h1{font-size:19px;font-weight:800;margin:0}
+.bar p{font-size:12px;color:var(--muted);margin:4px 0 0;font-weight:600}
+.wrap{padding:18px 14px 50px;max-width:540px;margin:0 auto}
+input{
+  width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);
+  border-radius:13px;padding:16px;font-size:17px;font-family:inherit;font-weight:600;margin-bottom:10px;
+}
+input:focus{outline:none;border-color:var(--amber)}
+input::placeholder{color:#59708F}
+.btn{width:100%;border:0;border-radius:13px;font-family:inherit;font-size:16px;font-weight:800;padding:16px;cursor:pointer}
+.btn.amber{background:var(--amber);color:#241400}
+.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--line);font-size:14px;padding:13px}
+.btn:disabled{background:var(--surface-2);color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:15px;margin-top:12px}
+.date{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.chip{font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--line);background:var(--surface-2)}
+.chip.done{color:var(--green);border-color:rgba(46,204,113,.4)}
+.chip.live{color:var(--amber);border-color:rgba(255,176,32,.4)}
+.pt{display:flex;gap:9px;margin-bottom:7px}
+.pt b{flex:none;width:34px;font-size:11px;font-weight:800;color:var(--muted);padding-top:2px}
+.pt span{font-size:15px;font-weight:700;line-height:1.45}
+.foot{display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);margin-top:11px;padding-top:11px}
+.yen{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.yen small{font-size:12px}
+.co{font-size:12px;color:var(--muted);font-weight:700}
+.mine{color:var(--amber);font-size:14px;font-weight:800;margin-top:10px}
+.stars{display:flex;gap:5px;margin:10px 0}
+.stars button{background:none;border:0;font-size:30px;line-height:1;padding:0;color:var(--line);cursor:pointer}
+.stars button.on{color:var(--amber)}
+.empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;font-weight:700;line-height:1.8}
+.toast{
+  position:fixed;left:12px;right:12px;bottom:calc(18px + env(safe-area-inset-bottom));
+  background:var(--surface-2);border:1px solid var(--green);color:var(--green);
+  border-radius:12px;padding:15px;font-size:14px;font-weight:800;z-index:50;
+  opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s;
+}
+.toast.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>ご利用履歴</h1>
+  <p>電話番号でこれまでのご利用を確認できます</p>
+</div>
+
+<div class="wrap">
+  <input id="ph" type="tel" inputmode="tel" placeholder="ご利用時の電話番号" autocomplete="tel">
+  <button class="btn amber" id="go">履歴を表示する</button>
+  <div id="app"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var SB="https://kjfmcpwstubgezebmstt.supabase.co/rest/v1/";
+var RPC=SB+"rpc/";
+var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqZm1jcHdzdHViZ2V6ZWJtc3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1ODU3MTksImV4cCI6MjA5NDE2MTcxOX0.GF5QPVI4AUCfIqdmApplwOAEDBoESZTfadi-hbOb7Gs";
+var H={"apikey":SK,"Authorization":"Bearer "+SK,"Content-Type":"application/json","Prefer":"return=representation"};
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=$('toast');t.textContent=m;t.className='toast show';
+  setTimeout(function(){t.className='toast';},3200);}
+
+var conames={};
+
+function fmt(iso){
+  var d=new Date(iso);
+  return (d.getMonth()+1)+'月'+d.getDate()+'日 '+
+    String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+function label(s){
+  if (s==='done') return ['done','完了'];
+  if (s==='open') return ['live','業者を探しています'];
+  if (s==='arriving') return ['live','運行中'];
+  return ['live','お迎え中'];
+}
+
+function draw(list){
+  if (!list.length){
+    $('app').innerHTML='<div class="empty">この番号のご利用履歴は見つかりませんでした。<br>入力した番号をご確認ください。</div>';
+    return;
+  }
+  $('app').innerHTML=list.map(function(o){
+    var lb=label(o.status);
+    var rated=(o.rating!=null);
+    var h='<div class="card" data-id="'+o.id+'">'+
+      '<div class="date">'+fmt(o.created_at)+'<span class="chip '+lb[0]+'">'+lb[1]+'</span></div>'+
+      '<div class="pt"><b>出発</b><span>'+esc(o.pickup)+'</span></div>'+
+      '<div class="pt"><b>到着</b><span>'+esc(o.dropoff)+'</span></div>'+
+      '<div class="foot"><div class="yen">'+Number(o.price||0).toLocaleString()+'<small>円</small></div>'+
+        '<div class="co">'+(o.km?'約'+o.km+'km／':'')+esc(conames[o.company_id]||'')+'</div></div>';
+    if (o.status==='done'){
+      if (rated){
+        h+='<div class="mine">'+'★'.repeat(o.rating)+'☆'.repeat(5-o.rating)+' 評価済み</div>';
+      } else {
+        h+='<div class="stars">'+[1,2,3,4,5].map(function(i){
+          return '<button data-v="'+i+'">★</button>';}).join('')+'</div>'+
+          '<button class="btn ghost" data-send="'+o.id+'" disabled>この利用を評価する</button>';
+      }
+    }
+    return h+'</div>';
+  }).join('');
+
+  var cards=$('app').querySelectorAll('.card');
+  for (var i=0;i<cards.length;i++){
+    (function(c){
+      var bs=c.querySelectorAll('.stars button'), send=c.querySelector('[data-send]'), val=0;
+      for (var j=0;j<bs.length;j++){
+        (function(b){ b.onclick=function(){
+          val=Number(b.getAttribute('data-v'));
+          for (var k=0;k<bs.length;k++) bs[k].className=(k<val)?'on':'';
+          if (send){ send.disabled=false; }
+        };})(bs[j]);
+      }
+      if (send) send.onclick=async function(){
+        send.disabled=true; send.textContent='送信中…';
+        try{
+          await fetch(RPC+'rate_order',{method:'POST',headers:H,
+            body:JSON.stringify({p_order_id:send.getAttribute('data-send'),p_rating:val,p_comment:''})});
+          send.textContent='評価を送信しました';
+          toast('評価ありがとうございました');
+        }catch(e){ send.disabled=false; send.textContent='この利用を評価する'; }
+      };
+    })(cards[i]);
+  }
+}
+
+$('go').onclick=async function(){
+  var ph=$('ph').value.trim();
+  if (ph.replace(/[^0-9]/g,'').length<10){ toast('電話番号を正しく入力してください'); return; }
+  this.disabled=true; this.textContent='読み込んでいます…';
+  try{
+    var rc=await fetch(SB+'companies?select=id,name',{headers:H});
+    (await rc.json()).forEach(function(c){ conames[c.id]=c.name; });
+    var r=await fetch(SB+'orders?cphone=eq.'+encodeURIComponent(ph)+'&order=created_at.desc&limit=30',{headers:H});
+    draw(await r.json());
+  }catch(e){ toast('読み込めませんでした'); }
+  this.disabled=false; this.textContent='履歴を表示する';
+};
+</script>
+</body>
+</html>

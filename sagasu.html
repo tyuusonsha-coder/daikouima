@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>近くの運転代行を探す｜代行なう運転代行</title>
+<meta name="description" content="中洲・天神・博多の運転代行を空車状況で比較。そのまま指名して呼べます。">
+<meta name="theme-color" content="#0B1220">
+<style>
+:root{
+  --bg:#0B1220; --surface:#142338; --surface-2:#1B2E48; --line:#22385A;
+  --text:#E8EEF7; --muted:#8FA3BF; --amber:#FFB020; --green:#2ECC71; --red:#FF5A5A;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  font-feature-settings:"palt"; padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+.bar{
+  position:sticky;top:0;z-index:20;background:rgba(11,18,32,.94);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);padding:calc(12px + env(safe-area-inset-top)) 16px 0;
+}
+.bar h1{font-size:17px;font-weight:800;margin:0 0 3px}
+.area{font-size:12px;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.area .p{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.tabs{display:flex;gap:22px}
+.tabs button{
+  background:none;border:0;padding:10px 0 12px;cursor:pointer;font-family:inherit;
+  font-size:14px;font-weight:800;color:var(--muted);border-bottom:2px solid transparent;
+}
+.tabs button.on{color:var(--text);border-bottom-color:var(--amber)}
+.tabs button i{font-style:normal;font-size:11px;color:var(--muted);margin-left:5px;font-weight:700}
+
+.list{padding:14px 12px 26px;display:flex;flex-direction:column;gap:13px}
+.co{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  overflow:hidden;position:relative;
+}
+.co.live{border-color:rgba(46,204,113,.55)}
+.co.live::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green);
+}
+.top{padding:15px 16px 0;display:flex;align-items:flex-start;gap:10px}
+.nm{font-size:17px;font-weight:800;line-height:1.3}
+.meta{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cert{font-size:10px;font-weight:800;padding:3px 6px;border-radius:5px;background:rgba(255,176,32,.14);color:var(--amber);border:1px solid rgba(255,176,32,.3)}
+.st{margin-left:auto;flex:none;text-align:right}
+.st .big{font-size:15px;font-weight:800;line-height:1.2}
+.st .big.y{color:var(--green)} .st .big.n{color:var(--muted)}
+.st .sm{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums}
+
+.news{
+  margin:13px 16px 0;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:11px;padding:11px 12px;
+}
+.news .t{font-size:12.5px;font-weight:800;color:var(--amber);line-height:1.5}
+.news .b{font-size:12px;color:var(--muted);font-weight:600;line-height:1.65;margin-top:4px}
+
+.mid{padding:13px 16px 0}
+.areas{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px}
+.areas span{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.kv{display:flex;gap:10px;font-size:13px;font-weight:700;padding:8px 0;border-top:1px solid var(--line);line-height:1.6}
+.kv b{flex:none;width:44px;color:var(--muted);font-size:10.5px;font-weight:800;padding-top:3px;letter-spacing:.06em}
+.rate{color:var(--amber);font-weight:800;font-size:13px}
+.rate i{color:var(--muted);font-style:normal;font-size:11.5px;margin-left:6px;font-weight:700}
+.pays{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px}
+.pays span{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+
+.acts{display:flex;gap:8px;padding:14px 16px 16px}
+.acts a{flex:1;border-radius:12px;text-decoration:none;text-align:center;font-size:15px;font-weight:800;padding:15px 8px}
+.acts .call{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+.acts .app{background:var(--amber);color:#241400}
+.acts .app small{display:block;font-size:10px;opacity:.6;margin-top:2px;font-weight:700}
+
+.empty{padding:64px 26px;text-align:center;color:var(--muted);font-size:14px;font-weight:700;line-height:1.9}
+.empty button{
+  margin-top:18px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);
+  border-radius:12px;padding:13px 22px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;
+}
+.nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:rgba(11,18,32,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  padding:9px 0 calc(9px + env(safe-area-inset-bottom));
+}
+.nav a{
+  text-decoration:none;text-align:center;color:var(--muted);
+  font-size:10.5px;font-weight:800;display:block;padding:5px 0;
+}
+.nav a .ic{display:block;font-size:19px;margin-bottom:3px;line-height:1}
+.nav a.on{color:var(--amber)}
+.note{padding:4px 18px 20px;font-size:10.5px;color:var(--muted);opacity:.62;line-height:1.85;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>近くの運転代行を探す</h1>
+  <div class="area"><span class="p"></span><span id="areaTxt">福岡市・春日市・那珂川市</span></div>
+  <div class="tabs">
+    <button class="on" id="tRec">おすすめ順</button>
+    <button id="tFast">すぐ来る順<i id="cnt"></i></button>
+  </div>
+</div>
+
+<div id="app"></div>
+<div class="note">「すぐ来る順」は業者が空車アピールをした順に表示しています。アピールは15分で自動的に消えるため、表示されている業者はいま実際に空車です。</div>
+
+<div class="nav">
+  <a href="index.html"><span class="ic">◎</span>ホーム</a>
+  <a class="on" href="sagasu.html"><span class="ic">⌕</span>探す</a>
+  <a href="rireki.html"><span class="ic">≡</span>履歴</a>
+</div>
+
+<script>
+var SB="https://kjfmcpwstubgezebmstt.supabase.co/rest/v1/";
+var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqZm1jcHdzdHViZ2V6ZWJtc3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1ODU3MTksImV4cCI6MjA5NDE2MTcxOX0.GF5QPVI4AUCfIqdmApplwOAEDBoESZTfadi-hbOb7Gs";
+var H={"apikey":SK,"Authorization":"Bearer "+SK};
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+var cos=[], mode='rec';
+
+function liveMin(c){
+  if (!c.appeal_until) return 0;
+  var m=Math.ceil((new Date(c.appeal_until).getTime()-Date.now())/60000);
+  return m>0?m:0;
+}
+function ago(iso){
+  if (!iso) return '未更新';
+  var m=Math.floor((Date.now()-new Date(iso).getTime())/60000);
+  if (m<1) return 'たった今更新';
+  if (m<60) return m+'分前更新';
+  var h=Math.floor(m/60);
+  return h<24 ? h+'時間前更新' : '24時間以上前';
+}
+function stars(avg,cnt){
+  if (!cnt) return '<span class="rate" style="color:var(--muted)">評価はまだありません</span>';
+  var n=Math.round(avg);
+  return '<span class="rate">'+'★'.repeat(n)+'☆'.repeat(5-n)+' '+Number(avg).toFixed(1)+
+    '<i>'+cnt+'件</i></span>';
+}
+
+function card(c){
+  var lm=liveMin(c), free=c.free_cars||0, live=(lm>0&&free>0);
+  var newsFresh = c.news_at && (Date.now()-new Date(c.news_at).getTime()) < 36*3600*1000;
+  return '<div class="co'+(live?' live':'')+'">'+
+    '<div class="top">'+
+      '<div><div class="nm">'+esc(c.name)+'</div>'+
+        '<div class="meta">'+(c.certified!==false?'<span class="cert">認定</span>':'')+
+          '<span>'+esc((c.areas&&c.areas[0])?'福岡市ほか':'福岡市')+'</span></div></div>'+
+      '<div class="st"><div class="big '+(live?'y':'n')+'">'+
+        (live?'空車'+free+'台':(c.is_open?'受付中':'受付停止中'))+'</div>'+
+        '<div class="sm">'+(live?'あと'+lm+'分':ago(c.status_updated_at))+'</div></div>'+
+    '</div>'+
+    (newsFresh&&c.news_title
+      ? '<div class="news"><div class="t">'+esc(c.news_title)+'</div>'+
+        (c.news_body?'<div class="b">'+esc(c.news_body)+'</div>':'')+'</div>'
+      : '')+
+    '<div class="mid">'+
+      (c.areas&&c.areas.length
+        ? '<div class="areas">'+c.areas.map(function(a){return '<span>'+esc(a)+'</span>';}).join('')+'</div>':'')+
+      '<div class="kv"><b>営業</b><span>'+esc(c.hours||'お問い合わせください')+'</span></div>'+
+      '<div class="kv"><b>料金</b><span>'+esc(c.price_note||'お問い合わせください')+'</span></div>'+
+      '<div class="kv"><b>評価</b>'+stars(c.rating_avg,c.rating_count)+'</div>'+
+      (c.pay_methods&&c.pay_methods.length
+        ? '<div class="pays">'+c.pay_methods.map(function(p){return '<span>'+esc(p)+'</span>';}).join('')+'</div>':'')+
+    '</div>'+
+    '<div class="acts">'+
+      (c.phone?'<a class="call" href="tel:'+esc(c.phone)+'">電話</a>':'')+
+      '<a class="app" href="yobu.html?co='+encodeURIComponent(c.id)+'">この業者を指名して呼ぶ<small>地図でタップ・料金が先にわかる</small></a>'+
+    '</div></div>';
+}
+
+function render(){
+  var arr=cos.slice();
+  var liveCnt=arr.filter(function(c){return liveMin(c)>0&&(c.free_cars||0)>0;}).length;
+  $('cnt').textContent = liveCnt? liveCnt+'社' : '';
+
+  if (mode==='fast'){
+    arr=arr.filter(function(c){return liveMin(c)>0&&(c.free_cars||0)>0;});
+    arr.sort(function(a,b){ return new Date(b.appeal_until)-new Date(a.appeal_until); });
+    if (!arr.length){
+      $('app').innerHTML='<div class="empty">いま空車アピール中の業者はいません。<br>おすすめ順からご依頼ください。'+
+        '<br><button id="toRec">おすすめ順を見る</button></div>';
+      $('toRec').onclick=function(){ $('tRec').click(); };
+      return;
+    }
+  } else {
+    arr.sort(function(a,b){
+      var al=(liveMin(a)>0?1:0), bl=(liveMin(b)>0?1:0);
+      if (bl!==al) return bl-al;
+      if ((b.sort_weight||0)!==(a.sort_weight||0)) return (b.sort_weight||0)-(a.sort_weight||0);
+      return (b.rating_avg||0)-(a.rating_avg||0);
+    });
+  }
+  if (!arr.length){ $('app').innerHTML='<div class="empty">業者情報を読み込めませんでした</div>'; return; }
+  $('app').innerHTML='<div class="list">'+arr.map(card).join('')+'</div>';
+}
+
+$('tRec').onclick=function(){ mode='rec'; this.className='on'; $('tFast').className=''; render(); };
+$('tFast').onclick=function(){ mode='fast'; this.className='on'; $('tRec').className=''; render(); };
+
+async function load(){
+  try{
+    var r=await fetch(SB+'companies?select=*',{headers:H});
+    cos=await r.json(); render();
+  }catch(e){ $('app').innerHTML='<div class="empty">業者情報を読み込めませんでした</div>'; }
+}
+load();
+setInterval(load, 25000);
+setInterval(render, 30000);
+</script>
+</body>
+</html>
