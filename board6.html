@@ -234,26 +234,40 @@ $('bell').onclick=function(){
       if (audioCtx.state==='suspended') audioCtx.resume();
       _buildBus();
       if (_bus) _bus.gain.setValueAtTime(0.9,audioCtx.currentTime);
-      beep(0.16); toast('新しい案件を音で知らせます','ok');
+      // 本番と同じ鳴り方をテスト。停止ボタンを押すまで鳴り続ける
+      testAlert();
     }catch(e){ toast('この端末では音を出せません','err'); }
+  } else {
+    stopAlert();
   }
 };
 /* 鳴り続ける受注アラート。停止ボタンか60秒で止まる */
 var _alertTimer=null, _autoStopTimer=null;
-function alertNew(n){
-  document.title='🔔 新着'+n+'件｜案件掲示板';
-  toast('新しい案件が'+n+'件入りました','ok');
+
+function _startRinging(){
   stopAlert();
   if (audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
   if (_bus&&audioCtx){ _bus.gain.cancelScheduledValues(audioCtx.currentTime); _bus.gain.setValueAtTime(0.9,audioCtx.currentTime); }
   var ring=function(){
-    if (soundOn) beep(0.4);
+    beep(0.4);
     if (navigator.vibrate) navigator.vibrate([160,120,160,120,260]);
   };
   ring();
   _alertTimer=setInterval(ring,3400);
   _autoStopTimer=setTimeout(stopAlert,60000);
   var b=$('alertStopBtn'); if (b) b.style.display='block';
+}
+
+function alertNew(n){
+  document.title='🔔 新着'+n+'件｜案件掲示板';
+  toast('新しい案件が'+n+'件入りました','ok');
+  if (soundOn) _startRinging();
+}
+
+// 本番とまったく同じ鳴り方を確認するためのテスト
+function testAlert(){
+  toast('テスト中です。停止ボタンで止まります','ok');
+  _startRinging();
 }
 function stopAlert(){
   clearInterval(_alertTimer); _alertTimer=null;
