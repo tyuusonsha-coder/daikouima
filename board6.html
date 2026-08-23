@@ -234,7 +234,6 @@ $('bell').onclick=function(){
       if (audioCtx.state==='suspended') audioCtx.resume();
       _buildBus();
       if (_bus) _bus.gain.setValueAtTime(0.9,audioCtx.currentTime);
-      // 本番と同じ鳴り方をテスト。停止ボタンを押すまで鳴り続ける
       testAlert();
     }catch(e){ toast('この端末では音を出せません','err'); }
   } else {
@@ -243,7 +242,6 @@ $('bell').onclick=function(){
 };
 /* 鳴り続ける受注アラート。停止ボタンか60秒で止まる */
 var _alertTimer=null, _autoStopTimer=null;
-
 function _startRinging(){
   stopAlert();
   if (audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
