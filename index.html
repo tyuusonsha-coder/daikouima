@@ -285,6 +285,9 @@ var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt
 var H={"apikey":SK,"Authorization":"Bearer "+SK};
 var CO="daikounaw";
 
+/* 配車ページは daikounaw.com に一本化 */
+var YOBU="https://daikounaw.com/yobu";
+
 /* ===== 案件ボード（募集中の依頼） ===== */
 function jbEsc(v){ return String(v==null?'':v).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -338,7 +341,7 @@ function clPaint(list, ok){
     if(c.campaign) o+='<div class="ccp">\uD83C\uDF89 '+jbEsc(c.campaign)+'</div>';
     o+='<div class="cb">';
     if(c.phone) o+='<a class="call" href="tel:'+jbEsc(String(c.phone).replace(/[^0-9+]/g,''))+'">電話をかける</a>';
-    o+='<a class="go" data-co="'+jbEsc(c.id)+'" href="yobu.html?co='+encodeURIComponent(c.id)+
+    o+='<a class="go" data-co="'+jbEsc(c.id)+'" href="'+YOBU+'?co='+encodeURIComponent(c.id)+
       (pinLat?('&lat='+pinLat+'&lng='+pinLng):'')+'">この場所に呼ぶ</a>';
     o+='</div></div>';
   });
@@ -412,7 +415,7 @@ function paintGo(){
   pinLat=c.lat.toFixed(6); pinLng=c.lng.toFixed(6);
   /* 一覧の「この場所に呼ぶ」に現在のピン位置を渡す */
   Array.prototype.forEach.call(document.querySelectorAll('a.go[data-co]'), function(a){
-    a.href='yobu.html?co='+encodeURIComponent(a.getAttribute('data-co'))+'&lat='+pinLat+'&lng='+pinLng;
+    a.href=YOBU+'?co='+encodeURIComponent(a.getAttribute('data-co'))+'&lat='+pinLat+'&lng='+pinLng;
   });
 }
 async function reverse(){
