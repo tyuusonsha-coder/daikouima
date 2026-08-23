@@ -1,7 +1,7 @@
 {
   "name": "代行なう板",
   "short_name": "代行なう板",
-  "description": "代行なう運転代行の案件掲示板（乗務員用）",
+  "description": "代行なうの案件掲示板（乗務員用）",
   "lang": "ja",
   "start_url": "/board6.html",
   "scope": "/",

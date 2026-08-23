@@ -1,4 +1,4 @@
-/* 代行なう運転代行 Service Worker */
+/* 代行なう Service Worker */
 var CACHE = 'dnud-v1';
 var SHELL = [
   '/',
