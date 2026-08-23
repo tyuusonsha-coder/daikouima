@@ -172,21 +172,57 @@ function railColor(m){ return m<3?'var(--green)':(m<8?'var(--amber)':'var(--red)
 var openOrders=[], myOrders=[], isOpen=false, busy=null, knownIds=null;
 
 /* ===== 通知音 ===== */
-var soundOn=false, audioCtx=null;
+var soundOn=false, audioCtx=null, _bus=null;
+
+function _buildBus(){
+  if (_bus||!audioCtx) return;
+  // ドライ＋残響 → コンプレッサー → 出力。歪ませずに音圧と広がりを両立
+  _bus=audioCtx.createGain(); _bus.gain.value=0.9;
+  var comp=audioCtx.createDynamicsCompressor();
+  comp.threshold.value=-20; comp.knee.value=14; comp.ratio.value=6;
+  comp.attack.value=0.004; comp.release.value=0.3;
+  var rate=audioCtx.sampleRate, len=Math.floor(rate*2.6);
+  var buf=audioCtx.createBuffer(2,len,rate);
+  for (var ch=0; ch<2; ch++){
+    var d=buf.getChannelData(ch);
+    for (var i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.4);
+  }
+  var rev=audioCtx.createConvolver(); rev.buffer=buf;
+  var wet=audioCtx.createGain(); wet.gain.value=0.42;
+  _bus.connect(comp);
+  _bus.connect(rev); rev.connect(wet); wet.connect(comp);
+  comp.connect(audioCtx.destination);
+}
+
+// FM一音（打鍵の瞬間だけ倍音が煌めく。ローズ／鉄琴のような艶）
+function _voice(f,at,dur,vol,ratio,idx){
+  var car=audioCtx.createOscillator(), amp=audioCtx.createGain();
+  var mod=audioCtx.createOscillator(), mg=audioCtx.createGain();
+  car.type='sine'; car.frequency.value=f;
+  mod.type='sine'; mod.frequency.value=f*ratio;
+  mg.gain.setValueAtTime(f*idx,at);
+  mg.gain.exponentialRampToValueAtTime(f*idx*0.02,at+dur*0.4);
+  mod.connect(mg); mg.connect(car.frequency);
+  amp.gain.setValueAtTime(0.0001,at);
+  amp.gain.exponentialRampToValueAtTime(vol,at+0.018);
+  amp.gain.exponentialRampToValueAtTime(vol*0.28,at+dur*0.32);
+  amp.gain.exponentialRampToValueAtTime(0.0001,at+dur);
+  car.connect(amp); amp.connect(_bus);
+  mod.start(at); mod.stop(at+dur+0.05);
+  car.start(at); car.stop(at+dur+0.05);
+}
+
+// Cmaj9 のアルペジオ（ミ→ソ→シ→レ）。転がるように鳴らす
 function beep(vol){
   if (!audioCtx) return;
-  var t=audioCtx.currentTime;
-  [0,0.28,0.56].forEach(function(off){
-    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type='sine';
-    o.frequency.setValueAtTime(880,t+off);
-    o.frequency.setValueAtTime(1320,t+off+0.1);
-    g.gain.setValueAtTime(0,t+off);
-    g.gain.linearRampToValueAtTime(vol||0.35,t+off+0.02);
-    g.gain.exponentialRampToValueAtTime(0.001,t+off+0.22);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(t+off); o.stop(t+off+0.24);
-  });
+  _buildBus();
+  var v=(vol==null?1:vol/0.4); // 旧beepの音量指定に合わせる
+  var s=audioCtx.currentTime+0.02;
+  _voice(1318.51,s,      2.4,0.34*v,3.5,1.6); // E6
+  _voice(1567.98,s+0.11, 2.4,0.32*v,3.5,1.5); // G6
+  _voice(1975.53,s+0.22, 2.6,0.30*v,3.5,1.4); // B6
+  _voice(2349.32,s+0.33, 3.0,0.28*v,2.0,1.1); // D7
+  _voice(659.26, s+0.33, 3.2,0.16*v,2.0,0.7); // E5（下に厚みを足す）
 }
 $('bell').onclick=function(){
   soundOn=!soundOn;
@@ -196,15 +232,43 @@ $('bell').onclick=function(){
     try{
       audioCtx=new (window.AudioContext||window.webkitAudioContext)();
       if (audioCtx.state==='suspended') audioCtx.resume();
-      beep(0.06); toast('新しい案件を音で知らせます','ok');
+      _buildBus();
+      if (_bus) _bus.gain.setValueAtTime(0.9,audioCtx.currentTime);
+      beep(0.16); toast('新しい案件を音で知らせます','ok');
     }catch(e){ toast('この端末では音を出せません','err'); }
   }
 };
+/* 鳴り続ける受注アラート。停止ボタンか60秒で止まる */
+var _alertTimer=null, _autoStopTimer=null;
 function alertNew(n){
-  if (soundOn){ if (audioCtx&&audioCtx.state==='suspended') audioCtx.resume(); beep(0.4); }
-  if (navigator.vibrate) navigator.vibrate([400,150,400,150,400]);
   document.title='🔔 新着'+n+'件｜案件掲示板';
   toast('新しい案件が'+n+'件入りました','ok');
+  stopAlert();
+  if (audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
+  if (_bus&&audioCtx){ _bus.gain.cancelScheduledValues(audioCtx.currentTime); _bus.gain.setValueAtTime(0.9,audioCtx.currentTime); }
+  var ring=function(){
+    if (soundOn) beep(0.4);
+    if (navigator.vibrate) navigator.vibrate([160,120,160,120,260]);
+  };
+  ring();
+  _alertTimer=setInterval(ring,3400);
+  _autoStopTimer=setTimeout(stopAlert,60000);
+  var b=$('alertStopBtn'); if (b) b.style.display='block';
+}
+function stopAlert(){
+  clearInterval(_alertTimer); _alertTimer=null;
+  clearTimeout(_autoStopTimer); _autoStopTimer=null;
+  try{
+    if (_bus&&audioCtx){
+      var t=audioCtx.currentTime;
+      _bus.gain.cancelScheduledValues(t);
+      _bus.gain.setValueAtTime(_bus.gain.value,t);
+      _bus.gain.linearRampToValueAtTime(0.0001,t+0.18); // 残響ごと素早く消す
+    }
+  }catch(e){}
+  try{ if (navigator.vibrate) navigator.vibrate(0); }catch(e){}
+  document.title='案件掲示板｜代行なう';
+  var b=$('alertStopBtn'); if (b) b.style.display='none';
 }
 
 /* ===== 位置送信 ===== */
@@ -285,6 +349,7 @@ function render(){
 
 async function action(act, id){
   if (act==='accept'){
+    stopAlert();
     if (busy) return;
     if (!confirm('この案件を受注します。よろしいですか？')) return;
     busy=id; render();
@@ -420,5 +485,12 @@ load();
 setInterval(load, 5000);
 setInterval(render, 30000);
 </script>
+<!-- 受注アラート停止ボタン -->
+<button id="alertStopBtn" onclick="stopAlert()"
+  style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:10000;width:100%;
+         padding:26px 0 calc(26px + env(safe-area-inset-bottom));border:none;
+         background:#d32f2f;color:#fff;font-size:26px;font-weight:800;
+         letter-spacing:4px;font-family:inherit;cursor:pointer;">■ 停止</button>
+
 </body>
 </html>
