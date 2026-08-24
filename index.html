@@ -17,6 +17,32 @@
 <meta property="og:description" content="中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dnud.jp/">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17580686224"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-17580686224');
+
+  /* 電話番号がタップされたときにコンバージョンを送信 */
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    while (t && t !== document) {
+      if (t.tagName === 'A' && (t.getAttribute('href')||'').indexOf('tel:') === 0) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17580686224/SImfCIiF4-YcEJD3j79B',
+          'value': 1900.0,
+          'currency': 'JPY'
+        });
+        return;
+      }
+      t = t.parentNode;
+    }
+  }, true);
+</script>
+
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
