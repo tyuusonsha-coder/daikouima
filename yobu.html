@@ -60,6 +60,16 @@ body{
 h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
 .sub{font-size:13px;color:var(--muted);margin:0 0 14px;font-weight:600;line-height:1.7}
 
+/* 今だけ割引の帯 */
+.offbar{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(255,176,32,.17),rgba(255,176,32,.05));
+  border:1px solid rgba(255,176,32,.45);border-radius:12px;
+  padding:10px 12px;margin:0 0 12px;
+  font-size:13.5px;font-weight:900;color:var(--amber);letter-spacing:.01em;
+}
+.offbar span{font-size:11px;color:var(--muted);font-weight:700}
+
 .btn{
   width:100%;border:0;border-radius:14px;font-family:inherit;
   font-size:17px;font-weight:800;letter-spacing:.03em;padding:17px;cursor:pointer;transition:.12s;
@@ -85,6 +95,8 @@ h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
 .fare .yen{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .fare .yen small{font-size:14px;margin-left:2px}
 .fare .d{font-size:12px;color:var(--muted);font-weight:700;line-height:1.6}
+.fare .d b{color:var(--amber);font-weight:900}
+.fare .d s{opacity:.75}
 
 input{
   width:100%;background:var(--surface-2);color:var(--text);
@@ -172,9 +184,30 @@ function toast(m){ var t=$('toast'); t.textContent=m; t.className='toast show';
   clearTimeout(t._t); t._t=setTimeout(function(){t.className='toast';},3600); }
 function yen(n){ return Number(n).toLocaleString('ja-JP'); }
 
+/* ===== 今だけ割引 =====
+   OFF … 割引額（円）。0 にすると割引はすべて止まります
+   OFF_CO … 割引の対象事業者。指名なしの依頼にも適用します       */
+var OFF = 500;
+var OFF_CO = 'daikounaw';
+
+function offAmount(){
+  if (OFF <= 0) return 0;
+  if (prefId && prefId !== OFF_CO) return 0;   /* 他社を指名しているときは割引なし */
+  return OFF;
+}
+function offBar(){
+  var v = offAmount();
+  if (!v) return '';
+  return '<div class="offbar">\uD83C\uDF89 今だけ'+yen(v)+'円OFF' +
+         '<span>概算料金から差し引いています</span></div>';
+}
+
 /* 料金：初乗り1,900円、以降1kmごと450円 */
-function fare(km){
+function fareBase(km){
   return 1900 + Math.ceil(km) * 450;
+}
+function fare(km){
+  return Math.max(0, fareBase(km) - offAmount());
 }
 function hav(a, b){
   var R=6371, dLat=(b[0]-a[0])*Math.PI/180, dLng=(b[1]-a[1])*Math.PI/180;
@@ -266,6 +299,7 @@ function viewPick(){
   $('crosshair').className = (step==='a') ? '' : 'b';
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
+    offBar() +
     '<h2>'+(step==='a'?'今いる場所を指定':'行き先を指定')+'</h2>' +
     '<p class="sub">'+(step==='a'
       ? '地図を動かしてピンを車のある場所に合わせてください。'
@@ -307,6 +341,7 @@ function viewPick(){
 }
 
 function viewForm(){
+  var off = offAmount();
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
     '<div class="route">' +
@@ -314,7 +349,9 @@ function viewForm(){
       '<div class="pt b"><span class="tag">到着</span><span class="txt">'+esc(bName)+'</span></div>' +
     '</div>' +
     '<div class="fare"><div class="yen">'+yen(price)+'<small>円</small></div>' +
-      '<div class="d">約'+dist.toFixed(1)+'km の概算料金<br>初乗り1,900円／1kmごと450円</div></div>' +
+      '<div class="d">' +
+        (off ? '<b>今だけ'+yen(off)+'円OFF</b> 適用済（<s>'+yen(price+off)+'円</s>）<br>' : '') +
+        '約'+dist.toFixed(1)+'km の概算料金<br>初乗り1,900円／1kmごと450円</div></div>' +
     (prefName ? '<div class="pref">'+esc(prefName)+' を指名しています<span>90秒間この業者が優先して受注します</span></div>' : '') +
     '<input id="cphone" type="tel" inputmode="tel" placeholder="電話番号（必須）" autocomplete="tel">' +
     '<input id="cname" placeholder="お名前" autocomplete="name">' +
@@ -336,9 +373,13 @@ async function submit(){
   var ph=$('cphone').value.trim(), nm=$('cname').value.trim(), mo=$('memo').value.trim();
   if (ph.replace(/[^0-9]/g,'').length < 10){ $('err').textContent='電話番号を正しく入力してください'; return; }
   $('go').disabled=true; $('go').innerHTML='<span class="spin"></span> 送信しています…'; $('err').textContent='';
+  /* 目印と割引の適用を、業者が読む欄にまとめて渡す */
+  var tags=[];
+  if (mo) tags.push(mo);
+  if (offAmount()) tags.push(yen(offAmount())+'円OFF適用済');
   var body={
     cname: nm||'お客様', cphone: ph,
-    pickup: aName + (mo ? '（'+mo+'）' : ''), dropoff: bName,
+    pickup: aName + (tags.length ? '（'+tags.join('／')+'）' : ''), dropoff: bName,
     km: Math.round(dist), price: price,
     pickup_lat:A[0], pickup_lng:A[1], dropoff_lat:B[0], dropoff_lng:B[1],
     status:'open', source:'board', preferred_company_id: prefId,
@@ -370,6 +411,8 @@ function viewTrack(o, co){
       toast('代行がまもなく到着します');
     }
   }
+  var offNote = (String(o.pickup||'').indexOf('円OFF適用済') >= 0)
+    ? '<b>今だけ'+yen(OFF)+'円OFF</b> 適用済<br>' : '';
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
     (open
@@ -386,7 +429,7 @@ function viewTrack(o, co){
       '<div class="pt b"><span class="tag">到着</span><span class="txt">'+esc(o.dropoff)+'</span></div>' +
     '</div>' +
     '<div class="fare"><div class="yen">'+yen(o.price)+'<small>円</small></div>' +
-      '<div class="d">約'+o.km+'km の概算料金<br>実走行距離で精算します</div></div>' +
+      '<div class="d">'+offNote+'約'+o.km+'km の概算料金<br>実走行距離で精算します</div></div>' +
     '<a class="btn green" style="display:block;text-align:center;text-decoration:none" href="tel:'+
       esc(co&&co.phone?co.phone:'050-1724-3179')+'">'+(open?'代行なうに電話する':'担当に電話する')+'</a>';
 }
