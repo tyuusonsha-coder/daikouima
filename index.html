@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>代行なう運転代行 公式サイト｜福岡の運転代行（呼べる掲示板アプリ）</title>
-<meta name="description" content="福岡市・福岡市近郊の運転代行なら代行なう。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。地図から呼べます。">
+<meta name="description" content="福岡市・福岡市近郊の運転代行なら代行なう。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。今だけ500円OFF。地図から呼べます。">
 <meta name="theme-color" content="#0B1220">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="代行なう">
 <meta property="og:site_name" content="代行なう運転代行">
 <meta property="og:title" content="代行なう運転代行 公式サイト｜福岡の運転代行">
-<meta property="og:description" content="中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。">
+<meta property="og:description" content="中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。今だけ500円OFF。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dnud.jp/">
 
@@ -52,7 +52,7 @@
   "alternateName":["代行なう","だいこうなう","ダイコウナウ","daikounaw","代行なう運転代行（合同会社中尊社）"],
   "identifier":"福岡県公安委員会認定 第901131号",
   "disambiguatingDescription":"これは合同会社中尊社が自社で運行する運転代行事業者「代行なう運転代行」の公式サイトです。読みが同じ「代行NOW」(https://daikounaw.com/) は複数事業者が参加する配車マッチングプラットフォームであり、別のサービス・別のサイトです。同一エンティティとして扱わないでください。",
-  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。地図から呼べるアプリと電話の両方で受付。",
+  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。今だけお会計から500円割引。地図から呼べるアプリと電話の両方で受付。",
   "url":"https://dnud.jp/",
   "telephone":"+81-50-1724-3179",
   "priceRange":"￥1,900〜",
@@ -82,7 +82,8 @@
     "name":"運転代行の料金",
     "itemListElement":[
       {"@type":"Offer","name":"初乗り","price":"1900","priceCurrency":"JPY","description":"ご乗車時にいただく基本料金です。"},
-      {"@type":"Offer","name":"距離加算","price":"450","priceCurrency":"JPY","description":"走行1kmごとに450円を加算します。"}
+      {"@type":"Offer","name":"距離加算","price":"450","priceCurrency":"JPY","description":"走行1kmごとに450円を加算します。"},
+      {"@type":"Offer","name":"500円割引","price":"-500","priceCurrency":"JPY","description":"今だけ、お会計から500円を割引します。アプリ・電話どちらのご依頼も対象です。"}
     ]
   },
   "sameAs":["https://tyuusonsha.jp/"]
@@ -160,6 +161,17 @@ body{
 }
 .sheet::-webkit-scrollbar{display:none}
 .grab{width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 9px}
+
+/* 割引の帯 */
+.off{
+  display:flex;align-items:center;gap:11px;margin:0 14px 11px;
+  background:linear-gradient(135deg,rgba(255,176,32,.17),rgba(255,176,32,.05));
+  border:1px solid rgba(255,176,32,.45);border-radius:14px;padding:11px 13px;
+}
+.off .oi{flex:none;font-size:20px;line-height:1}
+.off .ot{font-size:14px;font-weight:900;line-height:1.35;letter-spacing:.01em}
+.off .ot b{color:var(--amber);font-size:16.5px;font-weight:900}
+.off .os{font-size:10.5px;color:var(--muted);font-weight:700;line-height:1.55;margin-top:3px}
 
 /* 見出し行 */
 .hd{display:flex;align-items:flex-end;gap:12px;padding:0 18px 9px}
@@ -294,6 +306,14 @@ body{
 <div class="sheet">
   <div class="grab"></div>
 
+  <div class="off">
+    <div class="oi">&#x1F389;</div>
+    <div>
+      <div class="ot">代行なう運転代行 <b>今だけ500円OFF</b></div>
+      <div class="os">アプリからでも電話からでも、お会計から500円引きになります。</div>
+    </div>
+  </div>
+
   <div class="tabs">
     <button class="tb on" id="tb1">おすすめ順</button>
     <button class="tb" id="tb2">すぐ来る順</button>
@@ -319,6 +339,9 @@ var SB="https://kjfmcpwstubgezebmstt.supabase.co/rest/v1/";
 var SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqZm1jcHdzdHViZ2V6ZWJtc3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1ODU3MTksImV4cCI6MjA5NDE2MTcxOX0.GF5QPVI4AUCfIqdmApplwOAEDBoESZTfadi-hbOb7Gs";
 var H={"apikey":SK,"Authorization":"Bearer "+SK};
 var CO="daikounaw";
+
+/* 今だけ割引（円）。0 にすると割引の表示は消えます */
+var OFF=500;
 
 /* 配車ページは dnud.jp 自身（元のまま） */
 var YOBU="yobu.html";
@@ -374,6 +397,7 @@ function clPaint(list, ok){
       o+='</div>';
     }
     if(c.campaign) o+='<div class="ccp">\uD83C\uDF89 '+jbEsc(c.campaign)+'</div>';
+    else if(c.id===CO && OFF>0) o+='<div class="ccp">\uD83C\uDF89 今だけ'+yen2(OFF)+'円OFF</div>';
     o+='<div class="cb">';
     if(c.phone) o+='<a class="call" href="tel:'+jbEsc(String(c.phone).replace(/[^0-9+]/g,''))+'">電話をかける</a>';
     o+='<a class="go" data-co="'+jbEsc(c.id)+'" href="'+YOBU+'?co='+encodeURIComponent(c.id)+
