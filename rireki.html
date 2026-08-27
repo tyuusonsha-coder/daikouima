@@ -37,11 +37,21 @@ input::placeholder{color:#59708F}
 .btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--line);font-size:14px;padding:13px}
 .btn:disabled{background:var(--surface-2);color:var(--muted)}
 
+/* 今だけ割引の案内 */
+.offbar{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px;
+  background:linear-gradient(135deg,rgba(255,176,32,.17),rgba(255,176,32,.05));
+  border:1px solid rgba(255,176,32,.45);border-radius:13px;padding:11px 13px;
+  font-size:13.5px;font-weight:900;color:var(--amber);
+}
+.offbar span{font-size:11px;color:var(--muted);font-weight:700}
+
 .card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:15px;margin-top:12px}
 .date{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:10px;display:flex;gap:8px;align-items:center}
 .chip{font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--line);background:var(--surface-2)}
 .chip.done{color:var(--green);border-color:rgba(46,204,113,.4)}
 .chip.live{color:var(--amber);border-color:rgba(255,176,32,.4)}
+.chip.off{color:var(--amber);border-color:rgba(255,176,32,.55);background:rgba(255,176,32,.14);font-weight:900}
 .pt{display:flex;gap:9px;margin-bottom:7px}
 .pt b{flex:none;width:34px;font-size:11px;font-weight:800;color:var(--muted);padding-top:2px}
 .pt span{font-size:15px;font-weight:700;line-height:1.45}
@@ -49,6 +59,7 @@ input::placeholder{color:#59708F}
 .yen{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
 .yen small{font-size:12px}
 .co{font-size:12px;color:var(--muted);font-weight:700}
+.offnote{font-size:11.5px;color:var(--amber);font-weight:800;margin-top:6px}
 .mine{color:var(--amber);font-size:14px;font-weight:800;margin-top:10px}
 .stars{display:flex;gap:5px;margin:10px 0}
 .stars button{background:none;border:0;font-size:30px;line-height:1;padding:0;color:var(--line);cursor:pointer}
@@ -71,6 +82,7 @@ input::placeholder{color:#59708F}
 </div>
 
 <div class="wrap">
+  <div class="offbar" id="offbar" style="display:none">🎉 今だけ500円OFF<span>次回のご利用から、お会計より差し引きます</span></div>
   <input id="ph" type="tel" inputmode="tel" placeholder="ご利用時の電話番号" autocomplete="tel">
   <button class="btn amber" id="go">履歴を表示する</button>
   <div id="app"></div>
@@ -87,6 +99,12 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function toast(m){var t=$('toast');t.textContent=m;t.className='toast show';
   setTimeout(function(){t.className='toast';},3200);}
+
+/* ===== 今だけ割引 =====
+   OFF … 割引額（円）。0 にすると案内が消えます。
+   過去の履歴の金額は当時のままです。割引が効いた回だけ印を付けます。 */
+var OFF=500;
+function hadOff(o){ return String(o.pickup||'').indexOf('円OFF適用済') >= 0; }
 
 var conames={};
 
@@ -110,12 +128,15 @@ function draw(list){
   $('app').innerHTML=list.map(function(o){
     var lb=label(o.status);
     var rated=(o.rating!=null);
+    var off=hadOff(o);
     var h='<div class="card" data-id="'+o.id+'">'+
-      '<div class="date">'+fmt(o.created_at)+'<span class="chip '+lb[0]+'">'+lb[1]+'</span></div>'+
+      '<div class="date">'+fmt(o.created_at)+'<span class="chip '+lb[0]+'">'+lb[1]+'</span>'+
+        (off?'<span class="chip off">'+Number(OFF).toLocaleString('ja-JP')+'円OFF</span>':'')+'</div>'+
       '<div class="pt"><b>出発</b><span>'+esc(o.pickup)+'</span></div>'+
       '<div class="pt"><b>到着</b><span>'+esc(o.dropoff)+'</span></div>'+
       '<div class="foot"><div class="yen">'+Number(o.price||0).toLocaleString()+'<small>円</small></div>'+
-        '<div class="co">'+(o.km?'約'+o.km+'km／':'')+esc(conames[o.company_id]||'')+'</div></div>';
+        '<div class="co">'+(o.km?'約'+o.km+'km／':'')+esc(conames[o.company_id]||'')+'</div></div>'+
+      (off?'<div class="offnote">今だけ'+Number(OFF).toLocaleString('ja-JP')+'円OFF 適用済の金額です</div>':'');
     if (o.status==='done'){
       if (rated){
         h+='<div class="mine">'+'★'.repeat(o.rating)+'☆'.repeat(5-o.rating)+' 評価済み</div>';
@@ -151,6 +172,8 @@ function draw(list){
     })(cards[i]);
   }
 }
+
+if (OFF>0) $('offbar').style.display='flex';
 
 $('go').onclick=async function(){
   var ph=$('ph').value.trim();

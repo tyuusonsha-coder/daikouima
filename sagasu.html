@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>近くの運転代行を探す｜代行なう</title>
-<meta name="description" content="中洲・天神・博多の運転代行を空車状況で比較。そのまま指名して呼べます。">
+<meta name="description" content="中洲・天神・博多の運転代行を空車状況で比較。そのまま指名して呼べます。代行なうは今だけ500円OFF。">
 <meta name="theme-color" content="#0B1220">
 <style>
 :root{
@@ -46,6 +46,8 @@ body{
 .nm{font-size:17px;font-weight:800;line-height:1.3}
 .meta{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .cert{font-size:10px;font-weight:800;padding:3px 6px;border-radius:5px;background:rgba(255,176,32,.14);color:var(--amber);border:1px solid rgba(255,176,32,.3)}
+.offchip{font-size:10px;font-weight:900;padding:3px 7px;border-radius:5px;background:rgba(255,176,32,.2);color:var(--amber);border:1px solid rgba(255,176,32,.5)}
+.offline{display:block;margin-top:4px;font-size:12.5px;font-weight:900;color:var(--amber)}
 .st{margin-left:auto;flex:none;text-align:right}
 .st .big{font-size:15px;font-weight:800;line-height:1.2}
 .st .big.y{color:var(--green)} .st .big.n{color:var(--muted)}
@@ -122,6 +124,14 @@ var $=function(id){return document.getElementById(id);};
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
+/* ===== 今だけ割引 =====
+   代行なう運転代行だけのキャンペーンです。
+   OFF … 割引額（円）。0 にすると表示が止まります       */
+var OFF=500;
+var OFF_CO='daikounaw';
+function isOffCo(c){ return OFF>0 && c && c.id===OFF_CO; }
+function offYen(){ return Number(OFF).toLocaleString('ja-JP'); }
+
 var cos=[], mode='rec';
 
 function liveMin(c){
@@ -147,10 +157,12 @@ function stars(avg,cnt){
 function card(c){
   var lm=liveMin(c), free=c.free_cars||0, live=(lm>0&&free>0);
   var newsFresh = c.news_at && (Date.now()-new Date(c.news_at).getTime()) < 36*3600*1000;
+  var off = isOffCo(c);
   return '<div class="co'+(live?' live':'')+'">'+
     '<div class="top">'+
       '<div><div class="nm">'+esc(c.name)+'</div>'+
         '<div class="meta">'+(c.certified!==false?'<span class="cert">認定</span>':'')+
+          (off?'<span class="offchip">今だけ'+offYen()+'円OFF</span>':'')+
           '<span>'+esc((c.areas&&c.areas[0])?'福岡市ほか':'福岡市')+'</span></div></div>'+
       '<div class="st"><div class="big '+(live?'y':'n')+'">'+
         (live?'空車'+free+'台':(c.is_open?'受付中':'受付停止中'))+'</div>'+
@@ -164,14 +176,16 @@ function card(c){
       (c.areas&&c.areas.length
         ? '<div class="areas">'+c.areas.map(function(a){return '<span>'+esc(a)+'</span>';}).join('')+'</div>':'')+
       '<div class="kv"><b>営業</b><span>'+esc(c.hours||'お問い合わせください')+'</span></div>'+
-      '<div class="kv"><b>料金</b><span>'+esc(c.price_note||'お問い合わせください')+'</span></div>'+
+      '<div class="kv"><b>料金</b><span>'+esc(c.price_note||'お問い合わせください')+
+        (off?'<em class="offline">🎉 今だけ'+offYen()+'円OFF（お会計から差し引きます）</em>':'')+'</span></div>'+
       '<div class="kv"><b>評価</b>'+stars(c.rating_avg,c.rating_count)+'</div>'+
       (c.pay_methods&&c.pay_methods.length
         ? '<div class="pays">'+c.pay_methods.map(function(p){return '<span>'+esc(p)+'</span>';}).join('')+'</div>':'')+
     '</div>'+
     '<div class="acts">'+
       (c.phone?'<a class="call" href="tel:'+esc(c.phone)+'">電話</a>':'')+
-      '<a class="app" href="yobu.html?co='+encodeURIComponent(c.id)+'">この業者を指名して呼ぶ<small>地図でタップ・料金が先にわかる</small></a>'+
+      '<a class="app" href="yobu.html?co='+encodeURIComponent(c.id)+'">この業者を指名して呼ぶ<small>'+
+        (off?offYen()+'円OFF適用済の料金が出ます':'地図でタップ・料金が先にわかる')+'</small></a>'+
     '</div></div>';
 }
 
