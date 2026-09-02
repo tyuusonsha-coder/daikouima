@@ -70,6 +70,15 @@ h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
 }
 .offbar span{font-size:11px;color:var(--muted);font-weight:700}
 
+/* 高速無料・長距離割引 */
+.perks{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.perk{
+  flex:1 1 140px;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:12px;padding:9px 11px;line-height:1.5;
+}
+.perk b{display:block;color:var(--green);font-size:13px;font-weight:900;margin-bottom:2px}
+.perk i{font-style:normal;color:var(--muted);font-size:11px;font-weight:700}
+
 .btn{
   width:100%;border:0;border-radius:14px;font-family:inherit;
   font-size:17px;font-weight:800;letter-spacing:.03em;padding:17px;cursor:pointer;transition:.12s;
@@ -96,6 +105,7 @@ h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
 .fare .yen small{font-size:14px;margin-left:2px}
 .fare .d{font-size:12px;color:var(--muted);font-weight:700;line-height:1.6}
 .fare .d b{color:var(--amber);font-weight:900}
+.fare .d em{font-style:normal;color:var(--green);font-weight:900}
 .fare .d s{opacity:.75}
 
 input{
@@ -184,15 +194,21 @@ function toast(m){ var t=$('toast'); t.textContent=m; t.className='toast show';
   clearTimeout(t._t); t._t=setTimeout(function(){t.className='toast';},3600); }
 function yen(n){ return Number(n).toLocaleString('ja-JP'); }
 
+/* ===== 自社案件の判定 =====
+   指名なし、または自社を指名しているときだけ
+   「今だけ割引」「長距離割引」「高速無料」を適用します。
+   他社を指名しているときは従来料金（1kmごと450円）のままです。 */
+var OWN_CO = 'daikounaw';
+function isOwn(){ return !prefId || prefId === OWN_CO; }
+
 /* ===== 今だけ割引 =====
-   OFF … 割引額（円）。0 にすると割引はすべて止まります
-   OFF_CO … 割引の対象事業者。指名なしの依頼にも適用します       */
+   OFF … 割引額（円）。0 にすると割引はすべて止まります */
 var OFF = 500;
-var OFF_CO = 'daikounaw';
+var OFF_CO = OWN_CO;
 
 function offAmount(){
   if (OFF <= 0) return 0;
-  if (prefId && prefId !== OFF_CO) return 0;   /* 他社を指名しているときは割引なし */
+  if (!isOwn()) return 0;   /* 他社を指名しているときは割引なし */
   return OFF;
 }
 function offBar(){
@@ -202,12 +218,46 @@ function offBar(){
          '<span>概算料金から差し引いています</span></div>';
 }
 
-/* 料金：初乗り1,900円、以降1kmごと450円 */
+/* ===== 高速無料・長距離割引の案内 ===== */
+function perkBar(){
+  if (!isOwn()) return '';
+  return '<div class="perks">' +
+    '<div class="perk"><b>高速代 無料</b><i>全区間 当社が負担します</i></div>' +
+    '<div class="perk"><b>長距離割引</b><i>10km超から自動で適用</i></div>' +
+    '</div>';
+}
+
+/* ===== 料金 =====
+   初乗り 1,900円
+   〜10km        1kmごと 450円
+   10km超〜20km  1kmごと 400円
+   20km超        1kmごと 350円
+   高速代は当社負担（お客様の請求には含めません） */
+var BASE = 1900, R1 = 450, R2 = 400, R3 = 350;
+
 function fareBase(km){
-  return 1900 + Math.ceil(km) * 450;
+  var k = Math.ceil(km);
+  if (!isOwn()) return BASE + k * R1;      /* 他社指名は従来料金 */
+  var f = BASE;
+  f += Math.min(k, 10) * R1;
+  if (k > 10) f += Math.min(k - 10, 10) * R2;
+  if (k > 20) f += (k - 20) * R3;
+  return f;
+}
+/* 長距離割引でいくら安くなったか（案内表示用） */
+function longOff(km){
+  if (!isOwn()) return 0;
+  var k = Math.ceil(km);
+  return (BASE + k * R1) - fareBase(km);
 }
 function fare(km){
   return Math.max(0, fareBase(km) - offAmount());
+}
+/* 料金の内訳テキスト */
+function rateNote(){
+  if (!isOwn()) return '初乗り1,900円／1kmごと450円';
+  return '初乗り1,900円／〜10km 450円・〜20km 400円・20km超 350円<br>' +
+         '<em>高速代は無料（当社負担）</em>';
 }
 function hav(a, b){
   var R=6371, dLat=(b[0]-a[0])*Math.PI/180, dLng=(b[1]-a[1])*Math.PI/180;
@@ -300,6 +350,7 @@ function viewPick(){
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
     offBar() +
+    perkBar() +
     '<h2>'+(step==='a'?'今いる場所を指定':'行き先を指定')+'</h2>' +
     '<p class="sub">'+(step==='a'
       ? '地図を動かしてピンを車のある場所に合わせてください。'
@@ -342,6 +393,7 @@ function viewPick(){
 
 function viewForm(){
   var off = offAmount();
+  var lg = longOff(dist);
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
     '<div class="route">' +
@@ -350,8 +402,10 @@ function viewForm(){
     '</div>' +
     '<div class="fare"><div class="yen">'+yen(price)+'<small>円</small></div>' +
       '<div class="d">' +
+        (lg ? '<em>長距離割引 '+yen(lg)+'円</em> 適用済<br>' : '') +
         (off ? '<b>今だけ'+yen(off)+'円OFF</b> 適用済（<s>'+yen(price+off)+'円</s>）<br>' : '') +
-        '約'+dist.toFixed(1)+'km の概算料金<br>初乗り1,900円／1kmごと450円</div></div>' +
+        '約'+dist.toFixed(1)+'km の概算料金<br>'+rateNote()+'</div></div>' +
+    perkBar() +
     (prefName ? '<div class="pref">'+esc(prefName)+' を指名しています<span>90秒間この業者が優先して受注します</span></div>' : '') +
     '<input id="cphone" type="tel" inputmode="tel" placeholder="電話番号（必須）" autocomplete="tel">' +
     '<input id="cname" placeholder="お名前" autocomplete="name">' +
@@ -376,7 +430,9 @@ async function submit(){
   /* 目印と割引の適用を、業者が読む欄にまとめて渡す */
   var tags=[];
   if (mo) tags.push(mo);
+  if (longOff(dist)) tags.push('長距離割引'+yen(longOff(dist))+'円適用済');
   if (offAmount()) tags.push(yen(offAmount())+'円OFF適用済');
+  if (isOwn()) tags.push('高速代無料');
   var body={
     cname: nm||'お客様', cphone: ph,
     pickup: aName + (tags.length ? '（'+tags.join('／')+'）' : ''), dropoff: bName,
@@ -411,8 +467,11 @@ function viewTrack(o, co){
       toast('代行がまもなく到着します');
     }
   }
-  var offNote = (String(o.pickup||'').indexOf('円OFF適用済') >= 0)
+  var pu = String(o.pickup||'');
+  var offNote = (pu.indexOf('円OFF適用済') >= 0)
     ? '<b>今だけ'+yen(OFF)+'円OFF</b> 適用済<br>' : '';
+  var lgNote = (pu.indexOf('長距離割引') >= 0) ? '<em>長距離割引</em> 適用済<br>' : '';
+  var hwNote = (pu.indexOf('高速代無料') >= 0) ? '<em>高速代は無料（当社負担）</em><br>' : '';
   $('sheet').innerHTML =
     '<div class="grab"></div>' +
     (open
@@ -429,7 +488,7 @@ function viewTrack(o, co){
       '<div class="pt b"><span class="tag">到着</span><span class="txt">'+esc(o.dropoff)+'</span></div>' +
     '</div>' +
     '<div class="fare"><div class="yen">'+yen(o.price)+'<small>円</small></div>' +
-      '<div class="d">'+offNote+'約'+o.km+'km の概算料金<br>実走行距離で精算します</div></div>' +
+      '<div class="d">'+lgNote+offNote+hwNote+'約'+o.km+'km の概算料金<br>実走行距離で精算します</div></div>' +
     '<a class="btn green" style="display:block;text-align:center;text-decoration:none" href="tel:'+
       esc(co&&co.phone?co.phone:'050-1724-3179')+'">'+(open?'代行なうに電話する':'担当に電話する')+'</a>';
 }

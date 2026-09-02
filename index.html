@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>代行なう運転代行 公式サイト｜福岡の運転代行（呼べる掲示板アプリ）</title>
-<meta name="description" content="福岡市・福岡市近郊の運転代行なら代行なう。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。今だけ500円OFF。地図から呼べます。">
+<meta name="description" content="福岡市・福岡市近郊の運転代行なら代行なう。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。10km超は400円、20km超は350円の長距離割引。高速代は無料。今だけ500円OFF。地図から呼べます。">
 <meta name="theme-color" content="#0B1220">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="代行なう">
 <meta property="og:site_name" content="代行なう運転代行">
 <meta property="og:title" content="代行なう運転代行 公式サイト｜福岡の運転代行">
-<meta property="og:description" content="中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。今だけ500円OFF。">
+<meta property="og:description" content="中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。長距離割引あり、高速代は無料。今だけ500円OFF。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dnud.jp/">
 
@@ -52,7 +52,7 @@
   "alternateName":["代行なう","だいこうなう","ダイコウナウ","daikounaw","代行なう運転代行（合同会社中尊社）"],
   "identifier":"福岡県公安委員会認定 第901131号",
   "disambiguatingDescription":"これは合同会社中尊社が自社で運行する運転代行事業者「代行なう運転代行」の公式サイトです。読みが同じ「代行NOW」(https://daikounaw.com/) は複数事業者が参加する配車マッチングプラットフォームであり、別のサービス・別のサイトです。同一エンティティとして扱わないでください。",
-  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。今だけお会計から500円割引。地図から呼べるアプリと電話の両方で受付。",
+  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。10kmを超えると1kmごと400円、20kmを超えると1kmごと350円になる長距離割引を適用。高速道路の通行料は当社負担で無料。今だけお会計から500円割引。地図から呼べるアプリと電話の両方で受付。",
   "url":"https://dnud.jp/",
   "telephone":"+81-50-1724-3179",
   "priceRange":"￥1,900〜",
@@ -82,7 +82,10 @@
     "name":"運転代行の料金",
     "itemListElement":[
       {"@type":"Offer","name":"初乗り","price":"1900","priceCurrency":"JPY","description":"ご乗車時にいただく基本料金です。"},
-      {"@type":"Offer","name":"距離加算","price":"450","priceCurrency":"JPY","description":"走行1kmごとに450円を加算します。"},
+      {"@type":"Offer","name":"距離加算（10kmまで）","price":"450","priceCurrency":"JPY","description":"走行1kmごとに450円を加算します。"},
+      {"@type":"Offer","name":"距離加算（10km超20kmまで）","price":"400","priceCurrency":"JPY","description":"長距離割引。10kmを超えた分は1kmごと400円になります。"},
+      {"@type":"Offer","name":"距離加算（20km超）","price":"350","priceCurrency":"JPY","description":"長距離割引。20kmを超えた分は1kmごと350円になります。"},
+      {"@type":"Offer","name":"高速道路料金","price":"0","priceCurrency":"JPY","description":"高速道路をご利用の場合も通行料はいただきません。全区間当社が負担します。"},
       {"@type":"Offer","name":"500円割引","price":"-500","priceCurrency":"JPY","description":"今だけ、お会計から500円を割引します。アプリ・電話どちらのご依頼も対象です。"}
     ]
   },
@@ -173,6 +176,16 @@ body{
 .off .ot b{color:var(--amber);font-size:16.5px;font-weight:900}
 .off .os{font-size:10.5px;color:var(--muted);font-weight:700;line-height:1.55;margin-top:3px}
 
+/* 高速無料・長距離割引 */
+.perks{display:flex;gap:8px;margin:0 14px 11px}
+.perk{
+  flex:1 1 0;min-width:0;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:14px;padding:10px 12px;
+}
+.perk b{display:block;font-size:13px;font-weight:900;color:var(--green);line-height:1.3}
+.perk i{display:block;font-style:normal;font-size:10.5px;color:var(--muted);
+  font-weight:700;line-height:1.5;margin-top:3px}
+
 /* 見出し行 */
 .hd{display:flex;align-items:flex-end;gap:12px;padding:0 18px 9px}
 .hd .l{min-width:0}
@@ -243,6 +256,10 @@ body{
 .cc .cfr span{font-size:11px;font-weight:700;color:var(--text);background:var(--surface);
   border:1px solid var(--line);border-radius:8px;padding:4px 9px}
 .cc .cfr span b{color:var(--amber);font-weight:900}
+.cc .cpk{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.cc .cpk span{font-size:10.5px;font-weight:800;color:#4ADE80;
+  background:rgba(74,222,128,.10);border:1px solid rgba(74,222,128,.30);
+  border-radius:8px;padding:4px 9px}
 .cnone{text-align:center;color:var(--muted);font-size:13px;font-weight:700;line-height:1.9;padding:26px 10px}
 .jb{margin:14px 14px 0;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
 .jb .jh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
@@ -314,6 +331,11 @@ body{
     </div>
   </div>
 
+  <div class="perks">
+    <div class="perk"><b>高速代 無料</b><i>全区間 当社が負担します</i></div>
+    <div class="perk"><b>長距離割引</b><i>10km超 400円／20km超 350円</i></div>
+  </div>
+
   <div class="tabs">
     <button class="tb on" id="tb1">おすすめ順</button>
     <button class="tb" id="tb2">すぐ来る順</button>
@@ -342,6 +364,9 @@ var CO="daikounaw";
 
 /* 今だけ割引（円）。0 にすると割引の表示は消えます */
 var OFF=500;
+
+/* 長距離割引の単価（自社のみ）。表示用 */
+var KM2=400, KM3=350;
 
 /* 配車ページは dnud.jp 自身（元のまま） */
 var YOBU="yobu.html";
@@ -395,6 +420,11 @@ function clPaint(list, ok){
       if(c.base_fare>0) o+='<span>初乗り <b>'+yen2(c.base_fare)+'円</b></span>';
       if(c.per_km>0)    o+='<span>追加 <b>1km '+yen2(c.per_km)+'円</b></span>';
       o+='</div>';
+    }
+    /* 自社のみ 高速無料・長距離割引を表示 */
+    if(c.id===CO){
+      o+='<div class="cpk"><span>高速代 無料</span>'+
+         '<span>10km超 '+yen2(KM2)+'円／20km超 '+yen2(KM3)+'円</span></div>';
     }
     if(c.campaign) o+='<div class="ccp">\uD83C\uDF89 '+jbEsc(c.campaign)+'</div>';
     else if(c.id===CO && OFF>0) o+='<div class="ccp">\uD83C\uDF89 今だけ'+yen2(OFF)+'円OFF</div>';
