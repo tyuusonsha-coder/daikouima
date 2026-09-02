@@ -584,5 +584,188 @@ paintGo(); load(); setTimeout(reverse, 1400);
 setInterval(load, 20000);
 </script>
 <p style="text-align:center;font-size:12px;line-height:1.7;opacity:.65;padding:18px 14px;margin:0;">当サイトは「代行なう運転代行」（合同会社中尊社／福岡県公安委員会認定 第901131号）の公式サイトです。<br>読みが同じ「代行NOW」（daikounaw.com）は運転代行マッチングプラットフォームで、別のサービスです。</p>
+<!--
+============================================================
+  代行なう / 代行NOW  ライブ配信バナー
+============================================================
+
+  【使い方】
+  1) 下の TIKTOK_ID を、ご自分のTikTokのIDに書き換える
+  2) このファイルの中身を丸ごとコピー
+  3) dnud.jp と daikounaw.com の </body> の直前に貼り付け
+
+  【動くしくみ】
+  営業時間内だけ、画面の右下にバナーが出ます。
+  営業時間外は自動で消えるので、操作は不要です。
+
+    月火水金土 21:00〜翌6:00（金土は翌7:00まで）
+    木曜・日曜は定休のため非表示
+
+  営業日や時間を変えたときは SCHEDULE を直してください。
+
+  【手動で出す・消す】
+  サイトのURLの後ろに付けると切り替わります（その端末だけ）
+    ?live=on   … 時間に関係なく出す
+    ?live=off  … 時間内でも隠す
+    ?live=auto … 時間どおりに戻す
+
+============================================================
+-->
+
+<style>
+  .dnud-live {
+    --dnud-night: #0e1622;
+    --dnud-amber: #e9b64c;
+    --dnud-text: #f4efe6;
+
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 9999;
+
+    display: none;            /* 既定は非表示。JSが出す */
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 18px 12px 14px;
+    border: 1px solid rgba(233, 182, 76, .45);
+    border-radius: 999px;
+    background: var(--dnud-night);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+
+    color: var(--dnud-text);
+    font-family: "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.2;
+    letter-spacing: .02em;
+    text-decoration: none;
+
+    transition: transform .18s ease, border-color .18s ease;
+  }
+
+  .dnud-live[data-visible="true"] { display: flex; }
+
+  .dnud-live:hover,
+  .dnud-live:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--dnud-amber);
+  }
+
+  .dnud-live:focus-visible {
+    outline: 2px solid var(--dnud-amber);
+    outline-offset: 3px;
+  }
+
+  .dnud-live__dot {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #ff4b5c;
+    box-shadow: 0 0 0 0 rgba(255, 75, 92, .7);
+    animation: dnud-pulse 1.8s ease-out infinite;
+  }
+
+  .dnud-live__label { font-weight: 600; }
+
+  .dnud-live__sub {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(244, 239, 230, .68);
+    letter-spacing: 0;
+  }
+
+  @keyframes dnud-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 75, 92, .7); }
+    70%  { box-shadow: 0 0 0 9px rgba(255, 75, 92, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 75, 92, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dnud-live__dot { animation: none; }
+    .dnud-live { transition: none; }
+  }
+
+  @media (max-width: 480px) {
+    .dnud-live {
+      right: 12px;
+      bottom: 12px;
+      padding: 10px 16px 10px 12px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+<a class="dnud-live" id="dnudLive" href="#" target="_blank" rel="noopener">
+  <span class="dnud-live__dot" aria-hidden="true"></span>
+  <span>
+    <span class="dnud-live__label">TikTokでライブ配信中</span>
+    <span class="dnud-live__sub">今夜の福岡の街を走っています</span>
+  </span>
+</a>
+
+<script>
+(function () {
+  /* ▼ ここを自分のTikTok IDに書き換える（@は付けない） */
+  var TIKTOK_ID = "dnud.jp";
+
+  /* ▼ 営業スケジュール
+        0=日 1=月 2=火 3=水 4=木 5=金 6=土
+        その曜日の夜に営業するか / 何時まで走るか  */
+  var SCHEDULE = {
+    0: { open: false, until: 6 },  // 日曜 定休
+    1: { open: true,  until: 6 },  // 月曜
+    2: { open: true,  until: 6 },  // 火曜
+    3: { open: true,  until: 6 },  // 水曜
+    4: { open: false, until: 6 },  // 木曜 定休
+    5: { open: true,  until: 7 },  // 金曜
+    6: { open: true,  until: 7 }   // 土曜
+  };
+
+  var START_HOUR = 21;
+
+  var el = document.getElementById("dnudLive");
+  if (!el) return;
+
+  el.href = "https://www.tiktok.com/@" + TIKTOK_ID + "/live";
+
+  /* 手動切り替え（?live=on / off / auto）*/
+  var param = new URLSearchParams(location.search).get("live");
+  if (param === "on" || param === "off" || param === "auto") {
+    try { localStorage.setItem("dnudLive", param); } catch (e) {}
+  }
+
+  var override = "auto";
+  try { override = localStorage.getItem("dnudLive") || "auto"; } catch (e) {}
+
+  function isOpen() {
+    var now = new Date();
+    var h = now.getHours();
+    var day = now.getDay();
+
+    if (h >= START_HOUR) {
+      // 今夜の営業が始まった側
+      return SCHEDULE[day].open;
+    }
+
+    // 深夜〜早朝は「前日の夜」の続き
+    var prev = (day + 6) % 7;
+    var rule = SCHEDULE[prev];
+    return rule.open && h < rule.until;
+  }
+
+  function update() {
+    var show = override === "on" ? true
+             : override === "off" ? false
+             : isOpen();
+    el.setAttribute("data-visible", show ? "true" : "false");
+  }
+
+  update();
+  setInterval(update, 60000);
+})();
+</script>
 </body>
 </html>
