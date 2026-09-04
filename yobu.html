@@ -60,7 +60,7 @@ body{
 h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
 .sub{font-size:13px;color:var(--muted);margin:0 0 14px;font-weight:600;line-height:1.7}
 
-/* 今だけ割引の帯 */
+/* 緊急対策の割引の帯 */
 .offbar{
   display:flex;align-items:center;gap:9px;flex-wrap:wrap;
   background:linear-gradient(135deg,rgba(255,176,32,.17),rgba(255,176,32,.05));
@@ -69,6 +69,10 @@ h2{font-size:18px;font-weight:800;margin:0 0 6px;letter-spacing:.02em}
   font-size:13.5px;font-weight:900;color:var(--amber);letter-spacing:.01em;
 }
 .offbar span{font-size:11px;color:var(--muted);font-weight:700}
+.offbar .bd{
+  background:#E14B3C;color:#fff;font-size:10.5px;font-weight:900;
+  letter-spacing:.06em;padding:3px 8px;border-radius:6px;
+}
 
 /* 高速無料・長距離割引 */
 .perks{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
@@ -171,6 +175,30 @@ input::placeholder{color:#59708F}
   width:30px;height:30px;border-radius:50%;background:var(--amber);
   border:3px solid #241400;box-shadow:0 0 0 4px rgba(255,176,32,.3);
 }
+
+/* TikTokライブ配信バナー（地図の上に出します） */
+.dnud-live{
+  --dnud-night:#0e1622; --dnud-amber:#e9b64c; --dnud-text:#f4efe6;
+  position:fixed; right:12px; top:calc(12px + env(safe-area-inset-top));
+  z-index:800; display:none; align-items:center; gap:9px;
+  padding:9px 15px 9px 11px;
+  border:1px solid rgba(233,182,76,.45); border-radius:999px;
+  background:var(--dnud-night); box-shadow:0 8px 24px rgba(0,0,0,.5);
+  color:var(--dnud-text); font-size:13px; line-height:1.2;
+  letter-spacing:.02em; text-decoration:none;
+}
+.dnud-live[data-visible="true"]{display:flex}
+.dnud-live__dot{
+  width:8px;height:8px;flex:0 0 auto;border-radius:50%;background:#ff4b5c;
+  box-shadow:0 0 0 0 rgba(255,75,92,.7); animation:dnud-pulse 1.8s ease-out infinite;
+}
+.dnud-live__label{font-weight:700}
+.dnud-live__sub{display:block;margin-top:2px;font-size:10.5px;font-weight:400;color:rgba(244,239,230,.68);letter-spacing:0}
+@keyframes dnud-pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,75,92,.7)}
+  70%{box-shadow:0 0 0 8px rgba(255,75,92,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,75,92,0)}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -178,6 +206,15 @@ input::placeholder{color:#59708F}
 
 <div id="map"></div>
 <div id="crosshair"><div class="pin"></div></div>
+
+<a class="dnud-live" id="dnudLive" href="#" target="_blank" rel="noopener">
+  <span class="dnud-live__dot" aria-hidden="true"></span>
+  <span>
+    <span class="dnud-live__label">TikTokでライブ配信中</span>
+    <span class="dnud-live__sub">今夜の福岡の街を走っています</span>
+  </span>
+</a>
+
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
 
@@ -196,14 +233,16 @@ function yen(n){ return Number(n).toLocaleString('ja-JP'); }
 
 /* ===== 自社案件の判定 =====
    指名なし、または自社を指名しているときだけ
-   「今だけ割引」「長距離割引」「高速無料」を適用します。
+   「緊急対策の割引」「長距離割引」「高速無料」を適用します。
    他社を指名しているときは従来料金（1kmごと450円）のままです。 */
 var OWN_CO = 'daikounaw';
 function isOwn(){ return !prefId || prefId === OWN_CO; }
 
-/* ===== 今だけ割引 =====
-   OFF … 割引額（円）。0 にすると割引はすべて止まります */
-var OFF = 500;
+/* ===== 緊急対策の割引 =====
+   OFF … 割引額（円）。0 にすると割引はすべて止まります
+   OFF_COND … 割引の条件。表示にそのまま使われます */
+var OFF = 1000;
+var OFF_COND = '口コミ記入で';
 var OFF_CO = OWN_CO;
 
 function offAmount(){
@@ -214,8 +253,8 @@ function offAmount(){
 function offBar(){
   var v = offAmount();
   if (!v) return '';
-  return '<div class="offbar">\uD83C\uDF89 今だけ'+yen(v)+'円OFF' +
-         '<span>概算料金から差し引いています</span></div>';
+  return '<div class="offbar"><span class="bd">緊急対策</span>' + yen(v) + '円OFF' +
+         '<span>Googleの口コミをご記入いただいた方が対象です。概算料金から差し引いています</span></div>';
 }
 
 /* ===== 高速無料・長距離割引の案内 ===== */
@@ -273,8 +312,8 @@ var prefId=qs.get('co')||null, prefName='';
 var qLat=parseFloat(qs.get('lat')), qLng=parseFloat(qs.get('lng'));
 
 map = L.map('map', {zoomControl:false, attributionControl:false}).setView([33.5902,130.4017], 15);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {maxZoom:20}).addTo(map);
-L.control.attribution({prefix:false}).addAttribution('&copy; OpenStreetMap, CARTO').addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map);
+L.control.attribution({prefix:false}).addAttribution('&copy; OpenStreetMap contributors').addTo(map);
 
 if (!isNaN(qLat) && !isNaN(qLng)){
   map.setView([qLat, qLng], 17);
@@ -403,7 +442,7 @@ function viewForm(){
     '<div class="fare"><div class="yen">'+yen(price)+'<small>円</small></div>' +
       '<div class="d">' +
         (lg ? '<em>長距離割引 '+yen(lg)+'円</em> 適用済<br>' : '') +
-        (off ? '<b>今だけ'+yen(off)+'円OFF</b> 適用済（<s>'+yen(price+off)+'円</s>）<br>' : '') +
+        (off ? '<b>'+OFF_COND+yen(off)+'円OFF</b> 適用済（<s>'+yen(price+off)+'円</s>）<br>' : '') +
         '約'+dist.toFixed(1)+'km の概算料金<br>'+rateNote()+'</div></div>' +
     perkBar() +
     (prefName ? '<div class="pref">'+esc(prefName)+' を指名しています<span>90秒間この業者が優先して受注します</span></div>' : '') +
@@ -431,7 +470,7 @@ async function submit(){
   var tags=[];
   if (mo) tags.push(mo);
   if (longOff(dist)) tags.push('長距離割引'+yen(longOff(dist))+'円適用済');
-  if (offAmount()) tags.push(yen(offAmount())+'円OFF適用済');
+  if (offAmount()) tags.push('口コミ割'+yen(offAmount())+'円OFF適用済');
   if (isOwn()) tags.push('高速代無料');
   var body={
     cname: nm||'お客様', cphone: ph,
@@ -469,7 +508,7 @@ function viewTrack(o, co){
   }
   var pu = String(o.pickup||'');
   var offNote = (pu.indexOf('円OFF適用済') >= 0)
-    ? '<b>今だけ'+yen(OFF)+'円OFF</b> 適用済<br>' : '';
+    ? '<b>'+OFF_COND+yen(OFF)+'円OFF</b> 適用済<br>' : '';
   var lgNote = (pu.indexOf('長距離割引') >= 0) ? '<em>長距離割引</em> 適用済<br>' : '';
   var hwNote = (pu.indexOf('高速代無料') >= 0) ? '<em>高速代は無料（当社負担）</em><br>' : '';
   $('sheet').innerHTML =
@@ -558,6 +597,47 @@ if ('serviceWorker' in navigator){
     navigator.serviceWorker.register('/sw.js').catch(function(){});
   });
 }
+
+/* ===== TikTokライブ配信バナー ===== */
+(function () {
+  var TIKTOK_ID = "dnud.jp";
+
+  /* 営業スケジュール  0=日 1=月 2=火 3=水 4=木 5=金 6=土 */
+  var SCHEDULE = {
+    0: { open: false, until: 6 },  // 日曜 定休
+    1: { open: true,  until: 6 },  // 月曜
+    2: { open: true,  until: 6 },  // 火曜
+    3: { open: true,  until: 6 },  // 水曜
+    4: { open: false, until: 6 },  // 木曜 定休
+    5: { open: true,  until: 7 },  // 金曜
+    6: { open: true,  until: 7 }   // 土曜
+  };
+  var START_HOUR = 21;
+
+  var el = document.getElementById("dnudLive");
+  if (!el) return;
+  el.href = "https://www.tiktok.com/@" + TIKTOK_ID + "/live";
+
+  var param = new URLSearchParams(location.search).get("live");
+  if (param === "on" || param === "off" || param === "auto") {
+    try { localStorage.setItem("dnudLive", param); } catch (e) {}
+  }
+  var override = "auto";
+  try { override = localStorage.getItem("dnudLive") || "auto"; } catch (e) {}
+
+  function isOpen() {
+    var now = new Date(), h = now.getHours(), day = now.getDay();
+    if (h >= START_HOUR) return SCHEDULE[day].open;
+    var prev = (day + 6) % 7, rule = SCHEDULE[prev];
+    return rule.open && h < rule.until;
+  }
+  function update() {
+    var show = override === "on" ? true : override === "off" ? false : isOpen();
+    el.setAttribute("data-visible", show ? "true" : "false");
+  }
+  update();
+  setInterval(update, 60000);
+})();
 </script>
 </body>
 </html>
