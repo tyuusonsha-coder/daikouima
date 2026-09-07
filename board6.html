@@ -98,6 +98,18 @@ button.b:disabled{background:var(--surface-2);color:var(--muted);transform:none}
 .scan{width:44px;height:44px;margin:0 auto 22px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--amber);animation:spin 1.1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .paused .scan{animation:none;border-top-color:var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:9px}
+.chip{flex:1 1 46%;background:#16233A;border:1px solid #2A3A57;border-radius:11px;
+  color:#EAF1FF;font-size:13.5px;font-weight:800;padding:12px 6px;font-family:inherit;cursor:pointer}
+.chip:active{background:#1E2F4C}
+.chip.on{background:#123A2A;border-color:var(--green);color:var(--green)}
+.newsNow{display:none;align-items:center;gap:9px;background:#123A2A;border:1px solid #1F5C42;
+  border-radius:11px;padding:10px 12px;margin-bottom:9px}
+.newsNow.on{display:flex}
+.newsNow .nTxt{flex:1;font-size:13px;font-weight:800;color:#7BE6AE;line-height:1.4}
+.newsNow .nTxt small{display:block;font-size:11px;font-weight:700;color:#5E9C7C;margin-top:2px}
+.newsNow .nDel{background:none;border:1px solid #FF6B6B;border-radius:9px;color:#FF6B6B;
+  font-size:12px;font-weight:800;padding:8px 12px;font-family:inherit;cursor:pointer;white-space:nowrap}
 .toast{
   position:fixed;left:12px;right:12px;bottom:calc(18px + env(safe-area-inset-bottom));
   background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:15px;
@@ -130,8 +142,18 @@ button.b:disabled{background:var(--surface-2);color:var(--muted);transform:none}
     </select>
     <button class="pBtn" id="appeal">15分アピール</button>
   </div>
+  <div class="newsNow" id="newsNow">
+    <div class="nTxt" id="newsNowT"></div>
+    <button class="nDel" id="newsClear">取り下げ</button>
+  </div>
+  <div class="chips">
+    <button class="chip" data-n="ただいま空車です。すぐ向かえます">🚗 空車です</button>
+    <button class="chip" data-n="本日21時より営業しています">🟢 本日営業</button>
+    <button class="chip" data-n="本日は定休日です">💤 定休日</button>
+    <button class="chip" data-n="あと1台のみ受付できます">⏳ 残り1台</button>
+  </div>
   <div class="pRow">
-    <input id="newsT" placeholder="お知らせの見出し（例：本日すぐ行けます）">
+    <input id="newsT" placeholder="自由に書く（例：本日すぐ行けます）">
     <button class="pBtn ghost" id="newsBtn">投稿</button>
   </div>
   <div class="pRow">
@@ -416,6 +438,9 @@ async function loadCompany(){
     if (d[0].name) $('coName').textContent=d[0].name;
     isOpen=!!d[0].is_open; paintToggle();
     if (d[0].appeal_until){ appealUntil=new Date(d[0].appeal_until).getTime(); paintAppeal(); }
+    newsTitle = d[0].news_title || null;
+    newsAt = d[0].news_at ? new Date(d[0].news_at).getTime() : null;
+    paintNews();
     if (isOpen && !gpsStarted) startGPS();
   }catch(e){ toast('受付状態を読めません（'+(e && e.message ? e.message : '通信エラー')+'）','err'); }
 }
@@ -461,16 +486,54 @@ $('appeal').onclick=async function(){
     toast('15分間「すぐ来る順」の先頭に表示されます','ok');
   }catch(e){ toast('アピールを送信できませんでした','err'); }
 };
-$('newsBtn').onclick=async function(){
-  var t=$('newsT').value.trim();
-  if (!t){ toast('見出しを入力してください','err'); return; }
+/* ===== お知らせ（1タップ掲載・36時間で自動的に消えます） ===== */
+var newsTitle=null, newsAt=null;
+function newsAgo(){
+  if (!newsAt) return '';
+  var m=Math.floor((Date.now()-newsAt)/60000);
+  if (m<1) return 'たった今';
+  if (m<60) return m+'分前';
+  var h=Math.floor(m/60);
+  return h<24 ? h+'時間前' : Math.floor(h/24)+'日前';
+}
+function paintNews(){
+  var fresh = newsTitle && newsAt && (Date.now()-newsAt) < 36*3600*1000;
+  var box=$('newsNow');
+  if (fresh){
+    var left=Math.max(0, Math.round((36*3600*1000-(Date.now()-newsAt))/3600000));
+    $('newsNowT').innerHTML='掲載中：'+esc(newsTitle)+
+      '<small>'+newsAgo()+'に掲載・あと約'+left+'時間で自動的に消えます</small>';
+    box.className='newsNow on';
+  } else {
+    box.className='newsNow';
+  }
+  var els=document.querySelectorAll('.chip');
+  for (var i=0;i<els.length;i++){
+    els[i].className = (fresh && els[i].getAttribute('data-n')===newsTitle) ? 'chip on' : 'chip';
+  }
+}
+async function putNews(t){
+  var at = t ? new Date() : null;
   try{
     await fetch(SB+'companies?id=eq.'+COMPANY_ID,{method:'PATCH',headers:H,
-      body:JSON.stringify({news_title:t, news_at:new Date().toISOString()})});
-    $('newsT').value='';
-    toast('お知らせを掲載しました','ok');
-  }catch(e){ toast('掲載できませんでした','err'); }
+      body:JSON.stringify({news_title:t, news_at:at?at.toISOString():null})});
+    newsTitle=t; newsAt=at?at.getTime():null;
+    paintNews();
+    toast(t?'お知らせを掲載しました':'お知らせを取り下げました','ok');
+  }catch(e){ toast(t?'掲載できませんでした':'取り下げできませんでした','err'); }
+}
+var chipEls=document.querySelectorAll('.chip');
+for (var ci=0; ci<chipEls.length; ci++){
+  chipEls[ci].onclick=function(){ putNews(this.getAttribute('data-n')); };
+}
+$('newsClear').onclick=function(){ putNews(null); };
+$('newsBtn').onclick=function(){
+  var t=$('newsT').value.trim();
+  if (!t){ toast('見出しを入力してください','err'); return; }
+  $('newsT').value='';
+  putNews(t);
 };
+setInterval(paintNews, 60000);
 setInterval(paintAppeal, 20000);
 
 function tryPin(){
