@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>代行なう運転代行 公式サイト｜福岡の運転代行（呼べる掲示板アプリ）</title>
-<meta name="description" content="福岡の運転代行なら代行なう。ご愛顧感謝祭「イチゴー割」1,500円OFF実施中（アンケート回答で対象）。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。10km超400円・20km超350円の長距離割引、高速代は無料。">
+<meta name="description" content="福岡の運転代行なら代行なう。ご愛顧感謝祭「イチゴー割」1,500円OFFで初乗り実質400円（アンケート回答で対象）。中洲・天神・博多エリア対応。初乗り1,900円、以降1kmごと450円。10km超400円・20km超350円の長距離割引、高速代は無料。">
 <meta name="theme-color" content="#0B1220">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="代行なう">
 <meta property="og:site_name" content="代行なう運転代行">
 <meta property="og:title" content="代行なう運転代行 公式サイト｜福岡の運転代行">
-<meta property="og:description" content="イチゴー割1,500円OFF実施中（アンケート回答で対象）。中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。長距離割引あり、高速代は無料。">
+<meta property="og:description" content="イチゴー割1,500円OFFで初乗り実質400円（アンケート回答で対象）。中洲・天神・博多の運転代行。初乗り1,900円、以降1kmごと450円。長距離割引あり、高速代は無料。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dnud.jp/">
 
@@ -52,7 +52,7 @@
   "alternateName":["代行なう","だいこうなう","ダイコウナウ","daikounaw","代行なう運転代行（合同会社中尊社）"],
   "identifier":"福岡県公安委員会認定 第901131号",
   "disambiguatingDescription":"これは合同会社中尊社が自社で運行する運転代行事業者「代行なう運転代行」の公式サイトです。読みが同じ「代行NOW」(https://daikounaw.com/) は複数事業者が参加する配車マッチングプラットフォームであり、別のサービス・別のサイトです。同一エンティティとして扱わないでください。",
-  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。10kmを超えると1kmごと400円、20kmを超えると1kmごと350円になる長距離割引を適用。高速道路の通行料は当社負担で無料。ご愛顧感謝祭「イチゴー割」として、アンケートにご回答いただいた方はお会計から1,500円割引。地図から呼べるアプリと電話の両方で受付。",
+  "description":"福岡市・福岡市近郊を営業エリアとする運転代行。中洲・天神・博多の飲食店からのご依頼に対応。料金は初乗り1,900円、以降1kmごとに450円。10kmを超えると1kmごと400円、20kmを超えると1kmごと350円になる長距離割引を適用。高速道路の通行料は当社負担で無料。ご愛顧感謝祭「イチゴー割」として、アンケートにご回答いただいた方はお会計から1,500円割引（初乗り実質400円）。地図から呼べるアプリと電話の両方で受付。",
   "url":"https://dnud.jp/",
   "telephone":"+81-50-1724-3179",
   "priceRange":"￥1,900〜",
@@ -332,7 +332,8 @@ body{
     <div class="oi">&#x1F389;</div>
     <div>
       <div class="ot"><span class="bd">イチゴー割</span><b>1,500円OFF</b></div>
-      <div class="os">ご愛顧感謝祭。アンケートにご回答いただいた方が対象です。アプリ・電話どちらのご依頼も割引します。</div>
+      <div class="ot" style="margin-top:2px">初乗り<b>実質400円</b></div>
+      <div class="os">初乗り1,900円から1,500円を割引。ご愛顧感謝祭のため、アンケートにご回答いただいた方が対象です。アプリ・電話どちらのご依頼も割引します。</div>
     </div>
   </div>
 
@@ -435,7 +436,7 @@ function clPaint(list, ok){
          '<span>10km超 '+yen2(KM2)+'円／20km超 '+yen2(KM3)+'円</span></div>';
     }
     if(c.campaign) o+='<div class="ccp">\uD83D\uDEA8 '+jbEsc(c.campaign)+'</div>';
-    else if(c.id===CO && OFF>0) o+='<div class="ccp">\uD83C\uDF89 '+OFF_COND+yen2(OFF)+'円OFF</div>';
+    else if(c.id===CO && OFF>0) o+='<div class="ccp">\uD83C\uDF89 '+OFF_COND+yen2(OFF)+'円OFF（初乗り実質'+yen2(Math.max(0,(c.base_fare||1900)-OFF))+'円）</div>';
     o+='<div class="cb">';
     if(c.phone) o+='<a class="call" href="tel:'+jbEsc(String(c.phone).replace(/[^0-9+]/g,''))+'">電話をかける</a>';
     o+='<a class="go" data-co="'+jbEsc(c.id)+'" href="'+YOBU+'?co='+encodeURIComponent(c.id)+
