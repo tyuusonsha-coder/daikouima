@@ -241,8 +241,8 @@ function isOwn(){ return !prefId || prefId === OWN_CO; }
 /* ===== 緊急対策の割引 =====
    OFF … 割引額（円）。0 にすると割引はすべて止まります
    OFF_COND … 割引の条件。表示にそのまま使われます */
-var OFF = 1000;
-var OFF_COND = '口コミ記入で';
+var OFF = 1500;
+var OFF_COND = '御願有 ';
 var OFF_CO = OWN_CO;
 
 function offAmount(){
@@ -267,7 +267,7 @@ function perkBar(){
 }
 
 /* ===== 料金 =====
-   初乗り 1,900円
+   初乗り 400円（御願有）
    〜10km        1kmごと 450円
    10km超〜20km  1kmごと 400円
    20km超        1kmごと 350円
@@ -294,8 +294,8 @@ function fare(km){
 }
 /* 料金の内訳テキスト */
 function rateNote(){
-  if (!isOwn()) return '初乗り1,900円／1kmごと450円';
-  return '初乗り1,900円／〜10km 450円・〜20km 400円・20km超 350円<br>' +
+  if (!isOwn()) return '初乗り400円（御願有）／1kmごと450円';
+  return '初乗り400円（御願有）／〜10km 450円・〜20km 400円・20km超 350円<br>' +
          '<em>高速代は無料（当社負担）</em>';
 }
 function hav(a, b){
