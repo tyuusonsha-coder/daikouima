@@ -234,7 +234,7 @@ function yen(n){ return Number(n).toLocaleString('ja-JP'); }
 /* ===== 自社案件の判定 =====
    指名なし、または自社を指名しているときだけ
    「緊急対策の割引」「長距離割引」「高速無料」を適用します。
-   他社を指名しているときは従来料金（1kmごと450円）のままです。 */
+   他社を指名しているときは各社の料金です。 */
 var OWN_CO = 'daikounaw';
 function isOwn(){ return !prefId || prefId === OWN_CO; }
 
@@ -262,17 +262,16 @@ function perkBar(){
   if (!isOwn()) return '';
   return '<div class="perks">' +
     '<div class="perk"><b>高速代 無料</b><i>全区間 当社が負担します</i></div>' +
-    '<div class="perk"><b>長距離割引</b><i>10km超から自動で適用</i></div>' +
+    '<div class="perk"><b>長距離割引</b><i>20km超から自動で適用</i></div>' +
     '</div>';
 }
 
 /* ===== 料金 =====
    初乗り 400円（御願有）
-   〜10km        1kmごと 450円
-   10km超〜20km  1kmごと 400円
-   20km超        1kmごと 350円
+   〜20km        1kmごと 350円
+      20km超        1kmごと 300円
    高速代は当社負担（お客様の請求には含めません） */
-var BASE = 1900, R1 = 450, R2 = 400, R3 = 350;
+var BASE = 1900, R1 = 350, R2 = 350, R3 = 300;
 
 function fareBase(km){
   var k = Math.ceil(km);
@@ -294,8 +293,8 @@ function fare(km){
 }
 /* 料金の内訳テキスト */
 function rateNote(){
-  if (!isOwn()) return '初乗り400円（御願有）／1kmごと450円';
-  return '初乗り400円（御願有）／〜10km 450円・〜20km 400円・20km超 350円<br>' +
+  if (!isOwn()) return '初乗り400円（御願有）／1kmごと350円';
+  return '初乗り400円（御願有）／〜20km 1kmごと350円・20km超 300円<br>' +
          '<em>高速代は無料（当社負担）</em>';
 }
 function hav(a, b){
