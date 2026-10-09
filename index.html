@@ -134,6 +134,18 @@
   --amber:#FFB020; --amber-soft:#E3C283; --green:#2ECC71;
   --callbar:76px;
 }
+
+.nawcta{display:flex;align-items:center;gap:12px;margin:14px 18px 0;padding:15px 16px;border-radius:16px;text-decoration:none;
+  background:linear-gradient(135deg,rgba(0,229,255,.12),var(--surface));border:1px solid rgba(0,229,255,.40)}
+.nawcta__ic{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.35)}
+.nawcta__tx{flex:1;min-width:0}
+.nawcta__tx b{display:block;font-size:14.5px;font-weight:900;color:#7FE7F5;line-height:1.5}
+.nawcta__tx i{display:block;font-style:normal;font-size:11px;color:var(--muted);line-height:1.75;margin-top:4px}
+.nawcta__tag{display:inline-block;margin-top:7px;font-size:10px;font-weight:800;color:#7FE7F5;
+  background:rgba(0,229,255,.10);border:1px solid rgba(0,229,255,.35);border-radius:999px;padding:3px 10px}
+.nawcta__ar{flex:0 0 auto;font-size:20px;color:#7FE7F5}
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;height:100%;overflow:hidden}
 body{
@@ -441,9 +453,22 @@ body{
     表示されている業者はいま実際に空車です。
   </div>
 
+
+  <!-- 代行NOWアプリへの導線 -->
+  <a class="nawcta" href="https://daikounaw.com/">
+    <div class="nawcta__ic">📍</div>
+    <div class="nawcta__tx">
+      <b>地図から呼べる「代行NOW」</b>
+      <i>いま近くで空車の運転代行を地図で探せます。代行なうが対応できない時間帯・エリアでも、他社が見つかります。</i>
+      <span class="nawcta__tag">無料アプリ・登録不要</span>
+    </div>
+    <span class="nawcta__ar">&rsaquo;</span>
+  </a>
+
   <div class="jb" id="jb"></div>
 
   <div class="foot">
+    <a href="https://daikounaw.com/">代行NOW（地図から呼べる配車アプリ）</a><br>
     <a href="https://daikounaw.com/touroku">運転代行業者の方はこちら（掲載無料）</a><br>
     合同会社中尊社｜福岡県那珂川市　·　
     <a href="https://tyuusonsha.jp">運営会社</a></div>
